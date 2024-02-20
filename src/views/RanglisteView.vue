@@ -17,22 +17,26 @@ import { onMounted, ref } from 'vue'
 import type Player from '@/models/Player.js'
 import RanglisteVue from '@/components/rangliste/Rangliste.vue'
 
-const header = ref('Rangliste')
-
-const newPlayer = ref('')
-const newSinglesRating = ref('')
-const newDoublesRating = ref('')
-
-const players = ref<Player[]>([
+const defaultPlayers: Player[] = [
   { name: 'Cang', singles: '140', doubles: '80' },
   { name: 'Anton', singles: '150', doubles: '100' },
-  { name: 'Brecher', singles: '160', doubles: '110' }
-])
+  { name: 'Brecher', singles: '160', doubles: '110' },
+  { name: 'Richtiger Otto', singles: '3000', doubles: '3000' }
+];
+
+const header = ref('Rangliste');
+const newPlayer = ref('');
+const newSinglesRating = ref('');
+const newDoublesRating = ref('');
+const players = ref<Player[]>([]);
 
 onMounted(() => {
-  const foo = getPlayersFromLocalStorage()
-  console.log('Stored players', foo)
-  players.value = foo;
+  const storedPlayers = getPlayersFromSessionStorage()
+  if (storedPlayers.length > 0) {
+    players.value = storedPlayers;
+  } else {
+    players.value = defaultPlayers;
+  }
 })
 
 function clickAdd(): void {
@@ -41,7 +45,7 @@ function clickAdd(): void {
     singles: newSinglesRating.value,
     doubles: newDoublesRating.value
   })
-  saveArrayToLocalStorage('myRangliste', players.value)
+  saveArrayToSessionStorage('myRangliste', players.value)
   clearForm()
 }
 
@@ -51,19 +55,19 @@ function clearForm(): void {
   newDoublesRating.value = ''
 }
 
-function saveArrayToLocalStorage(key: string, array: any): void {
+function saveArrayToSessionStorage(key: string, array: any): void {
   try {
-    localStorage.setItem(key, JSON.stringify(array))
-    console.log('Array saved to local storage successfully.', array)
+    sessionStorage.setItem(key, JSON.stringify(array))
+    console.log('Array saved to session storage successfully.', array)
   } catch (error) {
-    console.error('Error saving array to local storage:', error)
+    console.error('Error saving array to session storage:', error)
   }
 }
 
-function getPlayersFromLocalStorage(): Player[]  {
-  const playersJSON = localStorage.getItem('myRangliste')
+function getPlayersFromSessionStorage(): Player[]  {
+  const playersJSON = sessionStorage.getItem('myRangliste')
   const myRangliste = playersJSON ? JSON.parse(playersJSON) : []
-  console.log(myRangliste)
+  console.log('MyRangliste', myRangliste)
   return myRangliste
 }
 
