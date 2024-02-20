@@ -1,6 +1,11 @@
 <template>
   <div class="rangliste__table">
     Table of players:
+    <ul class="rangliste__row">
+      <li class="rangliste__head">Name</li>
+      <li class="rangliste__head">Singles</li>
+      <li class="rangliste__head">Doubles</li>
+    </ul>
     <ul class="rangliste__row" v-for="player in players" :key="player.singles">
       <li class="rangliste__cell">
         {{ player.name }}
@@ -37,10 +42,15 @@ const props = defineProps<{
       display: table-row;
     }
 
-    &__cell {
+    &__cell, &__head {
       display: table-cell;
       border: 1px solid #000;
       padding: 8px;
+    }
+
+    &__head {
+      font-size: larger;
+      font-style: italic;
     }
   }
 }

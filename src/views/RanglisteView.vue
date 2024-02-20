@@ -1,19 +1,16 @@
 <template>
+  <h1>{{ header }}</h1>
   <div class="rangliste">
-    <h1>{{ header }}</h1>
-    <input v-model="newPlayer" type="text" placeholder="Name" />
+    <input v-model="newPlayerName" type="text" placeholder="Name" />
     <input v-model="newSinglesRating" type="text" placeholder="Einzelwertung" />
     <input v-model="newDoublesRating" type="text" placeholder="Doppelwertung" />
-    <button @click="clickAdd">Add</button>
-    <div v-if="newPlayer" class="summary">
-      <div>{{ newPlayer }} ({{ newSinglesRating }} / {{ newDoublesRating }})</div>
-    </div>
-    <RanglisteVue :players="players" />
+    <button @click="clickAdd">Add {{newPlayer}} </button>
   </div>
+  <RanglisteVue :players="players" />
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import type Player from '@/models/Player.js'
 import RanglisteVue from '@/components/rangliste/Rangliste.vue'
 
@@ -22,26 +19,32 @@ const defaultPlayers: Player[] = [
   { name: 'Anton', singles: '150', doubles: '100' },
   { name: 'Brecher', singles: '160', doubles: '110' },
   { name: 'Richtiger Otto', singles: '3000', doubles: '3000' }
-];
+]
 
-const header = ref('Rangliste');
-const newPlayer = ref('');
-const newSinglesRating = ref('');
-const newDoublesRating = ref('');
-const players = ref<Player[]>([]);
+const header = ref('Rangliste')
+const newPlayerName = ref('')
+const newSinglesRating = ref('')
+const newDoublesRating = ref('')
+const players = ref<Player[]>([])
 
 onMounted(() => {
   const storedPlayers = getPlayersFromSessionStorage()
   if (storedPlayers.length > 0) {
-    players.value = storedPlayers;
+    players.value = storedPlayers
   } else {
-    players.value = defaultPlayers;
+    players.value = defaultPlayers
   }
 })
 
+const newPlayer = computed(() => {
+  if (newPlayerName.value && newSinglesRating.value && newDoublesRating.value) {
+    return `${newPlayerName.value}(${newSinglesRating.value}/${newDoublesRating.value})`
+  }
+});
+
 function clickAdd(): void {
   players.value.push({
-    name: newPlayer.value,
+    name: newPlayerName.value,
     singles: newSinglesRating.value,
     doubles: newDoublesRating.value
   })
@@ -50,7 +53,7 @@ function clickAdd(): void {
 }
 
 function clearForm(): void {
-  newPlayer.value = ''
+  newPlayerName.value = ''
   newSinglesRating.value = ''
   newDoublesRating.value = ''
 }
@@ -64,13 +67,12 @@ function saveArrayToSessionStorage(key: string, array: any): void {
   }
 }
 
-function getPlayersFromSessionStorage(): Player[]  {
+function getPlayersFromSessionStorage(): Player[] {
   const playersJSON = sessionStorage.getItem('myRangliste')
   const myRangliste = playersJSON ? JSON.parse(playersJSON) : []
   console.log('MyRangliste', myRangliste)
   return myRangliste
 }
-
 </script>
 
 <style>
@@ -79,7 +81,7 @@ function getPlayersFromSessionStorage(): Player[]  {
     display: flex;
     align-items: center;
     align-content: center;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
   }
 }
