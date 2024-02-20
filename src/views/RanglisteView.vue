@@ -76,7 +76,6 @@ function getPlayersFromSessionStorage(): Player[]  {
 <style>
 @media (min-width: 1024px) {
   .rangliste {
-    min-height: 100vh;
     display: flex;
     align-items: center;
     align-content: center;
