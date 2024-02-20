@@ -1,33 +1,47 @@
 <template>
   <div class="rangliste__table">
-    <div>
-      <ul>
-        Table of players:
-        <li v-for="player in players" :key="player.singles">
-          {{ player.name }} ({{ player.singles }} / {{ player.doubles }})
-        </li>
-      </ul>
-    </div>
+    Table of players:
+    <ul class="rangliste__row" v-for="player in players" :key="player.singles">
+      <li class="rangliste__cell">
+        {{ player.name }}
+      </li>
+      <li class="rangliste__cell">
+        {{ player.singles }}
+      </li>
+      <li class="rangliste__cell">
+        {{ player.doubles }}
+      </li>
+    </ul>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 import type Player from '@/models/Player.js'
 
-defineProps<{
+const props = defineProps<{
   players: Player[]
 }>()
 
-// Todo Order Table
-
-
 </script>
 
-<style>
+<style lang="scss" scoped>
 @media (min-width: 1024px) {
-  ul {
-    list-style-type: none;
+  .rangliste {
+    &__table {
+      display: table;
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    &__row {
+      display: table-row;
+    }
+
+    &__cell {
+      display: table-cell;
+      border: 1px solid #000;
+      padding: 8px;
+    }
   }
 }
 </style>

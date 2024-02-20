@@ -4,7 +4,6 @@
     <input v-model="newPlayer" type="text" placeholder="Name" />
     <input v-model="newSinglesRating" type="text" placeholder="Einzelwertung" />
     <input v-model="newDoublesRating" type="text" placeholder="Doppelwertung" />
-    <!-- // TODO: Save to local storage  -->
     <button @click="clickAdd">Add</button>
     <div v-if="newPlayer" class="summary">
       <div>{{ newPlayer }} ({{ newSinglesRating }} / {{ newDoublesRating }})</div>
@@ -14,9 +13,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import type Player from '@/models/Player.js'
-import RanglisteVue from '@/components/rangliste/Rangliste.vue';
+import RanglisteVue from '@/components/rangliste/Rangliste.vue'
 
 const header = ref('Rangliste')
 
@@ -24,12 +23,17 @@ const newPlayer = ref('')
 const newSinglesRating = ref('')
 const newDoublesRating = ref('')
 
-// TODO: Get from localstorage
 const players = ref<Player[]>([
   { name: 'Cang', singles: '140', doubles: '80' },
   { name: 'Anton', singles: '150', doubles: '100' },
   { name: 'Brecher', singles: '160', doubles: '110' }
 ])
+
+onMounted(() => {
+  const foo = getPlayersFromLocalStorage()
+  console.log('Stored players', foo)
+  players.value = foo;
+})
 
 function clickAdd(): void {
   players.value.push({
@@ -37,6 +41,7 @@ function clickAdd(): void {
     singles: newSinglesRating.value,
     doubles: newDoublesRating.value
   })
+  saveArrayToLocalStorage('myRangliste', players.value)
   clearForm()
 }
 
@@ -45,6 +50,23 @@ function clearForm(): void {
   newSinglesRating.value = ''
   newDoublesRating.value = ''
 }
+
+function saveArrayToLocalStorage(key: string, array: any): void {
+  try {
+    localStorage.setItem(key, JSON.stringify(array))
+    console.log('Array saved to local storage successfully.', array)
+  } catch (error) {
+    console.error('Error saving array to local storage:', error)
+  }
+}
+
+function getPlayersFromLocalStorage(): Player[]  {
+  const playersJSON = localStorage.getItem('myRangliste')
+  const myRangliste = playersJSON ? JSON.parse(playersJSON) : []
+  console.log(myRangliste)
+  return myRangliste
+}
+
 </script>
 
 <style>
