@@ -4,9 +4,7 @@
     <input v-model="newPlayerName" type="text" placeholder="Name" id="name" />
     <input v-model="newSinglesRating" type="text" placeholder="Einzelwertung" id="singles" />
     <input v-model="newDoublesRating" type="text" placeholder="Doppelwertung" id="doubles" />
-    <button v-if="isValidPlayer" class="rangliste_button" @click="clickAdd" id="button">
-      Add {{ newPlayer }}
-    </button>
+    <button class="rangliste_button" @click="clickAdd" id="button">Add {{ newPlayer }}</button>
   </div>
   <RanglisteVue :players="players" />
 </template>
@@ -35,14 +33,8 @@ onMounted(() => {
   saveLastIdToLocalStorage(storedPlayers.length)
 })
 
-const isValidPlayer = computed(() => {
-  return newPlayerName.value && newSinglesRating.value && newDoublesRating.value
-})
-
 const newPlayer = computed(() => {
-  if (isValidPlayer) {
-    return `${newPlayerName.value}(${newSinglesRating.value}/${newDoublesRating.value})`
-  }
+  return `${newPlayerName.value}(${newSinglesRating.value}/${newDoublesRating.value})`
 })
 
 function initPlayerList(): Player[] {
