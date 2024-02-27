@@ -6,13 +6,15 @@
     <input v-model="newDoublesRating" type="text" placeholder="Doppelwertung" />
     <button @click="clickAdd">Add {{newPlayer}} </button>
   </div>
-  <RanglisteVue :players="players" />
+  <!-- <RanglisteVue :players="players" /> -->
+  <Table :players="players"></Table>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue'
 import type Player from '@/models/Player.js'
 import RanglisteVue from '@/components/rangliste/Rangliste.vue'
+import Table from '../components/rangliste/Table.vue'
 
 const defaultPlayers: Player[] = [
   { name: 'Cang', singles: '140', doubles: '80' },
@@ -30,10 +32,12 @@ const players = ref<Player[]>([])
 onMounted(() => {
   const storedPlayers = getPlayersFromSessionStorage()
   if (storedPlayers.length > 0) {
+    
     players.value = storedPlayers
   } else {
     players.value = defaultPlayers
   }
+  console.log('Number of players', players.value.length)
 })
 
 const newPlayer = computed(() => {
