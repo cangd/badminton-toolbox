@@ -10,9 +10,9 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, computed } from 'vue'
-import type Player from '@/models/Player.js'
 import RanglisteVue from '@/components/rangliste/Rangliste.vue'
+import type Player from '@/models/Player.js'
+import { computed, onMounted, ref } from 'vue'
 
 const defaultPlayers: Player[] = [
   { id: 1, name: 'Cang', singles: '140', doubles: '80' },
@@ -30,7 +30,8 @@ let lastId: number = 0
 
 onMounted(() => {
   const storedPlayers = initPlayerList()
-  saveLastIdToLocalStorage(storedPlayers.length)
+  const lastPlayer = storedPlayers.length - 1
+  saveLastIdToLocalStorage(storedPlayers[lastPlayer].id)
 })
 
 const newPlayer = computed(() => {
