@@ -1,3 +1,4 @@
+import AddPlayerVue from '@/components/rangliste/AddPlayer.vue'
 import { shallowMount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 import TablePlayers from '../components/rangliste/TablePlayers.vue'
@@ -7,19 +8,13 @@ const wrapper = shallowMount(RanglisteView)
 
 function setupComponent() {
   const cut = shallowMount(RanglisteView)
-  const nameInput = cut.find('#name')
-  const singlesInput = cut.find('#singles')
-  const doublesInput = cut.find('#doubles')
-  const addButton = cut.find('#button')
   const ranglisteComp = cut.findComponent(TablePlayers)
+  const addPlayerComp = cut.findComponent(AddPlayerVue)
 
   return {
     cut,
-    nameInput,
-    singlesInput,
-    doublesInput,
-    addButton,
-    ranglisteComp
+    ranglisteComp,
+    addPlayerComp
   }
 }
 
@@ -33,12 +28,8 @@ describe('test', () => {
     expect(ranglisteComp.isVisible()).toBe(true)
   })
 
-  it('button should have name and ratings', async () => {
-    const { nameInput, singlesInput, doublesInput, addButton } = setupComponent()
-    await nameInput.setValue('Test Player')
-    await singlesInput.setValue(100)
-    await doublesInput.setValue(200)
-    expect(addButton.exists()).toBe(true)
-    expect(addButton.text()).toContain('Add Test Player(100/200)')
+  it('should load rangliste comp', () => {
+    const { addPlayerComp } = setupComponent()
+    expect(addPlayerComp.isVisible()).toBe(true)
   })
 })
