@@ -6,11 +6,11 @@
     <input v-model="newDoublesRating" type="text" placeholder="Doppelwertung" id="doubles" />
     <button class="rangliste_button" @click="clickAdd" id="button">Add {{ newPlayer }}</button>
   </div>
-  <RanglisteVue :players="players" />
+  <TablePlayers :players="players" />
 </template>
 
 <script setup lang="ts">
-import RanglisteVue from '@/components/rangliste/Rangliste.vue'
+import TablePlayers from '@/components/rangliste/TablePlayers.vue'
 import type Player from '@/models/Player.js'
 import { computed, onMounted, ref } from 'vue'
 

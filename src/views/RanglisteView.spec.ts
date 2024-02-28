@@ -1,6 +1,6 @@
 import { shallowMount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
-import Rangliste from '../components/rangliste/Rangliste.vue'
+import TablePlayers from '../components/rangliste/TablePlayers.vue'
 import RanglisteView from '../views/RanglisteView.vue'
 
 const wrapper = shallowMount(RanglisteView)
@@ -11,7 +11,7 @@ function setupComponent() {
   const singlesInput = cut.find('#singles')
   const doublesInput = cut.find('#doubles')
   const addButton = cut.find('#button')
-  const ranglisteComp = cut.findComponent(Rangliste)
+  const ranglisteComp = cut.findComponent(TablePlayers)
 
   return {
     cut,

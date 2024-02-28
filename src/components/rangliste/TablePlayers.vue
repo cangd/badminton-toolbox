@@ -1,19 +1,19 @@
 <template>
-  <div class="rangliste__table">
+  <div class="tablePlayers__table">
     Table of players:
-    <ul class="rangliste__row">
-      <li class="rangliste__head">Name</li>
-      <li class="rangliste__head">Singles</li>
-      <li class="rangliste__head">Doubles</li>
+    <ul class="tablePlayers__row">
+      <li class="tablePlayers__head">Name</li>
+      <li class="tablePlayers__head">Singles</li>
+      <li class="tablePlayers__head">Doubles</li>
     </ul>
-    <ul class="rangliste__row" v-for="player in players" :key="player.singles">
-      <li class="rangliste__cell">
+    <ul class="tablePlayers__row" v-for="player in players" :key="player.singles">
+      <li class="tablePlayers__cell">
         {{ player.name }}
       </li>
-      <li class="rangliste__cell">
+      <li class="tablePlayers__cell">
         {{ player.singles }}
       </li>
-      <li class="rangliste__cell">
+      <li class="tablePlayers__cell">
         {{ player.doubles }}
       </li>
     </ul>
@@ -26,12 +26,11 @@ import type Player from '@/models/Player.js'
 const props = defineProps<{
   players: Player[]
 }>()
-
 </script>
 
 <style lang="scss" scoped>
 @media (min-width: 1024px) {
-  .rangliste {
+  .tablePlayers {
     &__table {
       display: table;
       width: 100%;
@@ -42,7 +41,8 @@ const props = defineProps<{
       display: table-row;
     }
 
-    &__cell, &__head {
+    &__cell,
+    &__head {
       display: table-cell;
       border: 1px solid #000;
       padding: 8px;
