@@ -1,7 +1,7 @@
 <template>
   <h1>{{ header }}</h1>
   <AddPlayer @update:players="updatePlayersFromStore" />
-  <TablePlayers :players="players" />
+  <TablePlayers :playersList="players" />
 </template>
 
 <script setup lang="ts">

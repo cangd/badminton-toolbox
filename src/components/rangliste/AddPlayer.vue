@@ -32,7 +32,7 @@ import {
 } from '@/helper/rangliste/lastIdStoragehelper.js'
 import {
   getPlayersFromSessionStorage,
-  saveArrayToSessionStorage
+  savePlayersToSessionStorage
 } from '@/helper/rangliste/playersStorageHelper.js'
 import type Player from '@/models/Player.js'
 import { computed, ref } from 'vue'
@@ -62,7 +62,7 @@ function clickAdd(): void {
     singles: newSinglesRating.value,
     doubles: newDoublesRating.value
   })
-  saveArrayToSessionStorage('myRangliste', players.value)
+  savePlayersToSessionStorage(players.value)
   clearForm()
   emit('update:players')
 }

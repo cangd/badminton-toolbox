@@ -29,7 +29,7 @@ describe('Add Player', () => {
     expect(addButton.text()).toContain('Add Test Player(100/200)')
   })
 
-  it('gets last player Id from LocalStorage player to session storage', async () => {
+  it('gets last player Id from LocalStorage', async () => {
     vitest.spyOn(Storage.prototype, 'getItem')
     vitest.spyOn(Storage.prototype, 'setItem')
     const { nameInput, singlesInput, doublesInput, addButton } = setupComponent()

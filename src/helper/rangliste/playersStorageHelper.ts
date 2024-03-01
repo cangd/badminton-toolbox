@@ -7,9 +7,9 @@ export function getPlayersFromSessionStorage(): Player[] {
   return myRangliste
 }
 
-export function saveArrayToSessionStorage(key: string, array: any): void {
+export function savePlayersToSessionStorage(array: Player[]): void {
   try {
-    sessionStorage.setItem(key, JSON.stringify(array))
+    sessionStorage.setItem('myRangliste', JSON.stringify(array))
     console.log('Array saved to session storage successfully.', array)
   } catch (error) {
     console.error('Error saving array to session storage:', error)
