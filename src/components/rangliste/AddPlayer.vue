@@ -37,7 +37,7 @@ import {
 import type Player from '@/models/Player.js'
 import { computed, ref } from 'vue'
 
-const emit = defineEmits<{ (e: 'updatePlayers'): void }>()
+const emit = defineEmits<{ (e: 'update:players'): void }>()
 
 const newPlayerName = ref('')
 const newSinglesRating = ref('')
@@ -64,7 +64,7 @@ function clickAdd(): void {
   })
   saveArrayToSessionStorage('myRangliste', players.value)
   clearForm()
-  emit('updatePlayers')
+  emit('update:players')
 }
 
 function createNewPlayerId(): number {

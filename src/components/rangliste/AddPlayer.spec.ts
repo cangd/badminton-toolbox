@@ -78,12 +78,12 @@ describe('Add Player', () => {
     expect(doublesInput.text()).toBe('')
   })
 
-  it('emits <updatePlayers> event after click', async () => {
+  it('emits <update:players> event after click', async () => {
     const { cut, nameInput, singlesInput, doublesInput, addButton } = setupComponent()
     await nameInput.setValue('Test Player')
     await singlesInput.setValue(100)
     await doublesInput.setValue(200)
     await addButton.trigger('click')
-    expect(cut.emitted().updatePlayers).toBeDefined()
+    expect(cut.emitted('update:players')).toBeDefined()
   })
 })

@@ -1,6 +1,6 @@
 <template>
   <h1>{{ header }}</h1>
-  <AddPlayer @updatePlayers="updatePlayersFromStore" />
+  <AddPlayer @update:players="updatePlayersFromStore" />
   <TablePlayers :players="players" />
 </template>
 
