@@ -18,7 +18,7 @@ import { onMounted, ref } from 'vue'
 const defaultPlayers: Player[] = [
   { id: 1, name: 'Cang', singles: '140', doubles: '80' },
   { id: 2, name: 'Anton', singles: '150', doubles: '100' },
-  { id: 3, name: 'Brecher', singles: '160', doubles: '110' },
+  { id: 3, name: 'Brecher', singles: '60', doubles: '110' },
   { id: 4, name: 'Richtiger Otto', singles: '3000', doubles: '3000' }
 ]
 
