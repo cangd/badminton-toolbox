@@ -1,27 +1,35 @@
 <template>
   <div class="addPlayer">
     <input
-      class="addPlayer_name"
+      class="addPlayer__name"
+      :class="{ addPlayer__error: hasNameError }"
       v-model="newPlayerName"
       type="text"
       placeholder="Name"
       id="name"
     />
     <input
-      class="addPlayer_singles"
+      class="addPlayer__singles"
+      :class="{ addPlayer__error: hasSinglesError }"
       v-model="newSinglesRating"
       type="text"
       placeholder="Einzelwertung"
       id="singles"
     />
     <input
-      class="addPlayer_doubles"
+      class="addPlayer__doubles"
+      :class="{ addPlayer__error: hasDoublesError }"
       v-model="newDoublesRating"
       type="text"
       placeholder="Doppelwertung"
       id="doubles"
     />
-    <button v-if="isFormFilled()" class="addPlayer_button" @click="clickAdd" id="button">
+    <button
+      v-if="isFormFilledWithoutErrors()"
+      class="addPlayer__button"
+      @click="clickAdd"
+      id="button"
+    >
       Add {{ newPlayer }}
     </button>
   </div>
@@ -32,18 +40,42 @@ import {
   getLastIdFromLocalStorage,
   saveLastIdToLocalStorage
 } from '@/helper/rangliste/lastIdStoragehelper.js'
+import { getPlayersFromSessionStorage } from '@/helper/rangliste/playersStorageHelper'
 import type Player from '@/models/Player.js'
 import { computed, ref } from 'vue'
-
-const emit = defineEmits<{ (e: 'update:players', player: Player): void }>()
 
 const newPlayerName = ref('')
 const newSinglesRating = ref('')
 const newDoublesRating = ref('')
 let lastId: number = 0
 
-const isFormFilled = ref(() => {
-  return newPlayerName.value && newSinglesRating.value && newDoublesRating.value
+const players = computed<Player[]>(() => {
+  return getPlayersFromSessionStorage()
+})
+
+const hasNameError = computed<boolean>(() => {
+  return !players.value.every((p) => p.name !== newPlayerName.value)
+})
+
+const hasSinglesError = computed<boolean>(() => {
+  return !players.value.every((p) => p.singles !== newSinglesRating.value)
+})
+
+const hasDoublesError = computed<boolean>(() => {
+  return !players.value.every((p) => p.doubles !== newDoublesRating.value)
+})
+
+const emit = defineEmits<{ (e: 'update:players', player: Player): void }>()
+
+const isFormFilledWithoutErrors = ref(() => {
+  return (
+    !hasNameError.value &&
+    !hasSinglesError.value &&
+    !hasDoublesError.value &&
+    newPlayerName.value &&
+    newSinglesRating.value &&
+    newDoublesRating.value
+  )
 })
 
 const newPlayer = computed(() => {
@@ -81,6 +113,10 @@ function clearForm(): void {
   .addPlayer {
     display: flex;
     justify-content: center;
+
+    &__error {
+      border: 3px solid red;
+    }
   }
 }
 </style>

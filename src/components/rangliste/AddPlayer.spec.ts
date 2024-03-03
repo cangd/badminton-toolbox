@@ -19,6 +19,13 @@ function setupComponent() {
   }
 }
 
+const testPlayer: Player = {
+  id: 1,
+  name: 'Test Player',
+  singles: '100',
+  doubles: '100'
+}
+
 describe('AddPlayer.vue', () => {
   it('add button is initially not rendered', () => {
     const { addButton } = setupComponent()
@@ -46,19 +53,13 @@ describe('AddPlayer.vue', () => {
   })
 
   it('creates last player Id from LocalStorage', async () => {
+    const { nameInput, singlesInput, doublesInput, addButton } = setupComponent()
     vitest.spyOn(Storage.prototype, 'getItem').mockReturnValueOnce('20')
     vitest.spyOn(Storage.prototype, 'setItem')
-    const { nameInput, singlesInput, doublesInput, addButton } = setupComponent()
-    const testPlayer: Player = {
-      id: 1,
-      name: 'Test Player',
-      singles: '100',
-      doubles: '100'
-    }
-
     await nameInput().setValue(testPlayer.name)
     await singlesInput().setValue(testPlayer.singles)
     await doublesInput().setValue(testPlayer.doubles)
+
     await addButton().trigger('click')
 
     expect(localStorage.getItem).toHaveBeenCalledWith('lastId')
@@ -66,18 +67,12 @@ describe('AddPlayer.vue', () => {
   })
 
   it('adds player to session storage', async () => {
-    vitest.spyOn(Storage.prototype, 'setItem')
     const { nameInput, singlesInput, doublesInput, addButton } = setupComponent()
-    const testPlayer: Player = {
-      id: 1,
-      name: 'Test Player',
-      singles: '100',
-      doubles: '100'
-    }
-
+    vitest.spyOn(Storage.prototype, 'setItem')
     await nameInput().setValue(testPlayer.name)
     await singlesInput().setValue(testPlayer.singles)
     await doublesInput().setValue(testPlayer.doubles)
+
     await addButton().trigger('click')
 
     expect(sessionStorage.setItem).toHaveBeenCalled()
@@ -88,7 +83,9 @@ describe('AddPlayer.vue', () => {
     await nameInput().setValue('Test Player')
     await singlesInput().setValue(100)
     await doublesInput().setValue(200)
+
     await addButton().trigger('click')
+
     expect(nameInput().text()).toBe('')
     expect(singlesInput().text()).toBe('')
     expect(doublesInput().text()).toBe('')
@@ -99,7 +96,21 @@ describe('AddPlayer.vue', () => {
     await nameInput().setValue('Test Player')
     await singlesInput().setValue(100)
     await doublesInput().setValue(200)
+
     await addButton().trigger('click')
+
     expect(cut.emitted('update:players')).toBeDefined()
   })
+
+  // TODO Make this test work with sessionStorage
+  // (altertive solution add players as prop into this comp)
+
+  // it('handles duplicate nameInput field', async () => {
+  //   const { nameInput } = setupComponent()
+  //   sessionStorage.setItem('myRangliste', JSON.stringify([testPlayer]))
+
+  //   await nameInput().setValue('Test Player')
+  //   await flushPromises()
+  //   expect(nameInput().classes()).toContain('[addPlayer_error]')
+  // })
 })
