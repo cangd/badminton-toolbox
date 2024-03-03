@@ -4,10 +4,10 @@
     <table>
       <thead>
         <tr>
-          <th class="tablePlayers__head">Player</th>
-          <th class="tablePlayers__head">Singles</th>
-          <th class="tablePlayers__head">Doubles</th>
-          <th class="tablePlayers__head">Action</th>
+          <th class="tablePlayers__head--player" @click="sortByName()">Player</th>
+          <th class="tablePlayers__head--singles" @click="sortBySingles()">Singles</th>
+          <th class="tablePlayers__head--doubles" @click="sortByDoubles()">Doubles</th>
+          <th class="tablePlayers__head--action">Action</th>
         </tr>
       </thead>
       <tbody>
@@ -115,6 +115,26 @@ function deletePlayer(id: any) {
   if (index !== -1) {
     players.value.splice(index, 1)
   }
+}
+
+function sortByName() {
+  players.value.sort((a, b) => a.name.localeCompare(b.name))
+}
+
+function sortBySingles() {
+  players.value.sort((a, b) => {
+    const singlesA = parseInt(a.singles)
+    const singlesB = parseInt(b.singles)
+    return singlesA - singlesB
+  })
+}
+
+function sortByDoubles() {
+  players.value.sort((a, b) => {
+    const doublesA = parseInt(a.doubles)
+    const doublesB = parseInt(b.doubles)
+    return doublesA - doublesB
+  })
 }
 </script>
 

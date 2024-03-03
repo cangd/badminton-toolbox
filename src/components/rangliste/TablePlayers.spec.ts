@@ -20,7 +20,9 @@ function setupComponent(overrides: Partial<ComponentProps<typeof TablePlayersVue
     }
   })
 
-  const tableHeader = () => cut.find('.tablePlayers__head')
+  const tableHeadPlayer = () => cut.find('.tablePlayers__head--player')
+  const tableHeadSingles = () => cut.find('.tablePlayers__head--singles')
+  const tableHeadDoubles = () => cut.find('.tablePlayers__head--doubles')
   const nameField = () => cut.find('.tablePlayers__name--input')
   const singlesField = () => cut.find('.tablePlayers__singles--input')
   const doublesField = () => cut.find('.tablePlayers__doubles--input')
@@ -31,7 +33,9 @@ function setupComponent(overrides: Partial<ComponentProps<typeof TablePlayersVue
 
   return {
     cut,
-    tableHeader,
+    tableHeadPlayer,
+    tableHeadSingles,
+    tableHeadDoubles,
     nameField,
     singlesField,
     doublesField,
@@ -61,8 +65,10 @@ const playersList: Player[] = [
 
 describe('TablePlayers.vue ', () => {
   it('displays a table header', () => {
-    const { tableHeader } = setupComponent()
-    expect(tableHeader().exists()).toBe(true)
+    const { tableHeadPlayer, tableHeadSingles, tableHeadDoubles } = setupComponent()
+    expect(tableHeadPlayer().exists()).toBe(true)
+    expect(tableHeadSingles().exists()).toBe(true)
+    expect(tableHeadDoubles().exists()).toBe(true)
   })
 
   it('fields are initially disabled', () => {
@@ -160,7 +166,7 @@ describe('TablePlayers.vue ', () => {
   })
 
   it('field is marked red when having the same values', async () => {
-    const { cut, nameField, singlesField, doublesField, editButton } = setupComponent({
+    const { nameField, singlesField, doublesField, editButton } = setupComponent({
       playersList: [
         {
           id: 3,
@@ -179,9 +185,83 @@ describe('TablePlayers.vue ', () => {
       ]
     })
     await editButton().trigger('click')
-    console.log(cut.html())
     expect(nameField().classes()).toContain('tablePlayers__error')
     expect(singlesField().classes()).toContain('tablePlayers__error')
     expect(doublesField().classes()).toContain('tablePlayers__error')
+  })
+
+  it('sorts by name', async () => {
+    const { tableHeadPlayer, nameField } = setupComponent({
+      playersList: [
+        {
+          id: 3,
+          name: 'Berta',
+          singles: '100',
+          doubles: '110',
+          editing: false
+        },
+        {
+          id: 4,
+          name: 'Anton',
+          singles: '200',
+          doubles: '100',
+          editing: false
+        }
+      ]
+    })
+    expect((nameField().element as HTMLInputElement).value).toBe('Berta')
+    await tableHeadPlayer().trigger('click')
+
+    expect((nameField().element as HTMLInputElement).value).toBe('Anton')
+  })
+
+  it('sorts by singles', async () => {
+    const { tableHeadSingles, singlesField } = setupComponent({
+      playersList: [
+        {
+          id: 3,
+          name: 'Berta',
+          singles: '100',
+          doubles: '110',
+          editing: false
+        },
+        {
+          id: 4,
+          name: 'Anton',
+          singles: '20',
+          doubles: '100',
+          editing: false
+        }
+      ]
+    })
+    expect((singlesField().element as HTMLInputElement).value).toBe('100')
+    await tableHeadSingles().trigger('click')
+
+    expect((singlesField().element as HTMLInputElement).value).toBe('20')
+  })
+
+  it('sorts by singles', async () => {
+    const { tableHeadSingles, doublesField } = setupComponent({
+      playersList: [
+        {
+          id: 3,
+          name: 'Berta',
+          singles: '100',
+          doubles: '110',
+          editing: false
+        },
+        {
+          id: 4,
+          name: 'Anton',
+          singles: '20',
+          doubles: '100',
+          editing: false
+        }
+      ]
+    })
+    expect((doublesField().element as HTMLInputElement).value).toBe('110')
+    await tableHeadSingles().trigger('click')
+
+    expect((doublesField().element as HTMLInputElement).value).toBe('100')
   })
 })
