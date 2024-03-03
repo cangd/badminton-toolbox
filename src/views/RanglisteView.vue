@@ -1,6 +1,6 @@
 <template>
   <h1>{{ header }}</h1>
-  <AddPlayer @update:players="updatePlayersFromStore" />
+  <AddPlayer @update:players="updatePlayers" />
   <TablePlayers :playersList="players" />
 </template>
 
@@ -8,7 +8,10 @@
 import AddPlayer from '@/components/rangliste/AddPlayer.vue'
 import TablePlayers from '@/components/rangliste/TablePlayers.vue'
 import { saveLastIdToLocalStorage } from '@/helper/rangliste/lastIdStoragehelper.js'
-import { getPlayersFromSessionStorage } from '@/helper/rangliste/playersStorageHelper.js'
+import {
+  getPlayersFromSessionStorage,
+  savePlayersToSessionStorage
+} from '@/helper/rangliste/playersStorageHelper.js'
 import type Player from '@/models/Player.js'
 import { onMounted, ref } from 'vue'
 
@@ -39,8 +42,9 @@ function initPlayerList(): Player[] {
   }
 }
 
-function updatePlayersFromStore(): Player[] {
-  return (players.value = getPlayersFromSessionStorage())
+function updatePlayers(player: Player): void {
+  players.value.push(player)
+  savePlayersToSessionStorage(players.value)
 }
 </script>
 
