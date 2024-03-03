@@ -1,3 +1,4 @@
+import type Player from '@/models/Player'
 import { shallowMount } from '@vue/test-utils'
 import { describe, expect, it, vitest } from 'vitest'
 import { type ComponentProps } from 'vue-component-type-helpers'
@@ -40,6 +41,23 @@ function setupComponent(overrides: Partial<ComponentProps<typeof TablePlayersVue
     deleteButton
   }
 }
+
+const playersList: Player[] = [
+  {
+    id: 1,
+    name: 'TestPlayer',
+    singles: '100',
+    doubles: '110',
+    editing: false
+  },
+  {
+    id: 2,
+    name: 'TestPlayer2',
+    singles: '90',
+    doubles: '900',
+    editing: false
+  }
+]
 
 describe('TablePlayers.vue ', () => {
   it('displays a table header', () => {
@@ -115,51 +133,22 @@ describe('TablePlayers.vue ', () => {
   })
 
   it('prompts an alert when the same value is already existing in singles', async () => {
-    const { singlesField, editButton, saveButton } = setupComponent({
-      playersList: [
-        {
-          id: 1,
-          name: 'TestPlayer',
-          singles: '100',
-          doubles: '110',
-          editing: false
-        },
-        {
-          id: 2,
-          name: 'TestPlayer2',
-          singles: '90',
-          doubles: '900',
-          editing: false
-        }
-      ]
-    })
     vitest.spyOn(window, 'alert')
+    const { singlesField, editButton, saveButton } = setupComponent({
+      playersList
+    })
     await editButton().trigger('click')
 
     await singlesField().setValue('90')
     await saveButton().trigger('click')
 
-    expect(window.alert).toHaveBeenCalledWith('Singles and Doubles values must be unique.')
+    expect(window.alert).toHaveBeenCalledWith('Name, Singles and Doubles values must be unique.')
   })
 
   it('prompts an alert when the same value is already existing in doubles', async () => {
+    vitest.spyOn(window, 'alert')
     const { doublesField, editButton, saveButton } = setupComponent({
-      playersList: [
-        {
-          id: 1,
-          name: 'TestPlayer',
-          singles: '100',
-          doubles: '110',
-          editing: false
-        },
-        {
-          id: 2,
-          name: 'TestPlayer2',
-          singles: '90',
-          doubles: '900',
-          editing: false
-        }
-      ]
+      playersList
     })
     vitest.spyOn(window, 'alert')
     await editButton().trigger('click')
@@ -167,6 +156,32 @@ describe('TablePlayers.vue ', () => {
     await doublesField().setValue('900')
     await saveButton().trigger('click')
 
-    expect(window.alert).toHaveBeenCalledWith('Singles and Doubles values must be unique.')
+    expect(window.alert).toHaveBeenCalledWith('Name, Singles and Doubles values must be unique.')
+  })
+
+  it('field is marked red when having the same values', async () => {
+    const { cut, nameField, singlesField, doublesField, editButton } = setupComponent({
+      playersList: [
+        {
+          id: 3,
+          name: 'TestPlayer3',
+          singles: '100',
+          doubles: '110',
+          editing: false
+        },
+        {
+          id: 4,
+          name: 'TestPlayer3',
+          singles: '100',
+          doubles: '110',
+          editing: false
+        }
+      ]
+    })
+    await editButton().trigger('click')
+    console.log(cut.html())
+    expect(nameField().classes()).toContain('tablePlayers__error')
+    expect(singlesField().classes()).toContain('tablePlayers__error')
+    expect(doublesField().classes()).toContain('tablePlayers__error')
   })
 })

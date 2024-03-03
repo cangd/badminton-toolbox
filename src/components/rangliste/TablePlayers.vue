@@ -15,6 +15,7 @@
           <td class="tablePlayers__name">
             <input
               class="tablePlayers__name--input"
+              :class="{ tablePlayers__error: !isNameValid(index) }"
               v-model="player.name"
               :disabled="!player.editing"
             />
@@ -22,6 +23,7 @@
           <td class="tablePlayers__singles">
             <input
               class="tablePlayers__singles--input"
+              :class="{ tablePlayers__error: !isSinglesValid(index) }"
               v-model="player.singles"
               :disabled="!player.editing"
             />
@@ -29,6 +31,7 @@
           <td class="tablePlayers__doubles">
             <input
               class="tablePlayers__doubles--input"
+              :class="{ tablePlayers__error: !isDoublesValid(index) }"
               v-model="player.doubles"
               :disabled="!player.editing"
             />
@@ -71,18 +74,36 @@ const players = computed<Player[]>(() => {
   return props.playersList
 })
 
+const isNameValid = (index: number) => {
+  const currentName = players.value[index].name
+  return players.value.every((player, i) => index === i || player.name !== currentName)
+}
+
+const isSinglesValid = (index: number) => {
+  const currentSingles = players.value[index].singles
+  return players.value.every((player, i) => index === i || player.singles !== currentSingles)
+}
+
+const isDoublesValid = (index: number) => {
+  const currentDoubles = players.value[index].doubles
+  return players.value.every((player, i) => index === i || player.doubles !== currentDoubles)
+}
+
 function editPlayer(index: number) {
   players.value[index].editing = true
 }
 
 function savePlayer(index: number) {
   const player = players.value[index]
+
   // Check uniqueness of singles and doubles values
   const isUnique = players.value.every(
-    (p) => p.id === player.id || (p.singles !== player.singles && p.doubles !== player.doubles)
+    (p) =>
+      p.id === player.id ||
+      (p.name !== player.name && p.singles !== player.singles && p.doubles !== player.doubles)
   )
   if (!isUnique) {
-    alert('Singles and Doubles values must be unique.')
+    alert('Name, Singles and Doubles values must be unique.')
     return
   }
   players.value[index].editing = false
@@ -123,6 +144,9 @@ function deletePlayer(id: any) {
 
   &__input {
     background-color: lightyellow;
+  }
+  &__error {
+    border: 3px solid red;
   }
 }
 *:disabled {
