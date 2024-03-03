@@ -71,11 +71,11 @@ const players = computed<Player[]>(() => {
   return props.playersList
 })
 
-function editPlayer(index: string | number) {
+function editPlayer(index: number) {
   players.value[index].editing = true
 }
 
-function savePlayer(index: string | number) {
+function savePlayer(index: number) {
   const player = players.value[index]
   // Check uniqueness of singles and doubles values
   const isUnique = players.value.every(
