@@ -2,11 +2,24 @@ import type Player from '@/models/Player'
 import { TeamEnum } from '@/models/TeamEnum'
 import { mount } from '@vue/test-utils'
 import { describe, expect, it, vitest } from 'vitest'
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
 import AddPlayerVue from './AddPlayer.vue'
 import TeamSelector from './TeamSelector.vue'
 
 function setupComponent() {
-  const cut = mount(AddPlayerVue)
+  const vuetify = createVuetify({
+    components,
+    directives
+  })
+
+  const cut = mount(AddPlayerVue, {
+    global: {
+      plugins: [vuetify]
+    }
+  })
+
   const teamSelector = () => cut.findComponent(TeamSelector).find('select')
   const nameInput = () => cut.find('#name')
   const singlesInput = () => cut.find('#singles')
@@ -41,8 +54,9 @@ describe('AddPlayer.vue', () => {
   it('add button is rendered when input fields are set', async () => {
     const { nameInput, singlesInput, doublesInput, addButton } = setupComponent()
 
+    expect(nameInput().exists()).toBe(true)
     await nameInput().setValue('Test Player')
-    await singlesInput().setValue(100)
+    await singlesInput().setValue(110)
     await doublesInput().setValue(200)
 
     expect(addButton().exists()).toBe(true)
@@ -51,7 +65,7 @@ describe('AddPlayer.vue', () => {
     const { nameInput, singlesInput, doublesInput, addButton, teamSelector } = setupComponent()
 
     await nameInput().setValue('Test Player')
-    await singlesInput().setValue(100)
+    await singlesInput().setValue(110)
     await doublesInput().setValue(200)
     await teamSelector().setValue(TeamEnum.M4)
 
