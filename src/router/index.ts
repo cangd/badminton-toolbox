@@ -1,5 +1,5 @@
+import TheWelcome from '@/components/TheWelcome.vue'
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 import RanglisteView from '../views/RanglisteView.vue'
 
 const router = createRouter({
@@ -8,7 +8,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: TheWelcome
     },
     {
       path: '/rangliste',

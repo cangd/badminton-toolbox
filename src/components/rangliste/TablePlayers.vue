@@ -8,73 +8,82 @@
           <th class="tablePlayers__head-doubles" @click="sortByDoubles()">Doubles</th>
           <th class="tablePlayers__head-team">Team</th>
           <th class="tablePlayers__head-action">Action</th>
+          <th class="tablePlayers__head--player" @click="sortByName()">Player</th>
+          <th class="tablePlayers__head--singles" @click="sortBySingles()">Singles</th>
+          <th class="tablePlayers__head--doubles" @click="sortByDoubles()">Doubles</th>
         </tr>
       </thead>
-      <tbody>
-        <tr class="tablePlayers__players" v-for="(player, index) in players" :key="player.id">
-          <td class="tablePlayers__name">
-            <input
-              class="tablePlayers__input-name"
-              :class="{ tablePlayers__error: !isNameValid(index) }"
-              v-model="player.name"
-              :disabled="!player.editing"
-            />
-          </td>
-          <td class="tablePlayers__singles">
-            <input
-              class="tablePlayers__input-singles"
-              :class="{ tablePlayers__error: !isSinglesValid(index) }"
-              v-model="player.singles"
-              :disabled="!player.editing"
-            />
-          </td>
-          <td class="tablePlayers__doubles">
-            <input
-              class="tablePlayers__input-doubles"
-              :class="{ tablePlayers__error: !isDoublesValid(index) }"
-              v-model="player.doubles"
-              :disabled="!player.editing"
-            />
-          </td>
-          <td class="tablePlayers__team">
-            <TeamSelector
-              class="tablePlayers__selector-team"
-              v-model="player.team"
-              :isDisabled="!player.editing"
-              :teamZugehoerigkeit="player.team"
-            >
-            </TeamSelector>
-          </td>
-          <td class="tablePlayers__action">
-            <button
-              class="tablePlayers__action--edit"
-              @click="editPlayer(index)"
-              v-if="!player.editing"
-            >
-              Edit
-            </button>
-            <button
-              class="tablePlayers__action--save"
-              @click="savePlayer(index)"
-              v-if="player.editing"
-            >
-              Save
-            </button>
-            <button class="tablePlayers__action--delete" @click="deletePlayer(player.id)">
-              Delete
-            </button>
-          </td>
-        </tr>
-      </tbody>
     </table>
+
+    <div class="tablePlayers__players" v-for="(player, index) in players" :key="player.id">
+      <v-col cols="12" md="4">
+        <v-text-field
+          class="tablePlayers__name--input"
+          :class="{ tablePlayers__error: !isNameValid(index) }"
+          v-model="player.name"
+          label="Name"
+          hide-details
+          :disabled="!player.editing"
+        ></v-text-field>
+      </v-col>
+
+      <v-col cols="12" md="2">
+        <v-text-field
+          class="tablePlayers__singles--input"
+          :class="{ tablePlayers__error: !isSinglesValid(index) }"
+          v-model="player.singles"
+          label="Einzel"
+          hide-details
+          :disabled="!player.editing"
+        ></v-text-field>
+      </v-col>
+
+      <v-col cols="12" md="2">
+        <v-text-field
+          class="tablePlayers__doubles--input"
+          :class="{ tablePlayers__error: !isDoublesValid(index) }"
+          v-model="player.doubles"
+          label="Doppel"
+          hide-details
+          :disabled="!player.editing"
+        ></v-text-field>
+      </v-col>
+
+      <td class="tablePlayers__action">
+        <v-btn
+          icon="mdi-pencil"
+          variant="plain"
+          class="tablePlayers__action--edit"
+          @click="editPlayer(index)"
+          v-if="!player.editing"
+        ></v-btn>
+        <v-btn
+          icon="mdi-send-variant-outline"
+          variant="plain"
+          class="tablePlayers__action--save"
+          @click="savePlayer(index)"
+          v-if="player.editing"
+        ></v-btn>
+        <v-btn
+          icon="mdi-delete"
+          variant="plain"
+          class="tablePlayers__action--delete"
+          @click="deletePlayer(player.id)"
+          v-if="player.editing"
+        ></v-btn>
+      </td>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
+// TODO I AM HERE
+// Try to use this for the TEMPLATE INSTEAD
+// https://vuetifyjs.com/en/components/data-tables/basics/#usage
+
 import { savePlayersToSessionStorage } from '@/helper/rangliste/playersStorageHelper'
 import type Player from '@/models/Player.js'
 import { computed } from 'vue'
-import TeamSelector from './TeamSelector.vue'
 
 const props = defineProps<{
   playersList: Player[]
@@ -86,17 +95,26 @@ const players = computed<Player[]>(() => {
 
 const isNameValid = (index: number) => {
   const currentName = players.value[index].name
-  return players.value.every((player, i) => index === i || player.name !== currentName)
+  return (
+    players.value.every((player, i) => index === i || player.name !== currentName) &&
+    currentName !== ''
+  )
 }
 
 const isSinglesValid = (index: number) => {
   const currentSingles = players.value[index].singles
-  return players.value.every((player, i) => index === i || player.singles !== currentSingles)
+  return (
+    players.value.every((player, i) => index === i || player.singles !== currentSingles) &&
+    currentSingles !== ''
+  )
 }
 
 const isDoublesValid = (index: number) => {
   const currentDoubles = players.value[index].doubles
-  return players.value.every((player, i) => index === i || player.doubles !== currentDoubles)
+  return (
+    players.value.every((player, i) => index === i || player.doubles !== currentDoubles) &&
+    currentDoubles !== ''
+  )
 }
 
 function editPlayer(index: number) {
@@ -131,10 +149,12 @@ function deletePlayer(id: any) {
 }
 
 function sortByName() {
+  console.log('Sort by name', players.value)
   players.value.sort((a, b) => a.name.localeCompare(b.name))
 }
 
 function sortBySingles() {
+  console.log('Sort by singles', players.value)
   players.value.sort((a, b) => {
     const singlesA = parseInt(a.singles)
     const singlesB = parseInt(b.singles)
@@ -143,6 +163,7 @@ function sortBySingles() {
 }
 
 function sortByDoubles() {
+  console.log('Sort by doubles', players.value)
   players.value.sort((a, b) => {
     const doublesA = parseInt(a.doubles)
     const doublesB = parseInt(b.doubles)
@@ -159,11 +180,18 @@ function sortByDoubles() {
   }
 
   &__players {
-    display: table-row;
+    display: flex;
+    justify-content: center;
   }
 
+  &__action {
+    display: flex;
+    align-items: center;
+  }
+
+  &__cell,
   &__head {
-    display: table-cell;
+    display: flex;
     border: 1px solid #000;
     padding: 8px;
     font-size: larger;

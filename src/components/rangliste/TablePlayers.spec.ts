@@ -58,6 +58,8 @@ function setupComponent(overrides: Partial<ComponentProps<typeof TablePlayersVue
   const teamSelectorComp = () => mountCut.findComponent(TeamSelector)
   const teamSelector = teamSelectorComp().find('select')
 
+  window.alert = vitest.fn()
+
   return {
     shallowMountCut,
     mountCut,
