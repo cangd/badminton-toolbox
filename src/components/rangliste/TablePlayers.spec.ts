@@ -78,7 +78,7 @@ describe('TablePlayers.vue ', () => {
     expect(doublesField().attributes().disabled).toBeDefined()
   })
 
-  it('displays players', () => {
+  it('displays player in table', () => {
     const { nameField, singlesField, doublesField } = setupComponent({})
     expect((nameField().element as HTMLInputElement).value).toBe('TestPlayer')
     expect((singlesField().element as HTMLInputElement).value).toBe('100')
