@@ -115,6 +115,7 @@ function deletePlayer(id: any) {
   if (index !== -1) {
     players.value.splice(index, 1)
   }
+  savePlayersToSessionStorage(players.value)
 }
 
 function sortByName() {

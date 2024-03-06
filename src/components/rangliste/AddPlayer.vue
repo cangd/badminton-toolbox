@@ -40,32 +40,50 @@ import {
   getLastIdFromLocalStorage,
   saveLastIdToLocalStorage
 } from '@/helper/rangliste/lastIdStoragehelper.js'
-import { getPlayersFromSessionStorage } from '@/helper/rangliste/playersStorageHelper'
+import { savePlayersToSessionStorage } from '@/helper/rangliste/playersStorageHelper'
 import type Player from '@/models/Player.js'
 import { computed, ref } from 'vue'
 
 const newPlayerName = ref('')
 const newSinglesRating = ref('')
 const newDoublesRating = ref('')
-let lastId: number = 0
 
-const players = computed<Player[]>(() => {
-  return getPlayersFromSessionStorage()
+const props = defineProps<{
+  playersList: Player[]
+}>()
+
+const emit = defineEmits<{ (e: 'update:playersList', player: Player[]): void }>()
+
+const players = computed<Player[]>({
+  get: () => {
+    return props.playersList
+  },
+  set: (value: Player[]) => {
+    emit('update:playersList', value)
+  }
 })
 
-const hasNameError = computed<boolean>(() => {
+const hasNameError = computed(() => {
+  if (!props.playersList) {
+    return false // or handle the case when players is undefined
+  }
   return !players.value.every((p) => p.name !== newPlayerName.value)
 })
 
 const hasSinglesError = computed<boolean>(() => {
+  if (!props.playersList) {
+    return false // or handle the case when players is undefined
+  }
   return !players.value.every((p) => p.singles !== newSinglesRating.value)
 })
 
 const hasDoublesError = computed<boolean>(() => {
+  if (!props.playersList) {
+    return false // or handle the case when players is undefined
+  }
+  1
   return !players.value.every((p) => p.doubles !== newDoublesRating.value)
 })
-
-const emit = defineEmits<{ (e: 'update:players', player: Player): void }>()
 
 const isFormFilledWithoutErrors = ref(() => {
   return (
@@ -90,13 +108,20 @@ function clickAdd(): void {
     singles: newSinglesRating.value,
     doubles: newDoublesRating.value
   }
-  emit('update:players', newPlayer)
+  // Check if players.value is defined before using it
+  if (players.value) {
+    players.value.push(newPlayer)
+    savePlayersToSessionStorage(players.value)
+  } else {
+    players.value = [newPlayer] // Initialize players with the newPlayer if it's not defined
+  }
+
   clearForm()
 }
 
 function createNewPlayerId(): number {
-  lastId = getLastIdFromLocalStorage()
-  const newPlayerId = lastId + 1
+  const lastId: number = getLastIdFromLocalStorage() | 0
+  const newPlayerId: number = lastId + 1
   saveLastIdToLocalStorage(newPlayerId)
   return newPlayerId
 }

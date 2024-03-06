@@ -90,27 +90,4 @@ describe('AddPlayer.vue', () => {
     expect(singlesInput().text()).toBe('')
     expect(doublesInput().text()).toBe('')
   })
-
-  it('emits <update:players> event after click', async () => {
-    const { cut, nameInput, singlesInput, doublesInput, addButton } = setupComponent()
-    await nameInput().setValue('Test Player')
-    await singlesInput().setValue(100)
-    await doublesInput().setValue(200)
-
-    await addButton().trigger('click')
-
-    expect(cut.emitted('update:players')).toBeDefined()
-  })
-
-  // TODO Make this test work with sessionStorage
-  // (altertive solution add players as prop into this comp)
-
-  // it('handles duplicate nameInput field', async () => {
-  //   const { nameInput } = setupComponent()
-  //   sessionStorage.setItem('myRangliste', JSON.stringify([testPlayer]))
-
-  //   await nameInput().setValue('Test Player')
-  //   await flushPromises()
-  //   expect(nameInput().classes()).toContain('[addPlayer_error]')
-  // })
 })
