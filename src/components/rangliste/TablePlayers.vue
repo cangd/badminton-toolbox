@@ -1,5 +1,5 @@
 <template>
-  <div class="tablePlayers__table">
+  <div v-if="players.length > 0" class="tablePlayers__table">
     Table of players:
     <table>
       <thead>

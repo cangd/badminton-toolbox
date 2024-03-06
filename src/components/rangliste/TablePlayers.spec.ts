@@ -71,6 +71,16 @@ describe('TablePlayers.vue ', () => {
     expect(tableHeadDoubles().exists()).toBe(true)
   })
 
+  it('will not display a table if there are no players', async () => {
+    const { deleteButton, tableHeadPlayer, tableHeadSingles, tableHeadDoubles } =
+      await setupComponent()
+
+    await deleteButton().trigger('click')
+    expect(tableHeadPlayer().exists()).toBe(false)
+    expect(tableHeadSingles().exists()).toBe(false)
+    expect(tableHeadDoubles().exists()).toBe(false)
+  })
+
   it('fields are initially disabled', () => {
     const { nameField, singlesField, doublesField } = setupComponent()
     expect(nameField().attributes().disabled).toBeDefined()
