@@ -1,10 +1,35 @@
 import type Player from '@/models/Player'
-import { shallowMount } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { describe, expect, it, vitest } from 'vitest'
+import { type ComponentProps } from 'vue-component-type-helpers'
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
 import AddPlayerVue from './AddPlayer.vue'
 
-function setupComponent() {
-  const cut = shallowMount(AddPlayerVue)
+function setupComponent(overrides: Partial<ComponentProps<typeof AddPlayerVue>> = {}) {
+  const vuetify = createVuetify({
+    components,
+    directives
+  })
+
+  const cut = mount(AddPlayerVue, {
+    global: {
+      plugins: [vuetify]
+    },
+    props: {
+      playersList: [
+        {
+          id: 1,
+          name: 'TestPlayer',
+          singles: '100',
+          doubles: '110',
+          editing: false
+        }
+      ],
+      ...overrides
+    }
+  })
   const nameInput = () => cut.find('#name')
   const singlesInput = () => cut.find('#singles')
   const doublesInput = () => cut.find('#doubles')
@@ -22,8 +47,8 @@ function setupComponent() {
 const testPlayer: Player = {
   id: 1,
   name: 'Test Player',
-  singles: '100',
-  doubles: '100'
+  singles: '300',
+  doubles: '300'
 }
 
 describe('AddPlayer.vue', () => {
@@ -36,8 +61,9 @@ describe('AddPlayer.vue', () => {
   it('add button is rendered when input fields are set', async () => {
     const { nameInput, singlesInput, doublesInput, addButton } = setupComponent()
 
+    expect(nameInput().exists()).toBe(true)
     await nameInput().setValue('Test Player')
-    await singlesInput().setValue(100)
+    await singlesInput().setValue(110)
     await doublesInput().setValue(200)
 
     expect(addButton().exists()).toBe(true)
@@ -46,10 +72,10 @@ describe('AddPlayer.vue', () => {
     const { nameInput, singlesInput, doublesInput, addButton } = setupComponent()
 
     await nameInput().setValue('Test Player')
-    await singlesInput().setValue(100)
+    await singlesInput().setValue(110)
     await doublesInput().setValue(200)
 
-    expect(addButton().text()).toContain('Add Test Player(100/200)')
+    expect(addButton().text()).toContain('Add Test Player(110/200)')
   })
 
   it('creates last player Id from LocalStorage', async () => {
@@ -81,8 +107,8 @@ describe('AddPlayer.vue', () => {
   it('clears form after click', async () => {
     const { nameInput, singlesInput, doublesInput, addButton } = setupComponent()
     await nameInput().setValue('Test Player')
-    await singlesInput().setValue(100)
-    await doublesInput().setValue(200)
+    await singlesInput().setValue(130)
+    await doublesInput().setValue(130)
 
     await addButton().trigger('click')
 

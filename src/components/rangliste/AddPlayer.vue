@@ -1,29 +1,39 @@
 <template>
   <div class="addPlayer">
-    <input
-      class="addPlayer__name"
-      :class="{ addPlayer__error: hasNameError }"
-      v-model="newPlayerName"
-      type="text"
-      placeholder="Name"
-      id="name"
-    />
-    <input
-      class="addPlayer__singles"
-      :class="{ addPlayer__error: hasSinglesError }"
-      v-model="newSinglesRating"
-      type="text"
-      placeholder="Einzelwertung"
-      id="singles"
-    />
-    <input
-      class="addPlayer__doubles"
-      :class="{ addPlayer__error: hasDoublesError }"
-      v-model="newDoublesRating"
-      type="text"
-      placeholder="Doppelwertung"
-      id="doubles"
-    />
+    <v-col cols="12" md="6">
+      <v-text-field
+        id="name"
+        class="addPlayer__name"
+        v-model="newPlayerName"
+        :class="{ addPlayer__error: hasNameError }"
+        clearable
+        label="New Player"
+        prepend-inner-icon="mdi-badminton"
+      ></v-text-field>
+    </v-col>
+    <v-col cols="12" md="5">
+      <v-text-field
+        id="singles"
+        class="addPlayer__singles"
+        v-model="newSinglesRating"
+        :class="{ addPlayer__error: hasSinglesError }"
+        clearable
+        label="Einzelwertung"
+        prepend-inner-icon="mdi-account"
+      ></v-text-field>
+    </v-col>
+    <v-col cols="12" md="5">
+      <v-text-field
+        id="doubles"
+        class="addPlayer__doubles"
+        v-model="newDoublesRating"
+        :class="{ addPlayer__error: hasDoublesError }"
+        clearable
+        label="Doppelwertung"
+        prepend-inner-icon="mdi-account-multiple"
+      ></v-text-field>
+    </v-col>
+
     <button
       v-if="isFormFilledWithoutErrors()"
       class="addPlayer__button"
@@ -42,7 +52,10 @@ import {
 } from '@/helper/rangliste/lastIdStoragehelper.js'
 import { savePlayersToSessionStorage } from '@/helper/rangliste/playersStorageHelper'
 import type Player from '@/models/Player.js'
+import { mdiAccount } from '@mdi/js'
 import { computed, ref } from 'vue'
+
+const accountIcon = { mdiAccount }
 
 const newPlayerName = ref('')
 const newSinglesRating = ref('')
