@@ -52,10 +52,7 @@ import {
 } from '@/helper/rangliste/lastIdStoragehelper.js'
 import { savePlayersToSessionStorage } from '@/helper/rangliste/playersStorageHelper'
 import type Player from '@/models/Player.js'
-import { mdiAccount } from '@mdi/js'
 import { computed, ref } from 'vue'
-
-const accountIcon = { mdiAccount }
 
 const newPlayerName = ref('')
 const newSinglesRating = ref('')

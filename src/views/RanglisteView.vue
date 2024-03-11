@@ -2,10 +2,12 @@
   <h1>{{ header }}</h1>
   <AddPlayer v-model:playersList="players" />
   <TablePlayers :playersList="players" />
+  <PairingsComp />
 </template>
 
 <script setup lang="ts">
 import AddPlayer from '@/components/rangliste/AddPlayer.vue'
+import PairingsComp from '@/components/rangliste/PairingsComp.vue'
 import TablePlayers from '@/components/rangliste/TablePlayers.vue'
 import { saveLastIdToLocalStorage } from '@/helper/rangliste/lastIdStoragehelper.js'
 import { getPlayersFromSessionStorage } from '@/helper/rangliste/playersStorageHelper.js'

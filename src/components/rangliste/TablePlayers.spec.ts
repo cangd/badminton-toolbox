@@ -31,6 +31,8 @@ function setupComponent(overrides: Partial<ComponentProps<typeof TablePlayersVue
   const saveButton = () => cut.find('.tablePlayers__action--save')
   const deleteButton = () => cut.find('.tablePlayers__action--delete')
 
+  window.alert = vitest.fn()
+
   return {
     cut,
     tableHeadPlayer,
