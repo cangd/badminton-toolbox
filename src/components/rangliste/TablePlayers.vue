@@ -11,7 +11,7 @@
     </table>
 
     <div class="tablePlayers__players" v-for="(player, index) in players" :key="player.id">
-      <v-col cols="12" md="5">
+      <v-col cols="12" md="4">
         <v-text-field
           class="tablePlayers__name--input"
           :class="{ tablePlayers__error: !isNameValid(index) }"
@@ -22,23 +22,23 @@
         ></v-text-field>
       </v-col>
 
-      <v-col cols="12" md="3">
+      <v-col cols="12" md="2">
         <v-text-field
           class="tablePlayers__singles--input"
           :class="{ tablePlayers__error: !isSinglesValid(index) }"
           v-model="player.singles"
-          label="Singles ranking"
+          label="Einzel"
           hide-details
           :disabled="!player.editing"
         ></v-text-field>
       </v-col>
 
-      <v-col cols="12" md="3">
+      <v-col cols="12" md="2">
         <v-text-field
           class="tablePlayers__doubles--input"
           :class="{ tablePlayers__error: !isDoublesValid(index) }"
           v-model="player.doubles"
-          label="Doubles ranking"
+          label="Doppel"
           hide-details
           :disabled="!player.editing"
         ></v-text-field>
@@ -72,6 +72,10 @@
 </template>
 
 <script setup lang="ts">
+// TODO I AM HERE
+// Try to use this for the TEMPLATE INSTEAD
+// https://vuetifyjs.com/en/components/data-tables/basics/#usage
+
 import { savePlayersToSessionStorage } from '@/helper/rangliste/playersStorageHelper'
 import type Player from '@/models/Player.js'
 import { computed } from 'vue'
@@ -138,10 +142,12 @@ function deletePlayer(id: any) {
 }
 
 function sortByName() {
+  console.log('Sort by name', players.value)
   players.value.sort((a, b) => a.name.localeCompare(b.name))
 }
 
 function sortBySingles() {
+  console.log('Sort by singles', players.value)
   players.value.sort((a, b) => {
     const singlesA = parseInt(a.singles)
     const singlesB = parseInt(b.singles)
@@ -150,6 +156,7 @@ function sortBySingles() {
 }
 
 function sortByDoubles() {
+  console.log('Sort by doubles', players.value)
   players.value.sort((a, b) => {
     const doublesA = parseInt(a.doubles)
     const doublesB = parseInt(b.doubles)
@@ -168,6 +175,7 @@ function sortByDoubles() {
 
   &__players {
     display: flex;
+    justify-content: center;
   }
 
   &__action {
@@ -177,7 +185,7 @@ function sortByDoubles() {
 
   &__cell,
   &__head {
-    display: table-cell;
+    display: flex;
     border: 1px solid #000;
     padding: 8px;
   }
