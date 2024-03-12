@@ -1,6 +1,6 @@
 <template>
   <div class="addPlayer">
-    <v-col cols="12" md="6">
+    <v-col cols="12" md="5">
       <v-text-field
         id="name"
         class="addPlayer__name"
@@ -11,7 +11,7 @@
         prepend-inner-icon="mdi-badminton"
       ></v-text-field>
     </v-col>
-    <v-col cols="12" md="5">
+    <v-col cols="12" md="4">
       <v-text-field
         id="singles"
         class="addPlayer__singles"
@@ -22,7 +22,7 @@
         prepend-inner-icon="mdi-account"
       ></v-text-field>
     </v-col>
-    <v-col cols="12" md="5">
+    <v-col cols="12" md="4">
       <v-text-field
         id="doubles"
         class="addPlayer__doubles"
@@ -77,14 +77,14 @@ const hasNameError = computed(() => {
   if (!props.playersList) {
     return false // or handle the case when players is undefined
   }
-  return !players.value.every((p) => p.name !== newPlayerName.value)
+  return !players.value.every((p) => p.name !== newPlayerName.value || p.name === '')
 })
 
 const hasSinglesError = computed<boolean>(() => {
   if (!props.playersList) {
     return false // or handle the case when players is undefined
   }
-  return !players.value.every((p) => p.singles !== newSinglesRating.value)
+  return !players.value.every((p) => p.singles !== newSinglesRating.value || p.singles === '')
 })
 
 const hasDoublesError = computed<boolean>(() => {
@@ -92,7 +92,7 @@ const hasDoublesError = computed<boolean>(() => {
     return false // or handle the case when players is undefined
   }
   1
-  return !players.value.every((p) => p.doubles !== newDoublesRating.value)
+  return !players.value.every((p) => p.doubles !== newDoublesRating.value || p.doubles === '')
 })
 
 const isFormFilledWithoutErrors = ref(() => {
