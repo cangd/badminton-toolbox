@@ -1,63 +1,73 @@
 <template>
   <div v-if="players.length > 0" class="tablePlayers__table">
-    Table of players:
     <table>
       <thead>
         <tr>
           <th class="tablePlayers__head--player" @click="sortByName()">Player</th>
           <th class="tablePlayers__head--singles" @click="sortBySingles()">Singles</th>
           <th class="tablePlayers__head--doubles" @click="sortByDoubles()">Doubles</th>
-          <th class="tablePlayers__head--action">Action</th>
         </tr>
       </thead>
-      <tbody>
-        <tr class="tablePlayers__players" v-for="(player, index) in players" :key="player.id">
-          <td class="tablePlayers__name">
-            <input
-              class="tablePlayers__name--input"
-              :class="{ tablePlayers__error: !isNameValid(index) }"
-              v-model="player.name"
-              :disabled="!player.editing"
-            />
-          </td>
-          <td class="tablePlayers__singles">
-            <input
-              class="tablePlayers__singles--input"
-              :class="{ tablePlayers__error: !isSinglesValid(index) }"
-              v-model="player.singles"
-              :disabled="!player.editing"
-            />
-          </td>
-          <td class="tablePlayers__doubles">
-            <input
-              class="tablePlayers__doubles--input"
-              :class="{ tablePlayers__error: !isDoublesValid(index) }"
-              v-model="player.doubles"
-              :disabled="!player.editing"
-            />
-          </td>
-          <td class="tablePlayers__action">
-            <button
-              class="tablePlayers__action--edit"
-              @click="editPlayer(index)"
-              v-if="!player.editing"
-            >
-              Edit
-            </button>
-            <button
-              class="tablePlayers__action--save"
-              @click="savePlayer(index)"
-              v-if="player.editing"
-            >
-              Save
-            </button>
-            <button class="tablePlayers__action--delete" @click="deletePlayer(player.id)">
-              Delete
-            </button>
-          </td>
-        </tr>
-      </tbody>
     </table>
+
+    <div class="tablePlayers__players" v-for="(player, index) in players" :key="player.id">
+      <v-col cols="12" md="5">
+        <v-text-field
+          class="tablePlayers__name--input"
+          :class="{ tablePlayers__error: !isNameValid(index) }"
+          v-model="player.name"
+          label="Name"
+          hide-details
+          :disabled="!player.editing"
+        ></v-text-field>
+      </v-col>
+
+      <v-col cols="12" md="3">
+        <v-text-field
+          class="tablePlayers__singles--input"
+          :class="{ tablePlayers__error: !isSinglesValid(index) }"
+          v-model="player.singles"
+          label="Singles ranking"
+          hide-details
+          :disabled="!player.editing"
+        ></v-text-field>
+      </v-col>
+
+      <v-col cols="12" md="3">
+        <v-text-field
+          class="tablePlayers__doubles--input"
+          :class="{ tablePlayers__error: !isDoublesValid(index) }"
+          v-model="player.doubles"
+          label="Doubles ranking"
+          hide-details
+          :disabled="!player.editing"
+        ></v-text-field>
+      </v-col>
+
+      <td class="tablePlayers__action">
+        <v-btn
+          icon="mdi-pencil"
+          variant="plain"
+          class="tablePlayers__action--edit"
+          @click="editPlayer(index)"
+          v-if="!player.editing"
+        ></v-btn>
+        <v-btn
+          icon="mdi-send-variant-outline"
+          variant="plain"
+          class="tablePlayers__action--save"
+          @click="savePlayer(index)"
+          v-if="player.editing"
+        ></v-btn>
+        <v-btn
+          icon="mdi-delete"
+          variant="plain"
+          class="tablePlayers__action--delete"
+          @click="deletePlayer(player.id)"
+          v-if="player.editing"
+        ></v-btn>
+      </td>
+    </div>
   </div>
 </template>
 
@@ -76,17 +86,26 @@ const players = computed<Player[]>(() => {
 
 const isNameValid = (index: number) => {
   const currentName = players.value[index].name
-  return players.value.every((player, i) => index === i || player.name !== currentName)
+  return (
+    players.value.every((player, i) => index === i || player.name !== currentName) &&
+    currentName !== ''
+  )
 }
 
 const isSinglesValid = (index: number) => {
   const currentSingles = players.value[index].singles
-  return players.value.every((player, i) => index === i || player.singles !== currentSingles)
+  return (
+    players.value.every((player, i) => index === i || player.singles !== currentSingles) &&
+    currentSingles !== ''
+  )
 }
 
 const isDoublesValid = (index: number) => {
   const currentDoubles = players.value[index].doubles
-  return players.value.every((player, i) => index === i || player.doubles !== currentDoubles)
+  return (
+    players.value.every((player, i) => index === i || player.doubles !== currentDoubles) &&
+    currentDoubles !== ''
+  )
 }
 
 function editPlayer(index: number) {
@@ -148,7 +167,12 @@ function sortByDoubles() {
   }
 
   &__players {
-    display: table-row;
+    display: flex;
+  }
+
+  &__action {
+    display: flex;
+    align-items: center;
   }
 
   &__cell,
