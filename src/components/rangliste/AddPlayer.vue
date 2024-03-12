@@ -1,47 +1,53 @@
 <template>
-  <div class="addPlayer">
-    <v-col cols="12" md="5">
-      <v-text-field
-        id="name"
-        class="addPlayer__name"
-        v-model="newPlayerName"
-        :class="{ addPlayer__error: hasNameError }"
-        clearable
-        label="New Player"
-        prepend-inner-icon="mdi-badminton"
-      ></v-text-field>
-    </v-col>
-    <v-col cols="12" md="4">
-      <v-text-field
-        id="singles"
-        class="addPlayer__singles"
-        v-model="newSinglesRating"
-        :class="{ addPlayer__error: hasSinglesError }"
-        clearable
-        label="Einzelwertung"
-        prepend-inner-icon="mdi-account"
-      ></v-text-field>
-    </v-col>
-    <v-col cols="12" md="4">
-      <v-text-field
-        id="doubles"
-        class="addPlayer__doubles"
-        v-model="newDoublesRating"
-        :class="{ addPlayer__error: hasDoublesError }"
-        clearable
-        label="Doppelwertung"
-        prepend-inner-icon="mdi-account-multiple"
-      ></v-text-field>
-    </v-col>
-
-    <button
-      v-if="isFormFilledWithoutErrors()"
-      class="addPlayer__button"
-      @click="clickAdd"
-      id="button"
-    >
-      Add {{ newPlayer }}
-    </button>
+  <div>
+    <div class="addPlayer">
+      <v-col cols="12" md="4">
+        <v-text-field
+          id="name"
+          class="addPlayer__name"
+          v-model="newPlayerName"
+          :class="{ addPlayer__error: hasNameError }"
+          clearable
+          hide-details
+          label="New Player"
+          prepend-inner-icon="mdi-badminton"
+        ></v-text-field>
+      </v-col>
+      <v-col cols="12" md="3">
+        <v-text-field
+          id="singles"
+          class="addPlayer__singles"
+          v-model="newSinglesRating"
+          :class="{ addPlayer__error: hasSinglesError }"
+          clearable
+          hide-details
+          label="Einzel"
+          prepend-inner-icon="mdi-account"
+        ></v-text-field>
+      </v-col>
+      <v-col cols="12" md="3">
+        <v-text-field
+          id="doubles"
+          class="addPlayer__doubles"
+          v-model="newDoublesRating"
+          :class="{ addPlayer__error: hasDoublesError }"
+          clearable
+          hide-details
+          label="Doppel"
+          prepend-inner-icon="mdi-account-multiple"
+        ></v-text-field>
+      </v-col>
+      <v-btn
+        class="addPlayer__button"
+        icon="mdi-check-all"
+        variant="tonal"
+        v-if="isFormFilledWithoutErrors()"
+        @click="clickAdd"
+        id="button"
+        density="comfortable"
+      >
+      </v-btn>
+    </div>
   </div>
 </template>
 
@@ -77,14 +83,14 @@ const hasNameError = computed(() => {
   if (!props.playersList) {
     return false // or handle the case when players is undefined
   }
-  return !players.value.every((p) => p.name !== newPlayerName.value || p.name === '')
+  return !players.value.every((p) => p.name !== newPlayerName.value)
 })
 
 const hasSinglesError = computed<boolean>(() => {
   if (!props.playersList) {
     return false // or handle the case when players is undefined
   }
-  return !players.value.every((p) => p.singles !== newSinglesRating.value || p.singles === '')
+  return !players.value.every((p) => p.singles !== newSinglesRating.value)
 })
 
 const hasDoublesError = computed<boolean>(() => {
@@ -92,7 +98,7 @@ const hasDoublesError = computed<boolean>(() => {
     return false // or handle the case when players is undefined
   }
   1
-  return !players.value.every((p) => p.doubles !== newDoublesRating.value || p.doubles === '')
+  return !players.value.every((p) => p.doubles !== newDoublesRating.value)
 })
 
 const isFormFilledWithoutErrors = ref(() => {
@@ -104,10 +110,6 @@ const isFormFilledWithoutErrors = ref(() => {
     newSinglesRating.value &&
     newDoublesRating.value
   )
-})
-
-const newPlayer = computed(() => {
-  return `${newPlayerName.value}(${newSinglesRating.value}/${newDoublesRating.value})`
 })
 
 function clickAdd(): void {
@@ -144,14 +146,13 @@ function clearForm(): void {
 </script>
 
 <style lang="scss" scoped>
-@media (min-width: 1024px) {
-  .addPlayer {
-    display: flex;
-    justify-content: center;
+.addPlayer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    &__error {
-      border: 3px solid red;
-    }
+  &__error {
+    border: 3px solid red;
   }
 }
 </style>
