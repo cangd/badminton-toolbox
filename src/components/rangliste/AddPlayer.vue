@@ -24,6 +24,13 @@
       placeholder="Doppelwertung"
       id="doubles"
     />
+    <TeamSelector
+      class="addPlayer__team"
+      v-model="newSelectedTeam"
+      :isDisabled="false"
+      :teamZugehoerigkeit="newSelectedTeam"
+    >
+    </TeamSelector>
     <button
       v-if="isFormFilledWithoutErrors()"
       class="addPlayer__button"
@@ -42,11 +49,14 @@ import {
 } from '@/helper/rangliste/lastIdStoragehelper.js'
 import { savePlayersToSessionStorage } from '@/helper/rangliste/playersStorageHelper'
 import type Player from '@/models/Player.js'
+import { TeamEnum } from '@/models/TeamEnum'
 import { computed, ref } from 'vue'
+import TeamSelector from './TeamSelector.vue'
 
 const newPlayerName = ref('')
 const newSinglesRating = ref('')
 const newDoublesRating = ref('')
+const newSelectedTeam = ref<TeamEnum>(TeamEnum.E)
 
 const props = defineProps<{
   playersList: Player[]
@@ -97,7 +107,7 @@ const isFormFilledWithoutErrors = ref(() => {
 })
 
 const newPlayer = computed(() => {
-  return `${newPlayerName.value}(${newSinglesRating.value}/${newDoublesRating.value})`
+  return `${newPlayerName.value}(${newSinglesRating.value}/${newDoublesRating.value}) [${newSelectedTeam.value}]`
 })
 
 function clickAdd(): void {
@@ -106,8 +116,10 @@ function clickAdd(): void {
     id: newId,
     name: newPlayerName.value,
     singles: newSinglesRating.value,
-    doubles: newDoublesRating.value
+    doubles: newDoublesRating.value,
+    team: newSelectedTeam.value
   }
+
   // Check if players.value is defined before using it
   if (players.value) {
     players.value.push(newPlayer)
@@ -130,6 +142,7 @@ function clearForm(): void {
   newPlayerName.value = ''
   newSinglesRating.value = ''
   newDoublesRating.value = ''
+  newSelectedTeam.value = TeamEnum.E
 }
 </script>
 

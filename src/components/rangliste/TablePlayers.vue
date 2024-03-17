@@ -1,20 +1,20 @@
 <template>
   <div v-if="players.length > 0" class="tablePlayers__table">
-    Table of players:
     <table>
       <thead>
         <tr>
-          <th class="tablePlayers__head--player" @click="sortByName()">Player</th>
-          <th class="tablePlayers__head--singles" @click="sortBySingles()">Singles</th>
-          <th class="tablePlayers__head--doubles" @click="sortByDoubles()">Doubles</th>
-          <th class="tablePlayers__head--action">Action</th>
+          <th class="tablePlayers__head-player" @click="sortByName()">Player</th>
+          <th class="tablePlayers__head-singles" @click="sortBySingles()">Singles</th>
+          <th class="tablePlayers__head-doubles" @click="sortByDoubles()">Doubles</th>
+          <th class="tablePlayers__head-team">Team</th>
+          <th class="tablePlayers__head-action">Action</th>
         </tr>
       </thead>
       <tbody>
         <tr class="tablePlayers__players" v-for="(player, index) in players" :key="player.id">
           <td class="tablePlayers__name">
             <input
-              class="tablePlayers__name--input"
+              class="tablePlayers__input-name"
               :class="{ tablePlayers__error: !isNameValid(index) }"
               v-model="player.name"
               :disabled="!player.editing"
@@ -22,7 +22,7 @@
           </td>
           <td class="tablePlayers__singles">
             <input
-              class="tablePlayers__singles--input"
+              class="tablePlayers__input-singles"
               :class="{ tablePlayers__error: !isSinglesValid(index) }"
               v-model="player.singles"
               :disabled="!player.editing"
@@ -30,11 +30,20 @@
           </td>
           <td class="tablePlayers__doubles">
             <input
-              class="tablePlayers__doubles--input"
+              class="tablePlayers__input-doubles"
               :class="{ tablePlayers__error: !isDoublesValid(index) }"
               v-model="player.doubles"
               :disabled="!player.editing"
             />
+          </td>
+          <td class="tablePlayers__team">
+            <TeamSelector
+              class="tablePlayers__selector-team"
+              v-model="player.team"
+              :isDisabled="!player.editing"
+              :teamZugehoerigkeit="player.team"
+            >
+            </TeamSelector>
           </td>
           <td class="tablePlayers__action">
             <button
@@ -65,6 +74,7 @@
 import { savePlayersToSessionStorage } from '@/helper/rangliste/playersStorageHelper'
 import type Player from '@/models/Player.js'
 import { computed } from 'vue'
+import TeamSelector from './TeamSelector.vue'
 
 const props = defineProps<{
   playersList: Player[]
@@ -95,6 +105,7 @@ function editPlayer(index: number) {
 
 function savePlayer(index: number) {
   const player = players.value[index]
+  console.log(players.value[index])
 
   // Check uniqueness of singles and doubles values
   const isUnique = players.value.every(
@@ -115,6 +126,7 @@ function deletePlayer(id: any) {
   if (index !== -1) {
     players.value.splice(index, 1)
   }
+  console.log('Deleting Player')
   savePlayersToSessionStorage(players.value)
 }
 
@@ -142,23 +154,18 @@ function sortByDoubles() {
 <style lang="scss" scoped>
 .tablePlayers {
   &__table {
-    display: table;
-    width: 100%;
-    border-collapse: collapse;
+    display: flex;
+    justify-content: center;
   }
 
   &__players {
     display: table-row;
   }
 
-  &__cell,
   &__head {
     display: table-cell;
     border: 1px solid #000;
     padding: 8px;
-  }
-
-  &__head {
     font-size: larger;
     font-style: italic;
   }
@@ -168,6 +175,15 @@ function sortByDoubles() {
   }
   &__error {
     border: 3px solid red;
+  }
+  &__selector-team {
+    display: table-row;
+    align-content: center;
+  }
+  &__checkbox {
+    display: table-row;
+    align-content: center;
+    justify-content: center;
   }
 }
 *:disabled {

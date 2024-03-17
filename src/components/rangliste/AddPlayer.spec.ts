@@ -1,10 +1,13 @@
 import type Player from '@/models/Player'
-import { shallowMount } from '@vue/test-utils'
+import { TeamEnum } from '@/models/TeamEnum'
+import { mount } from '@vue/test-utils'
 import { describe, expect, it, vitest } from 'vitest'
 import AddPlayerVue from './AddPlayer.vue'
+import TeamSelector from './TeamSelector.vue'
 
 function setupComponent() {
-  const cut = shallowMount(AddPlayerVue)
+  const cut = mount(AddPlayerVue)
+  const teamSelector = () => cut.findComponent(TeamSelector).find('select')
   const nameInput = () => cut.find('#name')
   const singlesInput = () => cut.find('#singles')
   const doublesInput = () => cut.find('#doubles')
@@ -15,6 +18,7 @@ function setupComponent() {
     nameInput,
     singlesInput,
     doublesInput,
+    teamSelector,
     addButton
   }
 }
@@ -23,7 +27,8 @@ const testPlayer: Player = {
   id: 1,
   name: 'Test Player',
   singles: '100',
-  doubles: '100'
+  doubles: '100',
+  team: TeamEnum.E
 }
 
 describe('AddPlayer.vue', () => {
@@ -42,14 +47,15 @@ describe('AddPlayer.vue', () => {
 
     expect(addButton().exists()).toBe(true)
   })
-  it('button should have name and ratings', async () => {
-    const { nameInput, singlesInput, doublesInput, addButton } = setupComponent()
+  it('button includes name, ratings and team', async () => {
+    const { nameInput, singlesInput, doublesInput, addButton, teamSelector } = setupComponent()
 
     await nameInput().setValue('Test Player')
     await singlesInput().setValue(100)
     await doublesInput().setValue(200)
+    await teamSelector().setValue(TeamEnum.M4)
 
-    expect(addButton().text()).toContain('Add Test Player(100/200)')
+    expect(addButton().text()).toEqual('Add Test Player(100/200) [M4]')
   })
 
   it('creates last player Id from LocalStorage', async () => {
@@ -79,15 +85,17 @@ describe('AddPlayer.vue', () => {
   })
 
   it('clears form after click', async () => {
-    const { nameInput, singlesInput, doublesInput, addButton } = setupComponent()
+    const { nameInput, singlesInput, doublesInput, addButton, teamSelector } = setupComponent()
     await nameInput().setValue('Test Player')
     await singlesInput().setValue(100)
     await doublesInput().setValue(200)
+    await teamSelector().setValue(TeamEnum.M1)
 
     await addButton().trigger('click')
 
     expect(nameInput().text()).toBe('')
     expect(singlesInput().text()).toBe('')
     expect(doublesInput().text()).toBe('')
+    expect(teamSelector().element.value).toEqual('Ersatz')
   })
 })
