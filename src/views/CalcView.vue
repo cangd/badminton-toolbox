@@ -17,10 +17,7 @@
       <div class="calcview__results" v-for="pair in filteredPairs" :key="pair.teamId">
         {{ pair.player1.name }} ({{ pair.player1.doubles }}) + {{ pair.player2.name }} ({{
           pair.player2.doubles
-    <div>{{ presentedTeam }}</div>
-    <div v-for="pair in filteredPairs" :key="pair.teamId" @click="onClick(pair)">
-      {{ pair.player1.name }} {{ pair.player1.doubles }} {{ pair.player2.name }}
-      {{ pair.player2.doubles }}
+        }}) = {{ pair.points }} {{ whichDoubles(pair) }}
       </div>
     </div>
   </div>
@@ -70,6 +67,55 @@ function filterPairs(id1: number, id2: number): Pair[] {
   return filtered
 }
 
+function whichDoubles(comparingTeam: Pair): string {
+  if (mainTeam.value) {
+    if (mainTeam.value.points === comparingTeam.points) {
+      const teamWithLowestDoublesRating = findTeamWithLowestDoubleRating(
+        mainTeam.value,
+        comparingTeam
+      )
+      if (teamWithLowestDoublesRating == comparingTeam.teamId) {
+        return 'HD1'
+      } else return 'HD2'
+    }
+    if (mainTeam.value.points < comparingTeam.points) {
+      return 'HD2'
+    } else {
+      return 'HD1'
+    }
+  }
+  console.error('No mainTeam found')
+  throw 'SumTingWong'
+}
+
+function findTeamWithLowestDoubleRating(mainTeam: Pair, comparingTeam: Pair): number {
+  const pairs = []
+  pairs.push(mainTeam, comparingTeam)
+  const players = []
+  players.push(mainTeam.player1, mainTeam.player2, comparingTeam.player1, comparingTeam.player2)
+  const playerWithLowestRating = players.reduce((minPlayer, currentPlayer) => {
+    const minRating = parseInt(minPlayer.doubles)
+    const currentRating = parseInt(currentPlayer.doubles)
+    return currentRating < minRating ? currentPlayer : minPlayer
+  }, players[0])
+  console.log('LowestRating', playerWithLowestRating)
+
+  return findPlayerInTeam(playerWithLowestRating, pairs)
+}
+
+function findPlayerInTeam(findPlayer: Player, pairs: Pair[]): number {
+  let teamId: number = 0
+  for (const pair of pairs) {
+    if (pair.player1.name === findPlayer.name || pair.player2.name === findPlayer.name) {
+      teamId = pair.teamId
+    }
+  }
+  if (teamId > 0) {
+    return teamId
+  }
+  console.error('No matching team found')
+  throw 'No TeamId found'
+}
 </script>
 
 <style lang="scss" scoped>
