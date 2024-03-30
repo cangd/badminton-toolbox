@@ -5,4 +5,5 @@ export default interface Pair {
   player1: Player
   player2: Player
   selected?: boolean | false
+  points: number
 }
