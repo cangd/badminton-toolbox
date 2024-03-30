@@ -16,6 +16,9 @@
         <v-list-item @click="clickFoo">
           <RouterLink to="/pairings">Test: Pairings</RouterLink>
         </v-list-item>
+        <v-list-item @click="clickFoo">
+          <RouterLink to="/calc">DoppelRechner</RouterLink>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
