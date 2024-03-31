@@ -14,8 +14,8 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-main class="d-flex align-center justify-center" style="min-height: 300px">
-      <div>
+    <v-main class="d-flex justify-center" style="min-height: 300px">
+      <div class="app">
         <RouterView />
       </div>
     </v-main>
@@ -31,3 +31,13 @@ import { ref } from 'vue'
 
 const drawer = ref(false)
 </script>
+
+<style lang="scss" scoped>
+// @media (min-width: 1024px) {
+.app {
+  display: flex;
+  flex-direction: column;
+  // width: 1024px;
+}
+// }
+</style>

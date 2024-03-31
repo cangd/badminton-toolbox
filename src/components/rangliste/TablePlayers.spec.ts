@@ -1,13 +1,21 @@
 import type Player from '@/models/Player'
 import { TeamEnum } from '@/models/TeamEnum'
-import { mount, shallowMount } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { describe, expect, it, vitest } from 'vitest'
 import { type ComponentProps } from 'vue-component-type-helpers'
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
 import TablePlayersVue from './TablePlayers.vue'
 import TeamSelector from './TeamSelector.vue'
 
 function setupComponent(overrides: Partial<ComponentProps<typeof TablePlayersVue>> = {}) {
-  const shallowMountCut = shallowMount(TablePlayersVue, {
+  const vuetify = createVuetify({
+    components,
+    directives
+  })
+
+  const cut = mount(TablePlayersVue, {
     props: {
       playersList: [
         {
@@ -20,49 +28,41 @@ function setupComponent(overrides: Partial<ComponentProps<typeof TablePlayersVue
         }
       ],
       ...overrides
+    },
+    global: {
+      components: {
+        TablePlayersVue
+      },
+      plugins: [vuetify]
     }
   })
 
-  const tableHeadPlayer = () => shallowMountCut.find('.tablePlayers__head-player')
-  const tableHeadSingles = () => shallowMountCut.find('.tablePlayers__head-singles')
-  const tableHeadDoubles = () => shallowMountCut.find('.tablePlayers__head-doubles')
-  const tableHeadTeam = () => shallowMountCut.find('.tablePlayers__head-team')
-  const tableHeadAction = () => shallowMountCut.find('.tablePlayers__head-action')
+  const tableHeadPlayer = () => cut.find('.tablePlayers__head-player')
+  const tableHeadSingles = () => cut.find('.tablePlayers__head-singles')
+  const tableHeadDoubles = () => cut.find('.tablePlayers__head-doubles')
+  const tableHeadTeam = () => cut.find('.tablePlayers__head-team')
+  const tableHeadAction = () => cut.find('.tablePlayers__head-action')
 
-  const nameField = () => shallowMountCut.find('.tablePlayers__input-name')
-  const singlesField = () => shallowMountCut.find('.tablePlayers__input-singles')
-  const doublesField = () => shallowMountCut.find('.tablePlayers__input-doubles')
-  const actionColumn = () => shallowMountCut.find('.tablePlayers__action')
-  const editButton = () => shallowMountCut.find('.tablePlayers__action--edit')
-  const saveButton = () => shallowMountCut.find('.tablePlayers__action--save')
-  const deleteButton = () => shallowMountCut.find('.tablePlayers__action--delete')
+  const nameField = () => cut.find('#tablePlayersName')
+  const singlesField = () => cut.find('#tablePlayersSingles')
+  const doublesField = () => cut.find('#tablePlayersDoubles')
+  const actionColumn = () => cut.find('.tablePlayers__action')
+  const editButton = () => cut.find('#tablePlayersEdit')
+  const saveButton = () => cut.find('#tablePlayersSave')
+  const deleteButton = () => cut.find('#tablePlayersDelete')
+
+  const nameFieldError = () => cut.find('.tablePlayers__input-name.tablePlayers__error')
+  const singlesFieldError = () => cut.find('.tablePlayers__input-singles.tablePlayers__error')
+  const doublesFieldError = () => cut.find('.tablePlayers__input-doubles.tablePlayers__error')
 
   vitest.spyOn(window, 'alert')
 
-  const mountCut = mount(TablePlayersVue, {
-    props: {
-      playersList: [
-        {
-          id: 1,
-          name: 'TestPlayer',
-          singles: '100',
-          doubles: '110',
-          editing: false,
-          team: TeamEnum.E
-        }
-      ],
-      ...overrides
-    }
-  })
-
-  const teamSelectorComp = () => mountCut.findComponent(TeamSelector)
-  const teamSelector = teamSelectorComp().find('select')
+  const teamSelector = () => cut.findComponent(TeamSelector)
 
   window.alert = vitest.fn()
 
   return {
-    shallowMountCut,
-    mountCut,
+    cut,
     tableHeadPlayer,
     tableHeadSingles,
     tableHeadDoubles,
@@ -75,7 +75,10 @@ function setupComponent(overrides: Partial<ComponentProps<typeof TablePlayersVue
     editButton,
     saveButton,
     deleteButton,
-    teamSelector
+    teamSelector,
+    nameFieldError,
+    singlesFieldError,
+    doublesFieldError
   }
 }
 
@@ -110,9 +113,9 @@ describe('TablePlayers.vue ', () => {
   })
 
   it('will not display a table if there are no players', async () => {
-    const { deleteButton, tableHeadPlayer, tableHeadSingles, tableHeadDoubles } =
-      await setupComponent()
-
+    const { editButton, deleteButton, tableHeadPlayer, tableHeadSingles, tableHeadDoubles } =
+      setupComponent()
+    await editButton().trigger('click')
     await deleteButton().trigger('click')
     expect(tableHeadPlayer().exists()).toBe(false)
     expect(tableHeadSingles().exists()).toBe(false)
@@ -127,17 +130,21 @@ describe('TablePlayers.vue ', () => {
   })
 
   it('displays player in table', () => {
-    const { nameField, singlesField, doublesField, teamSelector } = setupComponent({})
+    const { teamSelector, nameField, singlesField, doublesField } = setupComponent()
     expect((nameField().element as HTMLInputElement).value).toBe('TestPlayer')
     expect((singlesField().element as HTMLInputElement).value).toBe('100')
     expect((doublesField().element as HTMLInputElement).value).toBe('110')
-    expect(teamSelector.element.value).toBe('Ersatz')
+    expect(teamSelector().props().teamZugehoerigkeit).toBe(TeamEnum.E)
   })
 
   it('displays edit and delete button for a player', () => {
-    const { editButton, deleteButton } = setupComponent()
+    const { editButton } = setupComponent()
     expect(editButton().exists()).toBe(true)
-    expect(deleteButton().exists()).toBe(true)
+  })
+
+  it('delete button is not initially rendered', () => {
+    const { deleteButton } = setupComponent()
+    expect(deleteButton().exists()).toBe(false)
   })
 
   it('save button is not initially rendered', () => {
@@ -145,11 +152,12 @@ describe('TablePlayers.vue ', () => {
     expect(saveButton().exists()).toBe(false)
   })
 
-  it('displays save for a player when edit is clicked', async () => {
-    const { editButton, saveButton } = setupComponent()
+  it('displays save and delete button for a player when edit is clicked', async () => {
+    const { editButton, saveButton, deleteButton } = setupComponent()
 
     await editButton().trigger('click')
 
+    expect(deleteButton().exists()).toBe(true)
     expect(saveButton().exists()).toBe(true)
   })
 
@@ -185,15 +193,14 @@ describe('TablePlayers.vue ', () => {
       const { teamSelector, editButton } = setupComponent()
       await editButton().trigger('click')
 
-      await teamSelector.setValue(TeamEnum.M4)
+      await teamSelector().setValue(TeamEnum.M4)
 
-      expect(teamSelector.element.value).toEqual('M4')
+      expect(teamSelector().props().teamZugehoerigkeit).toBe(TeamEnum.M4)
     })
   })
 
   it('saves player after editing', async () => {
-    const { shallowMountCut, nameField, singlesField, doublesField, editButton, saveButton } =
-      setupComponent()
+    const { cut, nameField, singlesField, doublesField, editButton, saveButton } = setupComponent()
     await editButton().trigger('click')
 
     await nameField().setValue('Profi')
@@ -202,7 +209,7 @@ describe('TablePlayers.vue ', () => {
 
     await saveButton().trigger('click')
 
-    expect(shallowMountCut.props().playersList).toStrictEqual([
+    expect(cut.props().playersList).toStrictEqual([
       { id: 1, name: 'Profi', singles: '10', doubles: '20', editing: false, team: TeamEnum.E }
     ])
   })
@@ -235,30 +242,31 @@ describe('TablePlayers.vue ', () => {
     })
 
     it('field is marked red when having the same values', async () => {
-      const { nameField, singlesField, doublesField, editButton } = setupComponent({
-        playersList: [
-          {
-            id: 3,
-            name: 'TestPlayer3',
-            singles: '100',
-            doubles: '110',
-            editing: false,
-            team: TeamEnum.E
-          },
-          {
-            id: 4,
-            name: 'TestPlayer3',
-            singles: '100',
-            doubles: '110',
-            editing: false,
-            team: TeamEnum.M1
-          }
-        ]
-      })
+      const { cut, nameFieldError, singlesFieldError, doublesFieldError, editButton } =
+        setupComponent({
+          playersList: [
+            {
+              id: 3,
+              name: 'TestPlayer3',
+              singles: '100',
+              doubles: '110',
+              editing: false,
+              team: TeamEnum.E
+            },
+            {
+              id: 4,
+              name: 'TestPlayer3',
+              singles: '100',
+              doubles: '110',
+              editing: false,
+              team: TeamEnum.M1
+            }
+          ]
+        })
       await editButton().trigger('click')
-      expect(nameField().classes()).toContain('tablePlayers__error')
-      expect(singlesField().classes()).toContain('tablePlayers__error')
-      expect(doublesField().classes()).toContain('tablePlayers__error')
+      expect(nameFieldError().exists()).toBe(true)
+      expect(singlesFieldError().exists()).toBe(true)
+      expect(doublesFieldError().exists()).toBe(true)
     })
   })
 

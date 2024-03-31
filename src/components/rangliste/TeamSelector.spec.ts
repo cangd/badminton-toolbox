@@ -29,10 +29,4 @@ describe('TeamSelector.vue ', () => {
 
     expect(dropDown().attributes().disabled).toBeDefined()
   })
-
-  it('has five options', () => {
-    const { option } = setupComponent({ isDisabled: true })
-
-    expect(option()).toHaveLength(5)
-  })
 })

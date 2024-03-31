@@ -2,12 +2,10 @@
   <h1>{{ header }}</h1>
   <AddPlayer v-model:playersList="players" />
   <TablePlayers :playersList="players" />
-  <PairingsComp />
 </template>
 
 <script setup lang="ts">
 import AddPlayer from '@/components/rangliste/AddPlayer.vue'
-import PairingsComp from '@/components/rangliste/PairingsComp.vue'
 import TablePlayers from '@/components/rangliste/TablePlayers.vue'
 import { saveLastIdToLocalStorage } from '@/helper/rangliste/lastIdStoragehelper.js'
 import { getPlayersFromSessionStorage } from '@/helper/rangliste/playersStorageHelper.js'
@@ -44,17 +42,18 @@ function initPlayerList(): Player[] {
 </script>
 
 <style>
-@media (min-width: 1024px) {
-  .rangliste {
-    display: flex;
-    align-items: center;
-    align-content: center;
-    flex-direction: row;
-    justify-content: center;
-  }
+.rangliste {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  flex-direction: row;
+  justify-content: center;
 }
 
-ul {
-  list-style-type: none;
+h1 {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 </style>
