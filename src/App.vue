@@ -3,15 +3,17 @@
     <v-app-bar>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-      <v-app-bar-title> <RouterLink to="/"> Application </RouterLink></v-app-bar-title>
+      <v-app-bar-title @click="clickRangliste">
+        <RouterLink to="/"> {{ title }} </RouterLink></v-app-bar-title
+      >
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer">
       <v-list>
-        <v-list-item>
+        <v-list-item @click="clickRangliste">
           <RouterLink to="/rangliste">Rangliste</RouterLink>
         </v-list-item>
-        <v-list-item>
+        <v-list-item @click="clickFoo">
           <RouterLink to="/pairings">Test: Pairings</RouterLink>
         </v-list-item>
       </v-list>
@@ -33,14 +35,21 @@
 import { ref } from 'vue'
 
 const drawer = ref(false)
+
+const title = ref('Rangliste')
+
+function clickRangliste() {
+  return (title.value = 'Rangliste')
+}
+
+function clickFoo() {
+  return (title.value = 'Foo')
+}
 </script>
 
 <style lang="scss" scoped>
-// @media (min-width: 1024px) {
 .app {
   display: flex;
   flex-direction: column;
-  // width: 1024px;
 }
-// }
 </style>
