@@ -1,4 +1,5 @@
 import TheWelcome from '@/components/TheWelcome.vue'
+import PairingsComp from '@/components/rangliste/PairingsComp.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import RanglisteView from '../views/RanglisteView.vue'
 
@@ -17,6 +18,14 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: RanglisteView
+    },
+    {
+      path: '/pairings',
+      name: 'pairings',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: PairingsComp
     }
   ]
 })
