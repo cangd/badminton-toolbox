@@ -1,6 +1,5 @@
 <template>
-  <h1>{{ header }}</h1>
-  <AddPlayer v-model:playersList="players" />
+  <AddPlayer class="ranglisteView_addPlayer" v-model:playersList="players" />
   <TablePlayers :playersList="players" />
 </template>
 
@@ -50,10 +49,7 @@ function initPlayerList(): Player[] {
   justify-content: center;
 }
 
-h1 {
-  display: flex;
-  justify-content: center;
+.ranglisteView_addPlayer {
   margin-top: 20px;
-  margin-bottom: 20px;
 }
 </style>
