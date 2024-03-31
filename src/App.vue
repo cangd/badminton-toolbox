@@ -9,7 +9,10 @@
     <v-navigation-drawer v-model="drawer">
       <v-list>
         <v-list-item>
-          <RouterLink to="/rangliste">Rangliste </RouterLink>
+          <RouterLink to="/rangliste">Rangliste</RouterLink>
+        </v-list-item>
+        <v-list-item>
+          <RouterLink to="/pairings">Test: Pairings</RouterLink>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
