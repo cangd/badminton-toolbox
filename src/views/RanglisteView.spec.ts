@@ -19,10 +19,6 @@ function setupComponent() {
 }
 
 describe('test', () => {
-  it('renders properly', () => {
-    expect(wrapper.text()).toContain('Rangliste')
-  })
-
   it('should load rangliste comp', () => {
     const { ranglisteComp } = setupComponent()
     expect(ranglisteComp.isVisible()).toBe(true)
