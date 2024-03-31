@@ -1,68 +1,84 @@
 <template>
   <div v-if="players.length > 0" class="tablePlayers__table">
-    <table>
-      <thead>
-        <tr>
-          <th class="tablePlayers__head-player" @click="sortByName()">Player</th>
-          <th class="tablePlayers__head-singles" @click="sortBySingles()">Singles</th>
-          <th class="tablePlayers__head-doubles" @click="sortByDoubles()">Doubles</th>
-          <th class="tablePlayers__head-team">Team</th>
-          <th class="tablePlayers__head-action">Action</th>
-          <th class="tablePlayers__head--player" @click="sortByName()">Player</th>
-          <th class="tablePlayers__head--singles" @click="sortBySingles()">Singles</th>
-          <th class="tablePlayers__head--doubles" @click="sortByDoubles()">Doubles</th>
-        </tr>
-      </thead>
-    </table>
+    <div class="tablePlayers__head">
+      <v-col cols="12" sm="5">
+        <div class="tablePlayers__head-player" @click="sortByName()">Player</div>
+      </v-col>
+      <v-col cols="12" sm="4">
+        <div class="tablePlayers__head-singles" @click="sortBySingles()">Singles</div>
+      </v-col>
+      <v-col cols="12" sm="4">
+        <div class="tablePlayers__head-doubles" @click="sortByDoubles()">Doubles</div>
+      </v-col>
+      <v-col cols="12" sm="4">
+        <div class="tablePlayers__head-team">Team</div>
+      </v-col>
+      <v-col cols="12" sm="2">
+        <div class="tablePlayers__head-action" @click="clickOnAction()">Action</div>
+      </v-col>
+    </div>
 
     <div class="tablePlayers__players" v-for="(player, index) in players" :key="player.id">
-      <v-col cols="12" md="4">
+      <v-col cols="12" sm="5" class="pa-1">
         <v-text-field
-          class="tablePlayers__name--input"
+          class="tablePlayers__input-name"
           :class="{ tablePlayers__error: !isNameValid(index) }"
           v-model="player.name"
-          label="Name"
           hide-details
           :disabled="!player.editing"
+          id="tablePlayersName"
         ></v-text-field>
       </v-col>
 
-      <v-col cols="12" md="2">
+      <v-col cols="12" sm="4" class="pa-1">
         <v-text-field
-          class="tablePlayers__singles--input"
+          class="tablePlayers__input-singles"
           :class="{ tablePlayers__error: !isSinglesValid(index) }"
           v-model="player.singles"
-          label="Einzel"
           hide-details
           :disabled="!player.editing"
+          id="tablePlayersSingles"
         ></v-text-field>
       </v-col>
 
-      <v-col cols="12" md="2">
+      <v-col cols="12" sm="4" class="pa-1">
         <v-text-field
-          class="tablePlayers__doubles--input"
+          class="tablePlayers__input-doubles"
           :class="{ tablePlayers__error: !isDoublesValid(index) }"
           v-model="player.doubles"
-          label="Doppel"
           hide-details
           :disabled="!player.editing"
+          id="tablePlayersDoubles"
         ></v-text-field>
       </v-col>
 
-      <td class="tablePlayers__action">
+      <v-col cols="12" sm="4" class="pa-1">
+        <TeamSelector
+          class="tablePlayers__selector-team"
+          v-model="player.team"
+          :isDisabled="!player.editing"
+          :teamZugehoerigkeit="player.team"
+          id="tablePlayersTeamSelector"
+        >
+        </TeamSelector>
+      </v-col>
+
+      <v-col cols="12" sm="3" class="pa-1">
         <v-btn
-          icon="mdi-pencil"
+          icon="mdi-account-edit-outline"
           variant="plain"
           class="tablePlayers__action--edit"
           @click="editPlayer(index)"
           v-if="!player.editing"
+          id="tablePlayersEdit"
         ></v-btn>
         <v-btn
-          icon="mdi-send-variant-outline"
+          icon="mdi-pencil-off-outline"
           variant="plain"
           class="tablePlayers__action--save"
           @click="savePlayer(index)"
           v-if="player.editing"
+          id="tablePlayersSave"
         ></v-btn>
         <v-btn
           icon="mdi-delete"
@@ -70,20 +86,21 @@
           class="tablePlayers__action--delete"
           @click="deletePlayer(player.id)"
           v-if="player.editing"
+          id="tablePlayersDelete"
         ></v-btn>
-      </td>
+      </v-col>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-// TODO I AM HERE
 // Try to use this for the TEMPLATE INSTEAD
 // https://vuetifyjs.com/en/components/data-tables/basics/#usage
 
 import { savePlayersToSessionStorage } from '@/helper/rangliste/playersStorageHelper'
 import type Player from '@/models/Player.js'
 import { computed } from 'vue'
+import TeamSelector from './TeamSelector.vue'
 
 const props = defineProps<{
   playersList: Player[]
@@ -149,12 +166,10 @@ function deletePlayer(id: any) {
 }
 
 function sortByName() {
-  console.log('Sort by name', players.value)
   players.value.sort((a, b) => a.name.localeCompare(b.name))
 }
 
 function sortBySingles() {
-  console.log('Sort by singles', players.value)
   players.value.sort((a, b) => {
     const singlesA = parseInt(a.singles)
     const singlesB = parseInt(b.singles)
@@ -163,55 +178,46 @@ function sortBySingles() {
 }
 
 function sortByDoubles() {
-  console.log('Sort by doubles', players.value)
   players.value.sort((a, b) => {
     const doublesA = parseInt(a.doubles)
     const doublesB = parseInt(b.doubles)
     return doublesA - doublesB
   })
 }
+
+function clickOnAction() {
+  for (let i = 0; i < players.value.length; i++) {
+    players.value[i].editing == true
+      ? (players.value[i].editing = false)
+      : (players.value[i].editing = true)
+  }
+}
 </script>
 
 <style lang="scss" scoped>
 .tablePlayers {
-  &__table {
-    display: flex;
-    justify-content: center;
-  }
-
   &__players {
     display: flex;
     justify-content: center;
-  }
-
-  &__action {
-    display: flex;
     align-items: center;
   }
 
-  &__cell,
   &__head {
     display: flex;
-    border: 1px solid #000;
-    padding: 8px;
+    justify-content: center;
     font-size: larger;
     font-style: italic;
   }
 
-  &__input {
-    background-color: lightyellow;
-  }
   &__error {
     border: 3px solid red;
   }
-  &__selector-team {
-    display: table-row;
-    align-content: center;
-  }
-  &__checkbox {
-    display: table-row;
-    align-content: center;
-    justify-content: center;
+
+  &__head-action,
+  &__head-player,
+  &__head-singles,
+  &__head-doubles {
+    text-decoration: underline;
   }
 }
 *:disabled {

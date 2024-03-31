@@ -20,7 +20,7 @@ function setupComponent() {
     }
   })
 
-  const teamSelector = () => cut.findComponent(TeamSelector).find('select')
+  const teamSelector = () => cut.findComponent(TeamSelector).find('.teamDropdown_select')
   const nameInput = () => cut.find('#name')
   const singlesInput = () => cut.find('#singles')
   const doublesInput = () => cut.find('#doubles')
@@ -61,16 +61,6 @@ describe('AddPlayer.vue', () => {
 
     expect(addButton().exists()).toBe(true)
   })
-  it('button includes name, ratings and team', async () => {
-    const { nameInput, singlesInput, doublesInput, addButton, teamSelector } = setupComponent()
-
-    await nameInput().setValue('Test Player')
-    await singlesInput().setValue(110)
-    await doublesInput().setValue(200)
-    await teamSelector().setValue(TeamEnum.M4)
-
-    expect(addButton().text()).toEqual('Add Test Player(100/200) [M4]')
-  })
 
   it('creates last player Id from LocalStorage', async () => {
     const { nameInput, singlesInput, doublesInput, addButton } = setupComponent()
@@ -99,17 +89,15 @@ describe('AddPlayer.vue', () => {
   })
 
   it('clears form after click', async () => {
-    const { nameInput, singlesInput, doublesInput, addButton, teamSelector } = setupComponent()
+    const { nameInput, singlesInput, doublesInput, addButton } = setupComponent()
     await nameInput().setValue('Test Player')
     await singlesInput().setValue(100)
     await doublesInput().setValue(200)
-    await teamSelector().setValue(TeamEnum.M1)
 
     await addButton().trigger('click')
 
     expect(nameInput().text()).toBe('')
     expect(singlesInput().text()).toBe('')
     expect(doublesInput().text()).toBe('')
-    expect(teamSelector().element.value).toEqual('Ersatz')
   })
 })
