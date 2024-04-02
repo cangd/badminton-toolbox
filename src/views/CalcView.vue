@@ -1,61 +1,144 @@
 <template>
-  <div class="calcview__container">
-    <button
-      class="calcview__container--button"
-      v-for="pair in pairs"
-      :key="pair.teamId"
-      @click="onClick(pair)"
-    >
-      {{ pair.player1.name }} ({{ pair.player1.doubles }}) {{ pair.player2.name }} ({{
-        pair.player2.doubles
-      }})
-    </button>
+  <div class="calcview">
+    <v-card flat theme="dark">
+      <template v-slot:text>
+        <v-text-field
+          class="calcview__search-container"
+          v-model="searchPairs"
+          label="Filter nach Namen, HD1 oder M1"
+          prepend-inner-icon="mdi-magnify"
+          variant="outlined"
+          hide-details
+          single-line
+        >
+        </v-text-field>
+      </template>
+      <v-data-iterator :items="flatPairs" :items-per-page="itemsPerPage" :search="searchPairs">
+        <template v-slot:header="{ page, pageCount, prevPage, nextPage }">
+          <h1 class="text-h4 font-weight-bold d-flex justify-space-between mb-4 align-center">
+            <div class="text-truncate">&nbsp; Wähle ein Doppel, das gerantiert spielen soll</div>
+
+            <div class="d-flex align-center">
+              <v-btn class="me-8" variant="text" @click="onClickSeeAll">
+                <span class="text-decoration-underline text-none">See all</span>
+              </v-btn>
+
+              <div class="d-inline-flex">
+                <v-btn
+                  :disabled="page === 1"
+                  class="me-2"
+                  icon="mdi-arrow-left"
+                  size="small"
+                  variant="tonal"
+                  @click="prevPage"
+                ></v-btn>
+
+                <v-btn
+                  :disabled="page === pageCount"
+                  icon="mdi-arrow-right"
+                  size="small"
+                  variant="tonal"
+                  @click="nextPage"
+                ></v-btn>
+              </div>
+            </div>
+          </h1>
+        </template>
+
+        <template v-slot:default="{ items }">
+          <v-row>
+            <v-col v-for="(item, i) in items" :key="i" cols="20" sm="3" xl="3">
+              <v-sheet border>
+                <v-list-item
+                  class="calcView__listItem"
+                  density="comfortable"
+                  lines="two"
+                  @click="onClick(item.raw)"
+                >
+                  {{ item.raw.p1 }}<br />
+                  {{ item.raw.p2 }} <br />
+                </v-list-item>
+              </v-sheet>
+            </v-col>
+          </v-row>
+        </template>
+
+        <template v-slot:footer="{ page, pageCount }">
+          <v-footer class="justify-space-between text-body-2 mt-4" color="surface-variant">
+            Total pairs: {{ pairs.length }}
+
+            <div>Page {{ page }} of {{ pageCount }}</div>
+          </v-footer>
+        </template>
+      </v-data-iterator>
+    </v-card>
+
     <div class="calcview__container--presentedteam">
       <div class="calcview__presentedteam">{{ presentedTeam }}</div>
     </div>
-    <div class="calcview__container--results">
-      <div class="calcview__results" v-for="pair in filteredPairs" :key="pair.teamId">
-        {{ pair.player1.name }} ({{ pair.player1.doubles }}) + {{ pair.player2.name }} ({{
-          pair.player2.doubles
-        }}) = {{ pair.points }} {{ whichDoubles(pair) }}
-      </div>
-    </div>
+    <v-card flat theme="dark">
+      <template v-slot:text>
+        <v-text-field
+          class="calcview__search-container"
+          v-model="searchTable"
+          label="Filter nach Namen, HD2, M2, oder Wertung"
+          prepend-inner-icon="mdi-magnify"
+          variant="outlined"
+          hide-details
+          single-line
+        >
+        </v-text-field>
+      </template>
+      <v-data-table theme="dark" :items="dataTablePairs" :search="searchTable" />
+    </v-card>
   </div>
 </template>
 
 <script setup lang="ts">
-import { generateUniquePairs } from '@/helper/rangliste/generateUniquePairshelper'
+// TODO integrate whichDoubles into v-data-table
+// https://vuetifyjs.com/en/components/data-tables/basics/
+
+import { generateUniquePairs } from '@/helper/pairs/generateUniquePairshelper'
+import { pairsToDataTableMapper } from '@/helper/pairs/pairsToDataTableMapper'
 import { getPlayersFromSessionStorage } from '@/helper/rangliste/playersStorageHelper'
-import type Pair from '@/models/Pair'
 import type Player from '@/models/Player'
+import type DataTablePair from '@/models/pairs/DataTablePair'
+import type FlatPair from '@/models/pairs/FlatPair'
+import type Pair from '@/models/pairs/Pair'
 import { computed, onMounted, ref } from 'vue'
 
 const players = ref<Player[]>([])
 const presentedTeam = ref<string>()
 const filteredPairs = ref<Pair[]>()
+const dataTablePairs = ref<DataTablePair[]>()
+const searchTable = ref<string>('')
+const searchPairs = ref<string>('')
+const allPairs = ref<DataTablePair[]>()
 const mainTeam = ref<Pair>()
-const mainP1 = ref<string>()
-const mainP2 = ref<string>()
 
 onMounted(() => {
   players.value = getPlayersFromSessionStorage()
+  allPairs.value = pairsToDataTableMapper(pairs.value)
 })
 
 const pairs = computed<Pair[]>(() => {
   return generateUniquePairs(players.value)
 })
 
-function onClick(team: Pair) {
-  filteredPairs.value = filterPairs(team.player1.id, team.player2.id)
-  mainTeam.value = team
-  mainP1.value = `${team.player1.name} (${team.player1.doubles})`
-  mainP2.value = `${team.player2.name} (${team.player2.doubles})`
+const flatPairs = computed<FlatPair[]>(() => {
+  return flattenPairs(pairs.value)
+})
+
+function onClick(team: FlatPair) {
+  console.log('Pairs', pairs.value)
+  filteredPairs.value = filterPairs(team.p1Id, team.p2Id)
+  mainTeam.value = mapFlatPairToPair(team)
+  dataTablePairs.value = pairsToDataTableMapper(filteredPairs.value, mainTeam.value)
   console.log('Filtered', filteredPairs.value)
-  presentedTeam.value = `Festgelegtes Doppel: ${mainP1.value} + ${mainP2.value} = ${team.points}`
+  presentedTeam.value = `Festgelegtes Doppel: ${team.p1} + ${team.p2} = ${team.sumPoints}`
 }
 
 function filterPairs(id1: number, id2: number): Pair[] {
-  // const filtered = pairs.value
   const filtered = pairs.value.filter(
     (pair) =>
       pair.player1.id !== id1 &&
@@ -67,73 +150,58 @@ function filterPairs(id1: number, id2: number): Pair[] {
   return filtered
 }
 
-function whichDoubles(comparingTeam: Pair): string {
-  if (mainTeam.value) {
-    if (mainTeam.value.points === comparingTeam.points) {
-      const teamWithLowestDoublesRating = findTeamWithLowestDoubleRating(
-        mainTeam.value,
-        comparingTeam
-      )
-      if (teamWithLowestDoublesRating == comparingTeam.teamId) {
-        return 'HD1'
-      } else return 'HD2'
-    }
-    if (mainTeam.value.points < comparingTeam.points) {
-      return 'HD2'
-    } else {
-      return 'HD1'
-    }
-  }
-  console.error('No mainTeam found')
-  throw 'SumTingWong'
+const itemsPerPage = ref(16)
+
+function onClickSeeAll() {
+  itemsPerPage.value = itemsPerPage.value === 16 ? pairs.value.length : 16
 }
 
-function findTeamWithLowestDoubleRating(mainTeam: Pair, comparingTeam: Pair): number {
-  const pairs = []
-  pairs.push(mainTeam, comparingTeam)
-  const players = []
-  players.push(mainTeam.player1, mainTeam.player2, comparingTeam.player1, comparingTeam.player2)
-  const playerWithLowestRating = players.reduce((minPlayer, currentPlayer) => {
-    const minRating = parseInt(minPlayer.doubles)
-    const currentRating = parseInt(currentPlayer.doubles)
-    return currentRating < minRating ? currentPlayer : minPlayer
-  }, players[0])
-  console.log('LowestRating', playerWithLowestRating)
-
-  return findPlayerInTeam(playerWithLowestRating, pairs)
-}
-
-function findPlayerInTeam(findPlayer: Player, pairs: Pair[]): number {
-  let teamId: number = 0
+function flattenPairs(pairs: Pair[]): FlatPair[] {
+  let flatPairs = []
   for (const pair of pairs) {
-    if (pair.player1.name === findPlayer.name || pair.player2.name === findPlayer.name) {
-      teamId = pair.teamId
+    const flatPair = {
+      player1: pair.player1,
+      p1: `${pair.player1.name} (${pair.player1.doubles}) [${pair.player1.team}]`,
+      p1Id: pair.player1.id,
+      player2: pair.player2,
+      p2: `${pair.player2.name} (${pair.player2.doubles}) [${pair.player2.team}]`,
+      p2Id: pair.player2.id,
+      sumPoints: pair.points,
+      teamId: pair.teamId
     }
+    flatPairs.push(flatPair)
   }
-  if (teamId > 0) {
-    return teamId
+  return flatPairs
+}
+
+function mapFlatPairToPair(team: FlatPair): Pair {
+  return {
+    teamId: team.teamId,
+    player1: team.player1,
+    player2: team.player2,
+    points: team.sumPoints
   }
-  console.error('No matching team found')
-  throw 'No TeamId found'
 }
 </script>
 
 <style lang="scss" scoped>
-.calcview__container {
-  &--button {
-    flex-wrap: wrap;
-  }
+.calcview {
+  display: flex;
+  flex-direction: column;
 
-  &--presentedteam {
+  &__container--presentedteam {
+    margin: 20px;
     color: green;
-  }
-
-  &--results {
-    flex-direction: column;
+    text-decoration: underline;
   }
 }
 
-.calcview__results {
-  flex-direction: column;
+.calcView__listItem:active {
+  background-color: green;
+}
+
+.calcView__listItem_clicked {
+  background-color: green;
+  border: 3px solid green;
 }
 </style>
