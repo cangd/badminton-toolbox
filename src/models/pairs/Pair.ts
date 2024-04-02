@@ -1,4 +1,4 @@
-import type Player from './Player'
+import type Player from '../Player'
 
 export default interface Pair {
   teamId: number

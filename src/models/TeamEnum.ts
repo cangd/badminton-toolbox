@@ -3,5 +3,5 @@ export enum TeamEnum {
   M2 = 'M2',
   M3 = 'M3',
   M4 = 'M4',
-  E = 'Ersatz'
+  E = 'E'
 }

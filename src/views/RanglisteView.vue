@@ -19,7 +19,6 @@ const defaultPlayers: Player[] = [
   { id: 4, name: 'Richtiger Otto', singles: '3000', doubles: '3000', team: TeamEnum.E }
 ]
 
-const header = ref('Rangliste')
 const players = ref<Player[]>([])
 
 onMounted(() => {
