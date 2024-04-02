@@ -5,7 +5,7 @@
         <v-text-field
           class="calcview__search-container"
           v-model="searchPairs"
-          label="Filter nach Namen, HD1 oder M1"
+          label="Suche nach Namen, HD1 oder M1"
           prepend-inner-icon="mdi-magnify"
           variant="outlined"
           hide-details
@@ -35,7 +35,7 @@
                 <span class="text-decoration-underline text-none">See all</span>
               </v-btn>
 
-              <div v-if="itemsPerPage >= flatPairs.length" class="d-inline-flex">
+              <div class="d-inline-flex">
                 <v-btn
                   :disabled="page === 1"
                   class="me-2"
@@ -89,7 +89,7 @@
         <v-text-field
           class="calcview__search-container"
           v-model="searchTable"
-          label="Filter nach Namen, HD2, M2, oder Wertung"
+          label="Suche nach Namen, HD2, M2, oder Wertung"
           prepend-inner-icon="mdi-magnify"
           variant="outlined"
           hide-details
@@ -97,7 +97,12 @@
         >
         </v-text-field>
       </template>
-      <v-data-table theme="dark" :items="dataTablePairs" :search="searchTable" />
+      <v-data-table
+        theme="dark"
+        :items="dataTablePairs"
+        :search="searchTable"
+        :items-per-page="5"
+      />
     </v-card>
   </div>
 </template>
