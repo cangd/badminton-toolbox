@@ -1,5 +1,5 @@
 import TheWelcome from '@/components/TheWelcome.vue'
-import PairingsComp from '@/components/rangliste/PairingsComp.vue'
+import PairingsComp from '@/components/pairs/PairingsComp.vue'
 import CalcView from '@/views/CalcView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import RanglisteView from '../views/RanglisteView.vue'
