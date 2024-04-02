@@ -16,14 +16,26 @@
       <v-data-iterator :items="flatPairs" :items-per-page="itemsPerPage" :search="searchPairs">
         <template v-slot:header="{ page, pageCount, prevPage, nextPage }">
           <h1 class="text-h4 font-weight-bold d-flex justify-space-between mb-4 align-center">
-            <div class="text-truncate">&nbsp; Wähle ein Doppel, das gerantiert spielen soll</div>
+            <v-card
+              v-if="mainTeam"
+              class="calcView__card"
+              min-width="344"
+              append-icon="mdi-account-multiple"
+              :title="`${mainTeam.player1.name} (${mainTeam.player1.doubles}) [${mainTeam.player1.team}] + ${mainTeam.player2.name} (${mainTeam.player2.doubles}) [${mainTeam.player2.team}]`"
+              :subtitle="mainTeam.points"
+              color="green"
+            >
+            </v-card>
+            <div v-if="!mainTeam" class="text-truncate">
+              &nbsp; Wähle ein Doppel, das gerantiert spielen soll
+            </div>
 
             <div class="d-flex align-center">
               <v-btn class="me-8" variant="text" @click="onClickSeeAll">
                 <span class="text-decoration-underline text-none">See all</span>
               </v-btn>
 
-              <div class="d-inline-flex">
+              <div v-if="itemsPerPage >= flatPairs.length" class="d-inline-flex">
                 <v-btn
                   :disabled="page === 1"
                   class="me-2"
@@ -72,10 +84,6 @@
         </template>
       </v-data-iterator>
     </v-card>
-
-    <div class="calcview__container--presentedteam">
-      <div class="calcview__presentedteam">{{ presentedTeam }}</div>
-    </div>
     <v-card flat theme="dark">
       <template v-slot:text>
         <v-text-field
@@ -108,7 +116,6 @@ import type Pair from '@/models/pairs/Pair'
 import { computed, onMounted, ref } from 'vue'
 
 const players = ref<Player[]>([])
-const presentedTeam = ref<string>()
 const filteredPairs = ref<Pair[]>()
 const dataTablePairs = ref<DataTablePair[]>()
 const searchTable = ref<string>('')
@@ -130,12 +137,9 @@ const flatPairs = computed<FlatPair[]>(() => {
 })
 
 function onClick(team: FlatPair) {
-  console.log('Pairs', pairs.value)
   filteredPairs.value = filterPairs(team.p1Id, team.p2Id)
   mainTeam.value = mapFlatPairToPair(team)
   dataTablePairs.value = pairsToDataTableMapper(filteredPairs.value, mainTeam.value)
-  console.log('Filtered', filteredPairs.value)
-  presentedTeam.value = `Festgelegtes Doppel: ${team.p1} + ${team.p2} = ${team.sumPoints}`
 }
 
 function filterPairs(id1: number, id2: number): Pair[] {
@@ -188,12 +192,6 @@ function mapFlatPairToPair(team: FlatPair): Pair {
 .calcview {
   display: flex;
   flex-direction: column;
-
-  &__container--presentedteam {
-    margin: 20px;
-    color: green;
-    text-decoration: underline;
-  }
 }
 
 .calcView__listItem:active {
@@ -203,5 +201,9 @@ function mapFlatPairToPair(team: FlatPair): Pair {
 .calcView__listItem_clicked {
   background-color: green;
   border: 3px solid green;
+}
+
+.calcView__card {
+  margin: 20px;
 }
 </style>
