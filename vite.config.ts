@@ -5,7 +5,7 @@ import { defineConfig } from 'vite'
 // https://vitejs.dev/config/
 
 export default defineConfig({
-  base: '/vereins-rangliste/',
+  base: '/badminton-toolbox/',
   plugins: [vue()],
   resolve: {
     alias: {
