@@ -3,17 +3,17 @@
     <v-app-bar>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-      <v-app-bar-title @click="clickRangliste">
+      <v-app-bar-title>
         <RouterLink to="/"> {{ title }} </RouterLink></v-app-bar-title
       >
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer">
       <v-list>
-        <v-list-item @click="clickRangliste">
+        <v-list-item>
           <RouterLink to="/rangliste">Rangliste</RouterLink>
         </v-list-item>
-        <v-list-item @click="clickFoo">
+        <v-list-item>
           <RouterLink to="/calc">DoppelRechner</RouterLink>
         </v-list-item>
       </v-list>
@@ -36,15 +36,7 @@ import { ref } from 'vue'
 
 const drawer = ref(false)
 
-const title = ref('Rangliste')
-
-function clickRangliste() {
-  return (title.value = 'Rangliste')
-}
-
-function clickFoo() {
-  return (title.value = 'Foo')
-}
+const title = ref('Home')
 </script>
 
 <style lang="scss" scoped>
