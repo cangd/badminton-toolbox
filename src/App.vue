@@ -34,14 +34,19 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { defaultPlayers } from './helper/defaultPlayers'
-import { savePlayersToSessionStorage } from './helper/rangliste/playersStorageHelper'
+import {
+  getPlayersFromSessionStorage,
+  savePlayersToSessionStorage
+} from './helper/rangliste/playersStorageHelper'
 
 const drawer = ref(false)
 
 const title = ref('Home')
 
 onMounted(() => {
-  savePlayersToSessionStorage(defaultPlayers)
+  if (getPlayersFromSessionStorage().length === 0) {
+    savePlayersToSessionStorage(defaultPlayers)
+  }
 })
 </script>
 
