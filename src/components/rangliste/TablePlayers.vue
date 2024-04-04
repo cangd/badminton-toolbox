@@ -1,94 +1,98 @@
 <template>
   <div v-if="players.length > 0" class="tablePlayers__table">
     <div class="tablePlayers__head">
-      <v-col cols="12" sm="5">
-        <div class="tablePlayers__head-player" @click="sortByName()">Player</div>
-      </v-col>
-      <v-col cols="12" sm="4">
-        <div class="tablePlayers__head-singles" @click="sortBySingles()">Singles</div>
-      </v-col>
-      <v-col cols="12" sm="4">
-        <div class="tablePlayers__head-doubles" @click="sortByDoubles()">Doubles</div>
-      </v-col>
-      <v-col cols="12" sm="4">
-        <div class="tablePlayers__head-team">Team</div>
-      </v-col>
-      <v-col cols="12" sm="2">
-        <div class="tablePlayers__head-action" @click="clickOnAction()">Action</div>
-      </v-col>
+      <v-row class="justify-center hidden-xs">
+        <v-col cols="12" sm="3">
+          <div class="tablePlayers__head-player" @click="sortByName()">Player</div>
+        </v-col>
+        <v-col cols="12" sm="2">
+          <div class="tablePlayers__head-singles" @click="sortBySingles()">Singles</div>
+        </v-col>
+        <v-col cols="12" sm="2">
+          <div class="tablePlayers__head-doubles" @click="sortByDoubles()">Doubles</div>
+        </v-col>
+        <v-col cols="12" sm="2">
+          <div class="tablePlayers__head-team">Team</div>
+        </v-col>
+        <v-col cols="12" md="1" sm="3">
+          <div class="tablePlayers__head-action" @click="clickOnAction()">Action</div>
+        </v-col>
+      </v-row>
     </div>
 
     <div class="tablePlayers__players" v-for="(player, index) in players" :key="player.id">
-      <v-col cols="12" sm="5" class="pa-1">
-        <v-text-field
-          class="tablePlayers__input-name"
-          :class="{ tablePlayers__error: !isNameValid(index) }"
-          v-model="player.name"
-          hide-details
-          :disabled="!player.editing"
-          id="tablePlayersName"
-        ></v-text-field>
-      </v-col>
+      <v-row class="justify-center ma-1 my-xs-1">
+        <v-col cols="12" md="3" sm="3" xs="3" class="pa-1">
+          <v-text-field
+            class="tablePlayers__input-name"
+            :class="{ tablePlayers__error: !isNameValid(index) }"
+            v-model="player.name"
+            hide-details
+            :disabled="!player.editing"
+            id="tablePlayersName"
+          ></v-text-field>
+        </v-col>
 
-      <v-col cols="12" sm="4" class="pa-1">
-        <v-text-field
-          class="tablePlayers__input-singles"
-          :class="{ tablePlayers__error: !isSinglesValid(index) }"
-          v-model="player.singles"
-          hide-details
-          :disabled="!player.editing"
-          id="tablePlayersSingles"
-        ></v-text-field>
-      </v-col>
+        <v-col cols="12" md="2" sm="2" xs="2" class="pa-1">
+          <v-text-field
+            class="tablePlayers__input-singles"
+            :class="{ tablePlayers__error: !isSinglesValid(index) }"
+            v-model="player.singles"
+            hide-details
+            :disabled="!player.editing"
+            id="tablePlayersSingles"
+          ></v-text-field>
+        </v-col>
 
-      <v-col cols="12" sm="4" class="pa-1">
-        <v-text-field
-          class="tablePlayers__input-doubles"
-          :class="{ tablePlayers__error: !isDoublesValid(index) }"
-          v-model="player.doubles"
-          hide-details
-          :disabled="!player.editing"
-          id="tablePlayersDoubles"
-        ></v-text-field>
-      </v-col>
+        <v-col cols="12" md="2" sm="2" xs="2" class="pa-1">
+          <v-text-field
+            class="tablePlayers__input-doubles"
+            :class="{ tablePlayers__error: !isDoublesValid(index) }"
+            v-model="player.doubles"
+            hide-details
+            :disabled="!player.editing"
+            id="tablePlayersDoubles"
+          ></v-text-field>
+        </v-col>
 
-      <v-col cols="12" sm="4" class="pa-1">
-        <TeamSelector
-          class="tablePlayers__selector-team"
-          v-model="player.team"
-          :isDisabled="!player.editing"
-          :teamZugehoerigkeit="player.team"
-          id="tablePlayersTeamSelector"
-        >
-        </TeamSelector>
-      </v-col>
+        <v-col cols="12" md="2" sm="2" xs="3" class="pa-1">
+          <TeamSelector
+            class="tablePlayers__selector-team"
+            v-model="player.team"
+            :isDisabled="!player.editing"
+            :teamZugehoerigkeit="player.team"
+            id="tablePlayersTeamSelector"
+          >
+          </TeamSelector>
+        </v-col>
 
-      <v-col cols="12" sm="3" class="pa-1">
-        <v-btn
-          icon="mdi-account-edit-outline"
-          variant="plain"
-          class="tablePlayers__action--edit"
-          @click="editPlayer(index)"
-          v-if="!player.editing"
-          id="tablePlayersEdit"
-        ></v-btn>
-        <v-btn
-          icon="mdi-pencil-off-outline"
-          variant="plain"
-          class="tablePlayers__action--save"
-          @click="savePlayer(index)"
-          v-if="player.editing"
-          id="tablePlayersSave"
-        ></v-btn>
-        <v-btn
-          icon="mdi-delete"
-          variant="plain"
-          class="tablePlayers__action--delete"
-          @click="deletePlayer(player.id)"
-          v-if="player.editing"
-          id="tablePlayersDelete"
-        ></v-btn>
-      </v-col>
+        <v-col class="py-2" cols="12" md="2" sm="3" xs="3">
+          <v-btn
+            icon="mdi-account-edit-outline"
+            variant="plain"
+            class="tablePlayers__action--edit"
+            @click="editPlayer(index)"
+            v-if="!player.editing"
+            id="tablePlayersEdit"
+          ></v-btn>
+          <v-btn
+            icon="mdi-pencil-off-outline"
+            variant="plain"
+            class="tablePlayers__action--save"
+            @click="savePlayer(index)"
+            v-if="player.editing"
+            id="tablePlayersSave"
+          ></v-btn>
+          <v-btn
+            icon="mdi-delete"
+            variant="plain"
+            class="tablePlayers__action--delete"
+            @click="deletePlayer(player.id)"
+            v-if="player.editing"
+            id="tablePlayersDelete"
+          ></v-btn>
+        </v-col>
+      </v-row>
     </div>
   </div>
 </template>
@@ -204,10 +208,15 @@ function clickOnAction() {
   }
 
   &__head {
+    margin-bottom: 20px;
     display: flex;
     justify-content: center;
     font-size: larger;
     font-style: italic;
+  }
+
+  &__action {
+    margin-bottom: 20px;
   }
 
   &__error {

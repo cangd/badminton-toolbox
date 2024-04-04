@@ -1,61 +1,64 @@
 <template>
   <div>
     <div class="addPlayer">
-      <v-col cols="12" sm="5">
-        <v-text-field
-          id="name"
-          class="addPlayer__name"
-          v-model="newPlayerName"
-          :class="{ addPlayer__error: hasNameError }"
-          hide-details
-          label="New Player"
-          prepend-inner-icon="mdi-badminton"
-        ></v-text-field>
-      </v-col>
-      <v-col cols="12" sm="4">
-        <v-text-field
-          id="singles"
-          class="addPlayer__singles"
-          v-model="newSinglesRating"
-          :class="{ addPlayer__error: hasSinglesError }"
-          hide-details
-          label="Einzel"
-          prepend-inner-icon="mdi-account"
-        ></v-text-field>
-      </v-col>
-      <v-col cols="12" sm="4">
-        <v-text-field
-          id="doubles"
-          class="addPlayer__doubles"
-          v-model="newDoublesRating"
-          :class="{ addPlayer__error: hasDoublesError }"
-          hide-details
-          label="Doppel"
-          prepend-inner-icon="mdi-account-multiple"
-        ></v-text-field>
-      </v-col>
-      <v-col cols="12" sm="4">
-        <TeamSelector
-          class="addPlayer__team"
-          v-model="newSelectedTeam"
-          :isDisabled="false"
-          :teamZugehoerigkeit="newSelectedTeam"
-        >
-        </TeamSelector>
-      </v-col>
+      <v-row class="flex-row justify-center">
+        <v-col cols="12" md="4" sm="12" xs="4">
+          <v-text-field
+            id="name"
+            class="addPlayer__name"
+            v-model="newPlayerName"
+            :class="{ addPlayer__error: hasNameError }"
+            hide-details
+            label="New Player"
+            prepend-inner-icon="mdi-badminton"
+          ></v-text-field>
+        </v-col>
+        <v-col cols="12" md="2" sm="6" xs="1">
+          <v-text-field
+            id="singles"
+            class="addPlayer__singles"
+            v-model="newSinglesRating"
+            :class="{ addPlayer__error: hasSinglesError }"
+            hide-details
+            label="Einzel"
+            prepend-inner-icon="mdi-account"
+          ></v-text-field>
+        </v-col>
+        <v-col cols="12" md="2" sm="6" xs="1">
+          <v-text-field
+            id="doubles"
+            class="addPlayer__doubles"
+            v-model="newDoublesRating"
+            :class="{ addPlayer__error: hasDoublesError }"
+            hide-details
+            label="Doppel"
+            prepend-inner-icon="mdi-account-multiple"
+          ></v-text-field>
+        </v-col>
+        <v-col class="dlex justify-center" cols="12" md="2" sm="6" xs="1">
+          <TeamSelector
+            class="addPlayer__team"
+            v-model="newSelectedTeam"
+            :isDisabled="false"
+            :teamZugehoerigkeit="newSelectedTeam"
+          >
+          </TeamSelector>
+        </v-col>
 
-      <v-col cols="12" sm="2">
-        <v-btn
-          class="addPlayer__button"
-          icon="mdi-account-plus"
-          variant="tonal"
-          v-if="isFormFilledWithoutErrors()"
-          @click="clickAdd"
-          id="button"
-          density="comfortable"
-        >
-        </v-btn>
-      </v-col>
+        <v-col class="d-flex align-center justify-center" cols="12" md="1" sm="6" xs="1">
+          <v-btn
+            class="addPlayer__button"
+            icon="mdi-account-plus"
+            variant="tonal"
+            v-if="isFormFilledWithoutErrors()"
+            @click="clickAdd"
+            id="button"
+            density="comfortable"
+            color="teal-lighten-2"
+          >
+          </v-btn>
+        </v-col>
+      </v-row>
     </div>
   </div>
 </template>

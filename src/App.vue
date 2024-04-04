@@ -20,9 +20,11 @@
     </v-navigation-drawer>
 
     <v-main class="d-flex justify-center" style="min-height: 300px">
-      <div class="app">
-        <RouterView />
-      </div>
+      <v-container fluid>
+        <div class="app">
+          <RouterView />
+        </div>
+      </v-container>
     </v-main>
   </v-layout>
   <link
