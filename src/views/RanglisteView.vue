@@ -40,6 +40,6 @@ function initPlayerList(): Player[] {
 }
 
 .ranglisteView_addPlayer {
-  margin-top: 20px;
+  margin: 20px;
 }
 </style>
