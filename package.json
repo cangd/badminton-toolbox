@@ -1,5 +1,6 @@
 {
   "name": "vue-project",
+  "homepage": "https://cangd.github.io/badminton-toolbox/",
   "version": "0.0.0",
   "private": true,
   "type": "module",
