@@ -1,5 +1,5 @@
 <template>
-  <div class="calcview">
+  <div class="doublesSimulator">
     <v-card flat theme="dark">
       <template v-slot:text>
         <v-text-field
@@ -191,21 +191,21 @@ function mapFlatPairToPair(team: FlatPair): Pair {
 </script>
 
 <style lang="scss" scoped>
-.calcview {
+.doublesSimulator {
   display: flex;
   flex-direction: column;
 }
 
-.calcView__listItem:active {
+.doublesSimulator__listItem:active {
   background-color: #4db6ac;
 }
 
-.calcView__listItem_clicked {
+.doublesSimulator__listItem_clicked {
   background-color: #4db6ac;
   border: 3px solid #4db6ac;
 }
 
-.calcView__card {
+.doublesSimulator__card {
   margin: 20px;
 }
 </style>

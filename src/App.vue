@@ -14,7 +14,7 @@
           <RouterLink to="/rangliste">Rangliste</RouterLink>
         </v-list-item>
         <v-list-item>
-          <RouterLink to="/calc">DoppelRechner</RouterLink>
+          <RouterLink to="/simulator">DoppelRechner</RouterLink>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
