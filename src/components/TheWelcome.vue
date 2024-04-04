@@ -10,7 +10,8 @@ import SupportIcon from './icons/IconSupport.vue'
       <v-icon icon="mdi-hand-wave-outline"></v-icon>
     </template>
     <template #heading>Willkommen zur Badminton Toolbox</template>
-    Die Seite ist leider noch nicht mobil freundlich. Im Browser erlebst Du die Tools viel besser :)
+    Die Seite ist leider noch nicht mobil freundlich. Auf dem Desktop erlebst Du die Tools viel
+    besser :)
   </WelcomeItem>
 
   <WelcomeItem>
@@ -21,7 +22,7 @@ import SupportIcon from './icons/IconSupport.vue'
 
     In der Rangliste können derzeit Spieler*innen erstellt und bearbeitet werden.
     <br />
-    Der Name, eine Einzel- und Doppelwertung sowie die Mannschaft kann eingetragen werden.
+    Die Daten werden in eurem Browser gespeichert. Ihr seht also nur eure persönliche Rangliste.
   </WelcomeItem>
 
   <WelcomeItem>
