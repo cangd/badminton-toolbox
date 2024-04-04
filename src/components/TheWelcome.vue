@@ -10,8 +10,7 @@ import SupportIcon from './icons/IconSupport.vue'
       <v-icon icon="mdi-hand-wave-outline"></v-icon>
     </template>
     <template #heading>Willkommen zur Badminton Toolbox</template>
-    Erste nette Tools sind schon geschrieben worden. Es kommt bestimmt das eine oder andere Tool
-    dazu!
+    Die Seite ist leider noch nicht mobil freundlich. Im Browser erlebst Du die Tools viel besser :)
   </WelcomeItem>
 
   <WelcomeItem>
@@ -31,11 +30,9 @@ import SupportIcon from './icons/IconSupport.vue'
     </template>
     <template #heading><RouterLink to="/calc">Simulator</RouterLink></template>
 
-    Mit Hilfe dieses Tools werden alle Paarungen aus der erstellten Rangliste simuliert.
+    Im Simulator wählt man ein Team aus, das definitiv im Doppel aufgestellt wird.
     <br />
-    Hier zu wählt man ein Team aus, das definitiv ein Doppel aufgestellt wird.
-    <br />
-    Alle übriggebliebene Paare werden mit "Wertung" und "Doppel" (HD1/HD2) angezeigt
+    Alle übriggebliebene Paare werden mit "Wertung" und "Doppel" (HD1 oder HD2) angezeigt
   </WelcomeItem>
 
   <WelcomeItem>
@@ -43,22 +40,21 @@ import SupportIcon from './icons/IconSupport.vue'
       <CommunityIcon />
     </template>
     <template #heading>Community</template>
-    Alles was hier entwickelt wurde befindet sich noch im Entwicklungszustand, habt bitte Nachsicht.
+    Anregungen, Featurewünsche, Verbesserungsvorschläge sind herzlich willkommen und dürfen mir
+    persönlich mitgeteilt oder auf
+    <a href="https://github.com/cangd/badminton-toolbox/issues">GitHub</a> geposted werden.
     <br />
-    Weitere Ideen, wie Filter, PDF export und import stehen auf der Liste.
-    <br />
-    Ob sie es hier her schaffen, werden wir sehen ;)
-    <br />
-    Falls ihr Anregungen, Featurewünsche, Verbesserungsvorschläge habt, dürfen diese
-    <a href="https://github.com/cangd/badminton-toolbox/issues">hier</a> geposted werden.
+    Weitere Ideen, wie Filter, PDF export und weitere stehen auf der Liste.
   </WelcomeItem>
 
   <WelcomeItem>
     <template #icon>
       <SupportIcon />
     </template>
-    <template #heading>Supported mich</template>
+    <template #heading>Support</template>
 
     In dem ihr das Tool benutzt und mir Feedback gebt!
+    <br />
+    Die Seite befindet sich im Entwicklungszustand. Bugs sind nicht auszuschließen.
   </WelcomeItem>
 </template>
