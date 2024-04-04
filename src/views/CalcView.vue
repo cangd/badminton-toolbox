@@ -23,7 +23,7 @@
               append-icon="mdi-account-multiple"
               :title="`${mainTeam.player1.name} (${mainTeam.player1.doubles}) [${mainTeam.player1.team}] + ${mainTeam.player2.name} (${mainTeam.player2.doubles}) [${mainTeam.player2.team}]`"
               :subtitle="mainTeam.points"
-              color="green"
+              color="teal-lighten-2"
             >
             </v-card>
             <div v-if="!mainTeam" class="text-truncate">
@@ -197,12 +197,12 @@ function mapFlatPairToPair(team: FlatPair): Pair {
 }
 
 .calcView__listItem:active {
-  background-color: green;
+  background-color: #4db6ac;
 }
 
 .calcView__listItem_clicked {
-  background-color: green;
-  border: 3px solid green;
+  background-color: #4db6ac;
+  border: 3px solid #4db6ac;
 }
 
 .calcView__card {
