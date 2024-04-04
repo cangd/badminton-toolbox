@@ -140,7 +140,6 @@ function editPlayer(index: number) {
 
 function savePlayer(index: number) {
   const player = players.value[index]
-  console.log(players.value[index])
 
   // Check uniqueness of singles and doubles values
   const isUnique = players.value.every(
@@ -161,7 +160,6 @@ function deletePlayer(id: any) {
   if (index !== -1) {
     players.value.splice(index, 1)
   }
-  console.log('Deleting Player')
   savePlayersToSessionStorage(players.value)
 }
 

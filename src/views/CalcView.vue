@@ -108,9 +108,6 @@
 </template>
 
 <script setup lang="ts">
-// TODO integrate whichDoubles into v-data-table
-// https://vuetifyjs.com/en/components/data-tables/basics/
-
 import { generateUniquePairs } from '@/helper/pairs/generateUniquePairshelper'
 import { pairsToDataTableMapper } from '@/helper/pairs/pairsToDataTableMapper'
 import { getPlayersFromSessionStorage } from '@/helper/rangliste/playersStorageHelper'

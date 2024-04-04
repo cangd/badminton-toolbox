@@ -23,10 +23,8 @@ onMounted(() => {
 function initPlayerList(): Player[] {
   const storedPlayers = getPlayersFromSessionStorage()
   if (storedPlayers.length > 0) {
-    console.log('Load stored player list')
     return (players.value = storedPlayers)
   } else {
-    console.log('Load default player list')
     return (players.value = defaultPlayers)
   }
 }
