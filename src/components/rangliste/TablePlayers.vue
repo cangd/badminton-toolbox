@@ -184,10 +184,13 @@ function sortByDoubles() {
 }
 
 function clickOnAction() {
+  const close = (i: number) => {
+    savePlayer(i)
+    players.value[i].editing = false
+  }
+
   for (let i = 0; i < players.value.length; i++) {
-    players.value[i].editing == true
-      ? (players.value[i].editing = false)
-      : (players.value[i].editing = true)
+    players.value[i].editing == true ? close(i) : (players.value[i].editing = true)
   }
 }
 </script>
