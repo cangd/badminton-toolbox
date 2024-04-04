@@ -1,5 +1,5 @@
 import TheWelcome from '@/components/TheWelcome.vue'
-import CalcView from '@/views/CalcView.vue'
+import DoublesSimulator from '@/views/DoublesSimulator.vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import RanglisteView from '../views/RanglisteView.vue'
 
@@ -14,18 +14,12 @@ const router = createRouter({
     {
       path: '/rangliste',
       name: 'rangliste',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: RanglisteView
     },
     {
-      path: '/calc',
-      name: 'calc',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: CalcView
+      path: '/simulator',
+      name: 'simulator',
+      component: DoublesSimulator
     }
   ]
 })
