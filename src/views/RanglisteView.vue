@@ -6,18 +6,11 @@
 <script setup lang="ts">
 import AddPlayer from '@/components/rangliste/AddPlayer.vue'
 import TablePlayers from '@/components/rangliste/TablePlayers.vue'
+import { defaultPlayers } from '@/helper/defaultPlayers'
 import { saveLastIdToLocalStorage } from '@/helper/rangliste/lastIdStoragehelper.js'
 import { getPlayersFromSessionStorage } from '@/helper/rangliste/playersStorageHelper.js'
 import type Player from '@/models/Player.js'
-import { TeamEnum } from '@/models/TeamEnum'
 import { onMounted, ref } from 'vue'
-
-const defaultPlayers: Player[] = [
-  { id: 1, name: 'Cang', singles: '140', doubles: '80', team: TeamEnum.M2 },
-  { id: 2, name: 'Anton', singles: '150', doubles: '100', team: TeamEnum.E },
-  { id: 3, name: 'Brecher', singles: '60', doubles: '110', team: TeamEnum.E },
-  { id: 4, name: 'Richtiger Otto', singles: '3000', doubles: '3000', team: TeamEnum.E }
-]
 
 const players = ref<Player[]>([])
 
