@@ -15,6 +15,9 @@ function setupComponent() {
   })
 
   const cut = mount(AddPlayerVue, {
+    props: {
+      playersList: []
+    },
     global: {
       plugins: [vuetify]
     }
