@@ -1,6 +1,6 @@
 export default interface DataTablePair {
   player1: string
   player2: string
-  sumPoints: number
+  sum: number
   doppel?: string | undefined
 }
