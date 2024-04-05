@@ -1,109 +1,141 @@
 <template>
   <div class="doublesSimulator">
-    <v-card flat theme="dark">
-      <template v-slot:text>
-        <v-text-field
-          class="calcview__search-container"
-          v-model="searchPairs"
-          label="Suche nach Namen, HD1 oder M1"
-          prepend-inner-icon="mdi-magnify"
-          variant="outlined"
-          hide-details
-          single-line
-        >
-        </v-text-field>
-      </template>
-      <v-data-iterator :items="flatPairs" :items-per-page="itemsPerPage" :search="searchPairs">
-        <template v-slot:header="{ page, pageCount, prevPage, nextPage }">
-          <h1 class="text-h4 font-weight-bold d-flex justify-space-between mb-4 align-center">
-            <v-card
-              v-if="mainTeam"
-              class="calcView__card"
-              min-width="344"
-              append-icon="mdi-account-multiple"
-              :title="`${mainTeam.player1.name} (${mainTeam.player1.doubles}) [${mainTeam.player1.team}] + ${mainTeam.player2.name} (${mainTeam.player2.doubles}) [${mainTeam.player2.team}]`"
-              :subtitle="mainTeam.points"
-              color="teal-lighten-2"
+    <v-row>
+      <v-col cols="12">
+        <v-card flat theme="dark">
+          <template v-slot:text>
+            <v-text-field
+              class="calcview__search-container"
+              v-model="searchPairs"
+              label="Suche nach Namen, HD1 oder M1"
+              prepend-inner-icon="mdi-magnify"
+              variant="outlined"
+              hide-details
+              single-line
             >
-            </v-card>
-            <div v-if="!mainTeam" class="text-truncate">
-              &nbsp; Wähle ein Doppel, das gerantiert spielen soll
-            </div>
-
-            <div class="d-flex align-center">
-              <v-btn class="me-8" variant="text" @click="onClickSeeAll">
-                <span class="text-decoration-underline text-none">See all</span>
-              </v-btn>
-
-              <div class="d-inline-flex">
-                <v-btn
-                  :disabled="page === 1"
-                  class="me-2"
-                  icon="mdi-arrow-left"
-                  size="small"
-                  variant="tonal"
-                  @click="prevPage"
-                ></v-btn>
-
-                <v-btn
-                  :disabled="page === pageCount"
-                  icon="mdi-arrow-right"
-                  size="small"
-                  variant="tonal"
-                  @click="nextPage"
-                ></v-btn>
-              </div>
-            </div>
-          </h1>
-        </template>
-
-        <template v-slot:default="{ items }">
+            </v-text-field>
+          </template>
           <v-row>
-            <v-col v-for="(item, i) in items" :key="i" cols="20" sm="3" xl="3">
-              <v-sheet border>
-                <v-list-item
-                  class="calcView__listItem"
-                  density="comfortable"
-                  lines="two"
-                  @click="onClick(item.raw)"
-                >
-                  {{ item.raw.p1 }}<br />
-                  {{ item.raw.p2 }} <br />
-                </v-list-item>
-              </v-sheet>
+            <v-col cols="12">
+              <v-data-iterator
+                :items="flatPairs"
+                :items-per-page="itemsPerPage"
+                :search="searchPairs"
+              >
+                <template v-slot:header="{ page, pageCount, prevPage, nextPage }">
+                  <v-row>
+                    <v-col
+                      class="d-flex justify-md-start justify-center flex-sm-row"
+                      cols="12"
+                      md="9"
+                      sm="12"
+                      xs="6"
+                    >
+                      <v-card
+                        v-if="mainTeam"
+                        class="calcView__card"
+                        append-icon="mdi-account-multiple"
+                        :title="`${mainTeam.player1.name} (${mainTeam.player1.doubles}) [${mainTeam.player1.team}] + ${mainTeam.player2.name} (${mainTeam.player2.doubles}) [${mainTeam.player2.team}]`"
+                        :subtitle="mainTeam.points"
+                        color="teal-lighten-2"
+                      >
+                      </v-card>
+
+                      <div
+                        v-if="!mainTeam"
+                        class="d-flex align-center text-h6 font-weight-bold d-flex"
+                      >
+                        &nbsp; Wähle ein Doppel, das gerantiert spielt
+                      </div>
+                    </v-col>
+                    <v-col
+                      class="d-md-flex justify-md-end justify-xs-center flex-sm-row"
+                      cols="12"
+                      md="3"
+                    >
+                      <div class="d-flex justify-center align-center">
+                        <v-btn class="me-8" variant="text" @click="onClickSeeAll">
+                          <span class="text-decoration-underline text-none">See all</span>
+                        </v-btn>
+
+                        <div class="d-inline-flex">
+                          <v-btn
+                            :disabled="page === 1"
+                            class="me-2"
+                            icon="mdi-arrow-left"
+                            size="small"
+                            variant="tonal"
+                            @click="prevPage"
+                          ></v-btn>
+
+                          <v-btn
+                            :disabled="page === pageCount"
+                            icon="mdi-arrow-right"
+                            size="small"
+                            variant="tonal"
+                            @click="nextPage"
+                          ></v-btn>
+                        </div>
+                      </div>
+                    </v-col>
+                  </v-row>
+                </template>
+
+                <template v-slot:default="{ items }">
+                  <v-row>
+                    <v-col v-for="(item, i) in items" :key="i" cols="12" lg="4" sm="6">
+                      <v-sheet border>
+                        <v-list-item
+                          class="calcView__listItem"
+                          density="comfortable"
+                          lines="two"
+                          @click="onClick(item.raw)"
+                        >
+                          {{ item.raw.p1 }} <br />
+                          {{ item.raw.p2 }} <br />
+                        </v-list-item>
+                      </v-sheet>
+                    </v-col>
+                  </v-row>
+                </template>
+
+                <template v-slot:footer="{ page, pageCount }">
+                  <v-footer class="justify-space-between text-body-2 mt-4" color="surface-variant">
+                    Total pairs: {{ pairs.length }}
+
+                    <div>Page {{ page }} of {{ pageCount }}</div>
+                  </v-footer>
+                </template>
+              </v-data-iterator>
             </v-col>
           </v-row>
-        </template>
-
-        <template v-slot:footer="{ page, pageCount }">
-          <v-footer class="justify-space-between text-body-2 mt-4" color="surface-variant">
-            Total pairs: {{ pairs.length }}
-
-            <div>Page {{ page }} of {{ pageCount }}</div>
-          </v-footer>
-        </template>
-      </v-data-iterator>
-    </v-card>
-    <v-card flat theme="dark">
-      <template v-slot:text>
-        <v-text-field
-          class="calcview__search-container"
-          v-model="searchTable"
-          label="Suche nach Namen, HD2, M2, oder Wertung"
-          prepend-inner-icon="mdi-magnify"
-          variant="outlined"
-          hide-details
-          single-line
-        >
-        </v-text-field>
-      </template>
-      <v-data-table
-        theme="dark"
-        :items="dataTablePairs"
-        :search="searchTable"
-        :items-per-page="5"
-      />
-    </v-card>
+        </v-card>
+        <v-row>
+          <v-col cols="12">
+            <v-card flat theme="dark">
+              <template v-slot:text>
+                <v-text-field
+                  class="calcview__search-container"
+                  v-model="searchTable"
+                  label="Suche nach Namen, HD2, M2, oder Wertung"
+                  prepend-inner-icon="mdi-magnify"
+                  variant="outlined"
+                  hide-details
+                  single-line
+                >
+                </v-text-field>
+              </template>
+              <v-data-table
+                theme="dark"
+                :items="dataTablePairs"
+                :search="searchTable"
+                :items-per-page="5"
+              />
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
@@ -116,6 +148,9 @@ import type DataTablePair from '@/models/pairs/DataTablePair'
 import type FlatPair from '@/models/pairs/FlatPair'
 import type Pair from '@/models/pairs/Pair'
 import { computed, onMounted, ref } from 'vue'
+import { useDisplay } from 'vuetify'
+
+const { mobile } = useDisplay()
 
 const players = ref<Player[]>([])
 const filteredPairs = ref<Pair[]>()
@@ -128,6 +163,7 @@ const mainTeam = ref<Pair>()
 onMounted(() => {
   players.value = getPlayersFromSessionStorage()
   allPairs.value = pairsToDataTableMapper(pairs.value)
+  defaultItems()
 })
 
 const pairs = computed<Pair[]>(() => {
@@ -156,10 +192,24 @@ function filterPairs(id1: number, id2: number): Pair[] {
   return filtered
 }
 
-const itemsPerPage = ref(16)
+const itemsPerPage = ref<number>()
+
+function defaultItems() {
+  if (mobile.value === true) {
+    return (itemsPerPage.value = 2)
+  } else {
+    return (itemsPerPage.value = 6)
+  }
+}
 
 function onClickSeeAll() {
-  itemsPerPage.value = itemsPerPage.value === 16 ? pairs.value.length : 16
+  console.log('items', itemsPerPage.value)
+  console.log('pairs', pairs.value.length)
+  if (mobile.value) {
+    itemsPerPage.value = itemsPerPage.value === 2 ? pairs.value.length : 2
+  } else {
+    itemsPerPage.value = itemsPerPage.value === 6 ? pairs.value.length : 6
+  }
 }
 
 function flattenPairs(pairs: Pair[]): FlatPair[] {
