@@ -7,7 +7,7 @@
             <v-text-field
               class="calcview__search-container"
               v-model="searchPairs"
-              label="Suche nach Namen, HD1 oder M1"
+              label="Name, HD1 oder M1"
               prepend-inner-icon="mdi-magnify"
               variant="outlined"
               hide-details
@@ -45,7 +45,7 @@
                         v-if="!mainTeam"
                         class="d-flex align-center text-h6 font-weight-bold d-flex"
                       >
-                        &nbsp; Wähle ein Doppel, das gerantiert spielt
+                        &nbsp; Wähle ein Doppel
                       </div>
                     </v-col>
                     <v-col
@@ -117,7 +117,7 @@
                 <v-text-field
                   class="calcview__search-container"
                   v-model="searchTable"
-                  label="Suche nach Namen, HD2, M2, oder Wertung"
+                  label="Name, HD1, M2, oder Wertung"
                   prepend-inner-icon="mdi-magnify"
                   variant="outlined"
                   hide-details
