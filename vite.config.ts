@@ -1,6 +1,9 @@
 import vue from '@vitejs/plugin-vue'
 import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
+import dns from 'dns'
+
+dns.setDefaultResultOrder('ipv4first')
 
 // https://vitejs.dev/config/
 
