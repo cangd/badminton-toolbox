@@ -39,9 +39,9 @@ import SupportIcon from './icons/IconSupport.vue'
     <template #icon>
       <v-icon icon="mdi-table-account" />
     </template>
-    <template #heading><RouterLink to="/simulator">Simulator</RouterLink></template>
+    <template #heading><RouterLink to="/doppelrechner">Doppelrechner</RouterLink></template>
 
-    Im Simulator wählt man ein Team aus, das definitiv im Doppel aufgestellt wird.
+    Im Doppelrechner wählt man ein Team aus, das definitiv im Doppel aufgestellt wird.
     <br />
     Alle übriggebliebene Paare werden mit "Wertung" und "Doppel" (HD1 oder HD2) angezeigt
   </WelcomeItem>

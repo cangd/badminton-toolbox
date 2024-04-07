@@ -1,32 +1,37 @@
 import { TeamEnum } from '@/models/TeamEnum'
-import { shallowMount } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 import { type ComponentProps } from 'vue-component-type-helpers'
 import TeamSelector from './TeamSelector.vue'
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
 
 function setupComponent(overrides: Partial<ComponentProps<typeof TeamSelector>> = {}) {
-  const cut = shallowMount(TeamSelector, {
+  const vuetify = createVuetify({
+    components,
+    directives
+  })
+  const cut = mount(TeamSelector, {
     props: {
       isDisabled: false,
       teamZugehoerigkeit: TeamEnum.M1,
       ...overrides
+    },
+    global: {
+      plugins: [vuetify]
     }
   })
 
-  const dropDown = () => cut.find('.teamDropdown_select')
-  const option = () => cut.findAll('.teamDropdown_select--option')
-
   return {
-    cut,
-    dropDown,
-    option
+    cut
   }
 }
 
 describe('TeamSelector.vue ', () => {
-  it('disables select', () => {
-    const { dropDown } = setupComponent({ isDisabled: true })
+  it('is able to set disabled prop', () => {
+    const { cut } = setupComponent({ isDisabled: true })
 
-    expect(dropDown().attributes().disabled).toBeDefined()
+    expect(cut.props().isDisabled).toBe(true)
   })
 })

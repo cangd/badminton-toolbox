@@ -1,11 +1,11 @@
 import type Pair from '@/models/pairs/Pair'
-import { findTeamWithLowestDoubleRating } from './findTeamWithLowestDoubleRatingHelper'
+import { findDoublesWithSamePoints } from './findDoublesWithSamePoints'
 
-export function whichDoubles(selectedMainTeam: Pair, calculateForTeam: Pair): string {
-  if (selectedMainTeam.points === calculateForTeam.points) {
-    return findTeamWithLowestDoubleRating(selectedMainTeam, calculateForTeam)
+export function whichDoubles(mainTeam: Pair, teamToCompare: Pair): 'HD1' | 'HD2' {
+  if (mainTeam.points === teamToCompare.points) {
+    return findDoublesWithSamePoints(mainTeam, teamToCompare)
   }
-  if (selectedMainTeam.points < calculateForTeam.points) {
+  if (mainTeam.points < teamToCompare.points) {
     return 'HD2'
   } else {
     return 'HD1'
