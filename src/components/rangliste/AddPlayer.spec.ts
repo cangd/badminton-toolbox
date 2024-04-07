@@ -23,18 +23,18 @@ function setupComponent() {
     }
   })
 
-  const teamSelector = () => cut.findComponent(TeamSelector).find('.teamDropdown_select')
   const nameInput = () => cut.find('#name')
   const singlesInput = () => cut.find('#singles')
   const doublesInput = () => cut.find('#doubles')
   const addButton = () => cut.find('#button')
+  const teamSelector = () => cut.findComponent(TeamSelector)
 
   return {
     cut,
     nameInput,
+    teamSelector,
     singlesInput,
     doublesInput,
-    teamSelector,
     addButton
   }
 }
@@ -46,6 +46,8 @@ const testPlayer: Player = {
   doubles: '100',
   team: TeamEnum.E
 }
+
+// TODO Add unit tests for team selector
 
 describe('AddPlayer.vue', () => {
   it('add button is initially not rendered', () => {
@@ -63,6 +65,11 @@ describe('AddPlayer.vue', () => {
     await doublesInput().setValue(200)
 
     expect(addButton().exists()).toBe(true)
+  })
+
+  it('displays teamSelector', () => {
+    const { teamSelector } = setupComponent()
+    expect(teamSelector().props().teamZugehoerigkeit).toBe(TeamEnum.E)
   })
 
   it('creates last player Id from LocalStorage', async () => {

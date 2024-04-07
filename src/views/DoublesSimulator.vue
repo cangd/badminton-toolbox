@@ -101,7 +101,7 @@
 
                 <template v-slot:footer="{ page, pageCount }">
                   <v-footer class="justify-space-between text-body-2 mt-4" color="surface-variant">
-                    Total pairs: {{ pairs.length }}
+                    Total pairs: {{ allPairs.length }}
 
                     <div>Page {{ page }} of {{ pageCount }}</div>
                   </v-footer>
@@ -110,7 +110,7 @@
             </v-col>
           </v-row>
         </v-card>
-        <v-row>
+        <v-row v-if="mainTeam">
           <v-col cols="12">
             <v-card flat theme="dark">
               <template v-slot:text>
@@ -127,7 +127,7 @@
               </template>
               <v-data-table
                 theme="dark"
-                :items="dataTablePairs"
+                :items="possiblePairs"
                 :search="searchTable"
                 :items-per-page="5"
               />
@@ -151,50 +151,64 @@ import { computed, onMounted, ref } from 'vue'
 import { useDisplay } from 'vuetify'
 
 const { mobile } = useDisplay()
-
-const players = ref<Player[]>([])
-const filteredPairs = ref<Pair[]>()
-const dataTablePairs = ref<DataTablePair[]>()
 const searchTable = ref<string>('')
 const searchPairs = ref<string>('')
-const allPairs = ref<DataTablePair[]>()
 const mainTeam = ref<Pair>()
 
 onMounted(() => {
-  players.value = getPlayersFromSessionStorage()
-  allPairs.value = pairsToDataTableMapper(pairs.value)
-  defaultItems()
+  defaultItemsPerPage()
 })
 
-const pairs = computed<Pair[]>(() => {
+const props = defineProps<{
+  playersList: Player[]
+}>()
+
+const players = computed<Player[]>(() => {
+  if (props.playersList) {
+    return props.playersList
+  }
+  // Implemented for old version
+  return getPlayersFromSessionStorage()
+})
+
+const allPairs = computed<Pair[]>(() => {
   return generateUniquePairs(players.value)
 })
 
 const flatPairs = computed<FlatPair[]>(() => {
-  return flattenPairs(pairs.value)
+  return flattenPairs(allPairs.value)
 })
 
+const possiblePairs = computed<DataTablePair[]>(() => {
+  return pairsToDataTableMapper(filteredPairs.value, mainTeam.value)
+})
+
+const filteredPairs = ref<Pair[]>(filterPairs(allPairs.value))
+
 function onClick(team: FlatPair) {
-  filteredPairs.value = filterPairs(team.p1Id, team.p2Id)
   mainTeam.value = mapFlatPairToPair(team)
-  dataTablePairs.value = pairsToDataTableMapper(filteredPairs.value, mainTeam.value)
+  filteredPairs.value = filterPairs(allPairs.value, mainTeam.value)
 }
 
-function filterPairs(id1: number, id2: number): Pair[] {
-  const filtered = pairs.value.filter(
-    (pair) =>
-      pair.player1.id !== id1 &&
-      pair.player2.id !== id1 &&
-      pair.player1.id !== id2 &&
-      pair.player2.id !== id2
-  )
+function filterPairs(allPairs: Pair[], team?: Pair): Pair[] {
+  let filtered: Pair[] = allPairs
+  if (team) {
+    filtered = allPairs.filter(
+      (pair) =>
+        pair.player1.id !== team.player1.id &&
+        pair.player2.id !== team.player1.id &&
+        pair.player1.id !== team.player2.id &&
+        pair.player2.id !== team.player2.id
+    )
 
+    return filtered
+  }
   return filtered
 }
 
 const itemsPerPage = ref<number>()
 
-function defaultItems() {
+function defaultItemsPerPage() {
   if (mobile.value === true) {
     return (itemsPerPage.value = 2)
   } else {
@@ -203,12 +217,10 @@ function defaultItems() {
 }
 
 function onClickSeeAll() {
-  console.log('items', itemsPerPage.value)
-  console.log('pairs', pairs.value.length)
   if (mobile.value) {
-    itemsPerPage.value = itemsPerPage.value === 2 ? pairs.value.length : 2
+    itemsPerPage.value = itemsPerPage.value === 2 ? allPairs.value.length : 2
   } else {
-    itemsPerPage.value = itemsPerPage.value === 6 ? pairs.value.length : 6
+    itemsPerPage.value = itemsPerPage.value === 6 ? allPairs.value.length : 6
   }
 }
 

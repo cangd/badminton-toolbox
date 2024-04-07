@@ -110,8 +110,15 @@ const props = defineProps<{
   playersList: Player[]
 }>()
 
-const players = computed<Player[]>(() => {
-  return props.playersList
+const emit = defineEmits<{ (e: 'update:playersList', player: Player[]): void }>()
+
+const players = computed<Player[]>({
+  get: () => {
+    return props.playersList
+  },
+  set: (value: Player[]) => {
+    emit('update:playersList', value)
+  }
 })
 
 const isNameValid = (index: number) => {
