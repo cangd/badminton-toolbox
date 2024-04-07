@@ -1,9 +1,9 @@
 <template>
   <div class="ranglisteView">
     <AddPlayer class="ranglisteView_addPlayer" v-model:playersList="players" />
-    <TablePlayers class="ranglisteView_tablePlayers" :playersList="players" />
+    <TablePlayers class="ranglisteView_tablePlayers" v-model:playersList="players" />
   </div>
-  <DoublesSimulator class="ranglisteView_tablePlayers"></DoublesSimulator>
+  <DoublesSimulator class="ranglisteView_tablePlayers" :playersList="players"></DoublesSimulator>
 </template>
 
 <script setup lang="ts">
@@ -14,7 +14,7 @@ import { saveLastIdToLocalStorage } from '@/helper/rangliste/lastIdStoragehelper
 import { getPlayersFromSessionStorage } from '@/helper/rangliste/playersStorageHelper.js'
 import type Player from '@/models/Player.js'
 import { onMounted, ref } from 'vue'
-import DoublesSimulator from './DoublesSimulator.vue'
+import DoublesSimulator from '@/views/DoublesSimulator.vue'
 
 const players = ref<Player[]>([])
 
@@ -45,5 +45,9 @@ function initPlayerList(): Player[] {
 
 .ranglisteView_addPlayer {
   margin-top: 20px;
+}
+
+.ranglisteView_tablePlayers {
+  padding-bottom: 20px;
 }
 </style>

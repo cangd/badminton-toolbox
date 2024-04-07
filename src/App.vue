@@ -16,6 +16,9 @@
         <v-list-item>
           <RouterLink to="/simulator">DoppelRechner</RouterLink>
         </v-list-item>
+        <v-list-item>
+          <RouterLink to="/testinger">Testinger</RouterLink>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
