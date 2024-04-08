@@ -1,9 +1,17 @@
 <template>
   <div class="ranglisteView">
     <AddPlayer class="ranglisteView_addPlayer" v-model:playersList="players" />
-    <TablePlayers class="ranglisteView_tablePlayers" v-model:playersList="players" />
+    <TablePlayers
+      class="ranglisteView_tablePlayers"
+      v-model:playersList="players"
+      v-model:playersInSimulator="playersInSimulator"
+    />
   </div>
-  <DoublesSimulator class="ranglisteView_tablePlayers" :playersList="players"></DoublesSimulator>
+  <DoublesSimulator
+    v-if="playersInSimulator.length >= 4"
+    class="ranglisteView_tablePlayers"
+    :playersList="playersInSimulator"
+  ></DoublesSimulator>
 </template>
 
 <script setup lang="ts">
@@ -17,6 +25,7 @@ import { onMounted, ref } from 'vue'
 import DoublesSimulator from '@/views/DoublesSimulator.vue'
 
 const players = ref<Player[]>([])
+const playersInSimulator = ref<Player[]>([])
 
 onMounted(() => {
   const storedPlayers = initPlayerList()

@@ -1,6 +1,6 @@
 <template>
   <AddPlayer class="ranglisteView_addPlayer" v-model:playersList="players" />
-  <TablePlayers :playersList="players" />
+  <TablePlayers :playersList="players" v-model:playersInSimulator="playersInSimulator" />
 </template>
 
 <script setup lang="ts">
@@ -13,6 +13,7 @@ import type Player from '@/models/Player.js'
 import { onMounted, ref } from 'vue'
 
 const players = ref<Player[]>([])
+const playersInSimulator = ref<Player[]>([])
 
 onMounted(() => {
   const storedPlayers = initPlayerList()

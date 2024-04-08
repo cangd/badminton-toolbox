@@ -21,7 +21,10 @@
     </div>
 
     <div class="tablePlayers__players" v-for="(player, index) in players" :key="player.id">
-      <v-row class="justify-center ma-1 my-xs-1">
+      <v-row
+        class="justify-center ma-1 my-xs-1"
+        :class="{ tablePlayers__selected: isPlayerSelected(index) }"
+      >
         <v-col cols="12" md="3" sm="3" xs="3" class="pa-1">
           <v-text-field
             class="tablePlayers__input-name"
@@ -174,6 +177,10 @@ const isDoublesValid = (index: number) => {
   )
 }
 
+function isPlayerSelected(index: number): boolean {
+  return players.value[index].isInSimulator
+}
+
 function editPlayer(index: number) {
   players.value[index].isEditing = true
 }
@@ -287,5 +294,9 @@ function clickOnAction() {
 *:disabled {
   background-color: dimgrey;
   color: white;
+}
+
+.tablePlayers__selected {
+  border: 3px solid #4db6ac;
 }
 </style>
