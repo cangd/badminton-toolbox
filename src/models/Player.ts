@@ -6,5 +6,6 @@ export default interface Player {
   singles: string
   doubles: string
   team: TeamEnum
-  editing?: boolean
+  isInSimulator: boolean
+  isEditing?: boolean
 }

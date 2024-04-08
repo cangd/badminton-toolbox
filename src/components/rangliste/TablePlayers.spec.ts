@@ -23,8 +23,21 @@ function setupComponent(overrides: Partial<ComponentProps<typeof TablePlayersVue
           name: 'TestPlayer',
           singles: '100',
           doubles: '110',
-          editing: false,
-          team: TeamEnum.E
+          isEditing: false,
+          team: TeamEnum.E,
+          isInSimulator: false
+        }
+      ],
+
+      playersInSimulator: [
+        {
+          id: 2,
+          name: 'TestPlayer1',
+          singles: '110',
+          doubles: '120',
+          isEditing: false,
+          team: TeamEnum.E,
+          isInSimulator: true
         }
       ],
       ...overrides
@@ -82,22 +95,25 @@ function setupComponent(overrides: Partial<ComponentProps<typeof TablePlayersVue
   }
 }
 
+// TODO: Use testData from helper folder
 const playersList: Player[] = [
   {
     id: 1,
     name: 'TestPlayer',
     singles: '100',
     doubles: '110',
-    editing: false,
-    team: TeamEnum.M1
+    isEditing: false,
+    team: TeamEnum.M1,
+    isInSimulator: false
   },
   {
     id: 2,
     name: 'TestPlayer2',
     singles: '90',
     doubles: '900',
-    editing: false,
-    team: TeamEnum.E
+    isEditing: false,
+    team: TeamEnum.E,
+    isInSimulator: false
   }
 ]
 
@@ -210,7 +226,7 @@ describe('TablePlayers.vue ', () => {
     await saveButton().trigger('click')
 
     expect(cut.props().playersList).toStrictEqual([
-      { id: 1, name: 'Profi', singles: '10', doubles: '20', editing: false, team: TeamEnum.E }
+      { id: 1, name: 'Profi', singles: '10', doubles: '20', isEditing: false, team: TeamEnum.E }
     ])
   })
 
@@ -242,27 +258,28 @@ describe('TablePlayers.vue ', () => {
     })
 
     it('field is marked red when having the same values', async () => {
-      const { cut, nameFieldError, singlesFieldError, doublesFieldError, editButton } =
-        setupComponent({
-          playersList: [
-            {
-              id: 3,
-              name: 'TestPlayer3',
-              singles: '100',
-              doubles: '110',
-              editing: false,
-              team: TeamEnum.E
-            },
-            {
-              id: 4,
-              name: 'TestPlayer3',
-              singles: '100',
-              doubles: '110',
-              editing: false,
-              team: TeamEnum.M1
-            }
-          ]
-        })
+      const { nameFieldError, singlesFieldError, doublesFieldError, editButton } = setupComponent({
+        playersList: [
+          {
+            id: 3,
+            name: 'TestPlayer3',
+            singles: '100',
+            doubles: '110',
+            isEditing: false,
+            team: TeamEnum.E,
+            isInSimulator: false
+          },
+          {
+            id: 4,
+            name: 'TestPlayer3',
+            singles: '100',
+            doubles: '110',
+            isEditing: false,
+            team: TeamEnum.M1,
+            isInSimulator: false
+          }
+        ]
+      })
       await editButton().trigger('click')
       expect(nameFieldError().exists()).toBe(true)
       expect(singlesFieldError().exists()).toBe(true)
@@ -279,16 +296,18 @@ describe('TablePlayers.vue ', () => {
             name: 'Berta',
             singles: '100',
             doubles: '110',
-            editing: false,
-            team: TeamEnum.M1
+            isEditing: false,
+            team: TeamEnum.M1,
+            isInSimulator: false
           },
           {
             id: 4,
             name: 'Anton',
             singles: '200',
             doubles: '100',
-            editing: false,
-            team: TeamEnum.M1
+            isEditing: false,
+            team: TeamEnum.M1,
+            isInSimulator: false
           }
         ]
       })
@@ -306,16 +325,18 @@ describe('TablePlayers.vue ', () => {
             name: 'Berta',
             singles: '100',
             doubles: '110',
-            editing: false,
-            team: TeamEnum.M1
+            isEditing: false,
+            team: TeamEnum.M1,
+            isInSimulator: false
           },
           {
             id: 4,
             name: 'Anton',
             singles: '20',
             doubles: '100',
-            editing: false,
-            team: TeamEnum.M1
+            isEditing: false,
+            team: TeamEnum.M1,
+            isInSimulator: false
           }
         ]
       })
@@ -333,16 +354,18 @@ describe('TablePlayers.vue ', () => {
             name: 'Berta',
             singles: '100',
             doubles: '110',
-            editing: false,
-            team: TeamEnum.M1
+            isEditing: false,
+            team: TeamEnum.M1,
+            isInSimulator: false
           },
           {
             id: 4,
             name: 'Anton',
             singles: '20',
             doubles: '100',
-            editing: false,
-            team: TeamEnum.M1
+            isEditing: false,
+            team: TeamEnum.M1,
+            isInSimulator: false
           }
         ]
       })
@@ -352,4 +375,42 @@ describe('TablePlayers.vue ', () => {
       expect((doublesField().element as HTMLInputElement).value).toBe('100')
     })
   })
+
+  // describe('add to simulator', () => {
+  //   it('shows removeFromSimulatorIcon after clicking on addToSimulator', async () => {
+  //     const { addToSimulatorIcon, removeFromSimulatorIcon } = setupComponent()
+
+  //     await addToSimulator().trigger('click')
+
+  //     expect(removeFromSimulatorIcon().exists()).toBe(true)
+  //   })
+
+  //   it('highlights the player after clicking on addToSimulator', async () => {
+  //     const { addToSimulatorIcon } = setupComponent()
+
+  //     await addToSimulator().trigger('click')
+
+  //     // TODO Highlight the row somehow
+  //     expect(playerSelected().exists()).toBe(true)
+  //   })
+  // })
+
+  // describe('remove from simulator', () => {
+  //   it('shows addToSimulatorIcon when clicking on removeFromSimulator', async () => {
+  //     const { addToSimulatorIcon, removeFromSimulatorIcon } = setupComponent()
+
+  //     await addToSimulator().trigger('click')
+  //     await removeFromSimulatorIcon().trigger('click')
+
+  //     expect(addToSimulatorIcon().exists()).toBe(true)
+  //   })
+
+  //   it('removes highlight from player', async () => {
+  //     const { addToSimulatorIcon, removeFromSimulatorIcon } = setupComponent()
+  //     await addToSimulator().trigger('click')
+  //     await removeFromSimulatorIcon().trigger('click')
+
+  //     expect(playerSelected().exists()).toBe(false)
+  //   })
+  // })
 })

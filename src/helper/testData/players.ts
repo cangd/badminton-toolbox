@@ -6,7 +6,8 @@ export const player1: Player = {
   name: 'Anton',
   singles: '10',
   doubles: '20',
-  team: TeamEnum.M1
+  team: TeamEnum.M1,
+  isInSimulator: false
 }
 
 export const player2: Player = {
@@ -14,8 +15,8 @@ export const player2: Player = {
   name: 'Berta',
   singles: '20',
   doubles: '30',
-
-  team: TeamEnum.M1
+  team: TeamEnum.M1,
+  isInSimulator: false
 }
 
 export const player3: Player = {
@@ -23,7 +24,8 @@ export const player3: Player = {
   name: 'Caeser',
   singles: '30',
   doubles: '40',
-  team: TeamEnum.M1
+  team: TeamEnum.M1,
+  isInSimulator: false
 }
 
 export const player4: Player = {
@@ -31,5 +33,6 @@ export const player4: Player = {
   name: 'Dota',
   singles: '40',
   doubles: '50',
-  team: TeamEnum.M1
+  team: TeamEnum.M1,
+  isInSimulator: false
 }
