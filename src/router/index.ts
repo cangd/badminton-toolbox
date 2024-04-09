@@ -1,5 +1,5 @@
 import TheWelcome from '@/components/TheWelcome.vue'
-import DoublesSimulator from '@/views/DoublesSimulator.vue'
+import DoublesSimulator from '@/components/simulator/DoublesSimulator.vue'
 import RanglisteSimulator from '@/views/RanglisteSimulator.vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import RanglisteView from '../views/RanglisteView.vue'
@@ -15,16 +15,6 @@ const router = createRouter({
     {
       path: '/rangliste',
       name: 'rangliste',
-      component: RanglisteView
-    },
-    {
-      path: '/doppelrechner',
-      name: 'doppelrechner',
-      component: DoublesSimulator
-    },
-    {
-      path: '/simulator',
-      name: 'simulator',
       component: RanglisteSimulator
     }
   ]

@@ -44,10 +44,9 @@ const testPlayer: Player = {
   name: 'Test Player',
   singles: '100',
   doubles: '100',
-  team: TeamEnum.E
+  team: TeamEnum.E,
+  isInSimulator: true
 }
-
-// TODO Add unit tests for team selector
 
 describe('AddPlayer.vue', () => {
   it('add button is initially not rendered', () => {

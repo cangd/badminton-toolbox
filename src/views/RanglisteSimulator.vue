@@ -1,27 +1,37 @@
 <template>
   <div class="ranglisteView">
     <AddPlayer class="ranglisteView_addPlayer" v-model:playersList="players" />
-    <TablePlayers class="ranglisteView_tablePlayers" v-model:playersList="players" />
+    <TablePlayers
+      class="ranglisteView_tablePlayers"
+      v-model:playersList="players"
+      v-model:playersInSimulator="playersInSimulator"
+    />
   </div>
-  <DoublesSimulator class="ranglisteView_tablePlayers" :playersList="players"></DoublesSimulator>
+  <DoublesSimulator
+    v-if="playersInSimulator.length >= 4"
+    class="ranglisteView_tablePlayers"
+    :playersList="playersInSimulator"
+  ></DoublesSimulator>
 </template>
 
 <script setup lang="ts">
 import AddPlayer from '@/components/rangliste/AddPlayer.vue'
 import TablePlayers from '@/components/rangliste/TablePlayers.vue'
+import DoublesSimulator from '@/components/simulator/DoublesSimulator.vue'
 import { defaultPlayers } from '@/helper/defaultPlayers'
 import { saveLastIdToLocalStorage } from '@/helper/rangliste/lastIdStoragehelper.js'
 import { getPlayersFromSessionStorage } from '@/helper/rangliste/playersStorageHelper.js'
 import type Player from '@/models/Player.js'
 import { onMounted, ref } from 'vue'
-import DoublesSimulator from '@/views/DoublesSimulator.vue'
 
 const players = ref<Player[]>([])
+const playersInSimulator = ref<Player[]>([])
 
 onMounted(() => {
   const storedPlayers = initPlayerList()
   const lastPlayer = storedPlayers.length - 1
   saveLastIdToLocalStorage(storedPlayers[lastPlayer].id)
+  addPlayersToSimulator()
 })
 
 function initPlayerList(): Player[] {
@@ -30,6 +40,14 @@ function initPlayerList(): Player[] {
     return (players.value = storedPlayers)
   } else {
     return (players.value = defaultPlayers)
+  }
+}
+
+function addPlayersToSimulator() {
+  for (const player of players.value) {
+    if (player.isInSimulator === true) {
+      playersInSimulator.value.push(player)
+    }
   }
 }
 </script>

@@ -147,7 +147,7 @@ import type Player from '@/models/Player'
 import type DataTablePair from '@/models/pairs/DataTablePair'
 import type FlatPair from '@/models/pairs/FlatPair'
 import type Pair from '@/models/pairs/Pair'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useDisplay } from 'vuetify'
 
 const { mobile } = useDisplay()
@@ -185,10 +185,30 @@ const possiblePairs = computed<DataTablePair[]>(() => {
 
 const filteredPairs = ref<Pair[]>(filterPairs(allPairs.value))
 
+watch(allPairs, () => {
+  filteredPairs.value = filterPairs(allPairs.value, mainTeam.value)
+  if (mainTeam.value) {
+    const player1 = mainTeam.value.player1
+    const player2 = mainTeam.value.player2
+    // if (player in mainteam is missing in allPairs) then mainTeam.value = undefined
+    if (
+      !(
+        players.value.some((player) => player.id === player1.id) &&
+        players.value.some((player) => player.id === player2.id)
+      )
+    ) {
+      mainTeam.value = undefined
+    }
+  }
+})
+
 function onClick(team: FlatPair) {
   mainTeam.value = mapFlatPairToPair(team)
-  filteredPairs.value = filterPairs(allPairs.value, mainTeam.value)
 }
+
+watch(mainTeam, () => {
+  filteredPairs.value = filterPairs(allPairs.value, mainTeam.value)
+})
 
 function filterPairs(allPairs: Pair[], team?: Pair): Pair[] {
   let filtered: Pair[] = allPairs
@@ -200,8 +220,6 @@ function filterPairs(allPairs: Pair[], team?: Pair): Pair[] {
         pair.player1.id !== team.player2.id &&
         pair.player2.id !== team.player2.id
     )
-
-    return filtered
   }
   return filtered
 }

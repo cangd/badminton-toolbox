@@ -134,7 +134,8 @@ function clickAdd(): void {
     name: newPlayerName.value,
     singles: newSinglesRating.value,
     doubles: newDoublesRating.value,
-    team: newSelectedTeam.value
+    team: newSelectedTeam.value,
+    isInSimulator: false
   }
 
   // Check if players.value is defined before using it

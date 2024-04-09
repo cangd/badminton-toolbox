@@ -4,7 +4,7 @@ import { whichDoubles } from './whichDoublesHelper'
 
 export function pairsToDataTableMapper(pairs: Pair[], mainTeam?: Pair): DataTablePair[] {
   const dataTablePairs: DataTablePair[] = []
-  for (let pair of pairs) {
+  for (const pair of pairs) {
     const sum = parseInt(pair.player1.doubles) + parseInt(pair.player2.doubles)
     pair.points = sum
     const doppel = mainTeam ? whichDoubles(mainTeam, pair) : ''

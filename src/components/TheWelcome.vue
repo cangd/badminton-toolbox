@@ -20,7 +20,6 @@ import SupportIcon from './icons/IconSupport.vue'
     </template>
     <template #heading>Neue Features:</template>
 
-    <li>05.04.2024: Mobile Friendly design</li>
     <li>03.04.2024: Die Toolbox geht online</li>
   </WelcomeItem>
 
@@ -28,22 +27,11 @@ import SupportIcon from './icons/IconSupport.vue'
     <template #icon>
       <v-icon icon="mdi-clipboard-account-outline" />
     </template>
-    <template #heading><RouterLink to="/rangliste">Rangliste</RouterLink></template>
+    <template #heading><RouterLink to="/rangliste">Ranglisten-Tool</RouterLink></template>
 
     In der Rangliste können derzeit Spieler*innen erstellt und bearbeitet werden.
     <br />
     Die Daten werden in eurem Browser gespeichert. Ihr seht also nur eure persönliche Rangliste.
-  </WelcomeItem>
-
-  <WelcomeItem>
-    <template #icon>
-      <v-icon icon="mdi-table-account" />
-    </template>
-    <template #heading><RouterLink to="/doppelrechner">Doppelrechner</RouterLink></template>
-
-    Im Doppelrechner wählt man ein Team aus, das definitiv im Doppel aufgestellt wird.
-    <br />
-    Alle übriggebliebene Paare werden mit "Wertung" und "Doppel" (HD1 oder HD2) angezeigt
   </WelcomeItem>
 
   <WelcomeItem>
