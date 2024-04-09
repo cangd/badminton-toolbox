@@ -31,6 +31,7 @@ onMounted(() => {
   const storedPlayers = initPlayerList()
   const lastPlayer = storedPlayers.length - 1
   saveLastIdToLocalStorage(storedPlayers[lastPlayer].id)
+  addPlayersToSimulator()
 })
 
 function initPlayerList(): Player[] {
@@ -39,6 +40,15 @@ function initPlayerList(): Player[] {
     return (players.value = storedPlayers)
   } else {
     return (players.value = defaultPlayers)
+  }
+}
+
+function addPlayersToSimulator() {
+  for (const player of players.value) {
+    if (player.isInSimulator === true) {
+      console.log('Testinger')
+      playersInSimulator.value.push(player)
+    }
   }
 }
 </script>

@@ -186,12 +186,10 @@ const possiblePairs = computed<DataTablePair[]>(() => {
 const filteredPairs = ref<Pair[]>(filterPairs(allPairs.value))
 
 watch(allPairs, () => {
-  console.log('Players: ', players.value.length)
   filteredPairs.value = filterPairs(allPairs.value, mainTeam.value)
   if (mainTeam.value) {
     const player1 = mainTeam.value.player1
     const player2 = mainTeam.value.player2
-    console.log(player1.id, player2.id)
     // if (player in mainteam is missing in allPairs) then mainTeam.value = undefined
     if (
       !(

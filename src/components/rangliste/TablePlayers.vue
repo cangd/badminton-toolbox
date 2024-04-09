@@ -90,9 +90,9 @@
             v-if="!player.isEditing && player.isInSimulator == true"
             icon="mdi-playlist-minus"
             variant="plain"
-            class="tablePlayers__action--addToSimulator"
+            class="tablePlayers__action--removeFromSimulator"
             @click="removeFromSimulator(player.id)"
-            id="tablePlayersAddToSimulator"
+            id="tablePlayersRemoveFromSimulator"
           ></v-btn>
           <v-btn
             v-if="player.isEditing"
