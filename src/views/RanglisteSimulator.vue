@@ -17,12 +17,12 @@
 <script setup lang="ts">
 import AddPlayer from '@/components/rangliste/AddPlayer.vue'
 import TablePlayers from '@/components/rangliste/TablePlayers.vue'
+import DoublesSimulator from '@/components/simulator/DoublesSimulator.vue'
 import { defaultPlayers } from '@/helper/defaultPlayers'
 import { saveLastIdToLocalStorage } from '@/helper/rangliste/lastIdStoragehelper.js'
 import { getPlayersFromSessionStorage } from '@/helper/rangliste/playersStorageHelper.js'
 import type Player from '@/models/Player.js'
 import { onMounted, ref } from 'vue'
-import DoublesSimulator from '@/views/DoublesSimulator.vue'
 
 const players = ref<Player[]>([])
 const playersInSimulator = ref<Player[]>([])
@@ -46,7 +46,6 @@ function initPlayerList(): Player[] {
 function addPlayersToSimulator() {
   for (const player of players.value) {
     if (player.isInSimulator === true) {
-      console.log('Testinger')
       playersInSimulator.value.push(player)
     }
   }
