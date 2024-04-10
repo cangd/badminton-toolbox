@@ -35,8 +35,7 @@
                         v-if="mainTeam"
                         class="calcView__card"
                         append-icon="mdi-account-multiple"
-                        :title="`${mainTeam.player1.name} (${mainTeam.player1.doubles}) [${mainTeam.player1.team}] + ${mainTeam.player2.name} (${mainTeam.player2.doubles}) [${mainTeam.player2.team}]`"
-                        :subtitle="mainTeam.points"
+                        :title="`${mainTeam.player1.name} [${mainTeam.player1.team}] + ${mainTeam.player2.name} [${mainTeam.player2.team}] ${mainTeam.points}`"
                         color="teal-lighten-2"
                       >
                       </v-card>

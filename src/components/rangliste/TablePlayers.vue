@@ -212,6 +212,7 @@ function deletePlayer(id: any) {
 function addToSimulator(index: number) {
   const player = players.value[index]
   player.isInSimulator = true
+  savePlayersToSessionStorage(players.value)
   playersSimulator.value.push(player)
 }
 
@@ -223,6 +224,7 @@ function removeFromSimulator(id: any) {
 
   const player = players.value[indexPlayer]
   player.isInSimulator = false
+  savePlayersToSessionStorage(players.value)
   if (indexSimulator !== -1) {
     playersSimulator.value.splice(indexSimulator, 1)
   }
