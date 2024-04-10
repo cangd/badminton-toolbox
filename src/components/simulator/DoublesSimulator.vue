@@ -44,7 +44,7 @@
                         v-if="!mainTeam"
                         class="d-flex align-center text-h6 font-weight-bold d-flex"
                       >
-                        &nbsp; Wähle ein Doppel
+                        &nbsp; Wähle ein gesetztes Doppel
                       </div>
                     </v-col>
                     <v-col

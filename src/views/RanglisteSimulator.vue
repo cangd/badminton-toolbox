@@ -1,7 +1,13 @@
 <template>
   <div class="ranglisteView">
     <AddPlayer class="ranglisteView_addPlayer" v-model:playersList="players" />
+    <TableToolbar
+      v-model:teamFilter="filterTeams"
+      v-model:displayTable="showTable"
+      @update:teamFilter="filterPlayers"
+    ></TableToolbar>
     <TablePlayers
+      v-if="showTable"
       class="ranglisteView_tablePlayers"
       v-model:playersList="players"
       v-model:playersInSimulator="playersInSimulator"
@@ -17,22 +23,41 @@
 <script setup lang="ts">
 import AddPlayer from '@/components/rangliste/AddPlayer.vue'
 import TablePlayers from '@/components/rangliste/TablePlayers.vue'
+import TableToolbar from '@/components/rangliste/TableToolbar.vue'
 import DoublesSimulator from '@/components/simulator/DoublesSimulator.vue'
 import { defaultPlayers } from '@/helper/defaultPlayers'
 import { saveLastIdToLocalStorage } from '@/helper/rangliste/lastIdStoragehelper.js'
 import { getPlayersFromSessionStorage } from '@/helper/rangliste/playersStorageHelper.js'
 import type Player from '@/models/Player.js'
+import type { TeamEnum } from '@/models/TeamEnum'
 import { onMounted, ref } from 'vue'
 
 const players = ref<Player[]>([])
 const playersInSimulator = ref<Player[]>([])
+const storedPlayers = ref<Player[]>([])
+const filterTeams = ref<TeamEnum[]>([])
+const showTable = ref<boolean>(true)
 
 onMounted(() => {
-  const storedPlayers = initPlayerList()
-  const lastPlayer = storedPlayers.length - 1
-  saveLastIdToLocalStorage(storedPlayers[lastPlayer].id)
+  storedPlayers.value = initPlayerList()
+  const lastPlayer = storedPlayers.value.length - 1
+  saveLastIdToLocalStorage(storedPlayers.value[lastPlayer].id)
   addPlayersToSimulator()
 })
+
+function filterPlayers(): Player[] {
+  console.log('I got here', filterTeams.value)
+  const playerList = storedPlayers.value
+  console.log('SpielerListe vorher', playerList.length)
+  if (filterTeams.value.length > 0) {
+    const foo = playerList.filter((player) => filterTeams.value.includes(player.team))
+    console.log('Spieler nach Filter', foo.length)
+    return (players.value = foo)
+  } else {
+    console.log('Reset players', playerList.length)
+    return (players.value = playerList)
+  }
+}
 
 function initPlayerList(): Player[] {
   const storedPlayers = getPlayersFromSessionStorage()

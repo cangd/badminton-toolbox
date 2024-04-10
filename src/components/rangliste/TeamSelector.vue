@@ -7,6 +7,7 @@
       :disabled="isDisabled"
       v-model="selectedTeam"
       hide-details
+      theme="dark"
     >
     </v-select>
   </div>

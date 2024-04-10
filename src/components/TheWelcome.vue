@@ -27,7 +27,7 @@ import SupportIcon from './icons/IconSupport.vue'
     <template #icon>
       <v-icon icon="mdi-clipboard-account-outline" />
     </template>
-    <template #heading><RouterLink to="/rangliste">Ranglisten-Tool</RouterLink></template>
+    <template #heading><RouterLink to="/simulator">Ranglisten-Tool</RouterLink></template>
 
     In der Rangliste können derzeit Spieler*innen erstellt und bearbeitet werden.
     <br />
