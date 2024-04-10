@@ -45,6 +45,9 @@ function initPlayerList(): Player[] {
 
 function addPlayersToSimulator() {
   for (const player of players.value) {
+    if (player.isInSimulator === undefined) {
+      player.isInSimulator = true
+    }
     if (player.isInSimulator === true) {
       playersInSimulator.value.push(player)
     }
