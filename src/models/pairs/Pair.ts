@@ -6,4 +6,5 @@ export default interface Pair {
   player2: Player
   selected?: boolean | false
   points: number
+  doubles?: string
 }

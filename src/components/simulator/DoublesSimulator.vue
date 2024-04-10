@@ -18,7 +18,7 @@
           <v-row>
             <v-col cols="12">
               <v-data-iterator
-                :items="flatPairs"
+                :items="allPairs"
                 :items-per-page="itemsPerPage"
                 :search="searchPairs"
               >
@@ -35,8 +35,7 @@
                         v-if="mainTeam"
                         class="calcView__card"
                         append-icon="mdi-account-multiple"
-                        :title="`${mainTeam.player1.name} (${mainTeam.player1.doubles}) [${mainTeam.player1.team}] + ${mainTeam.player2.name} (${mainTeam.player2.doubles}) [${mainTeam.player2.team}]`"
-                        :subtitle="mainTeam.points"
+                        :title="`${mainTeam.player1.name} [${mainTeam.player1.team}] + ${mainTeam.player2.name} [${mainTeam.player2.team}] (${parseInt(mainTeam.player1.doubles) + parseInt(mainTeam.player2.doubles)})`"
                         color="teal-lighten-2"
                       >
                       </v-card>
@@ -91,8 +90,13 @@
                           lines="two"
                           @click="onClick(item.raw)"
                         >
-                          {{ item.raw.p1 }} <br />
-                          {{ item.raw.p2 }} <br />
+                          {{ item.raw.player1.name }}({{ item.raw.player1.doubles }}) [{{
+                            item.raw.player1.team
+                          }}]
+                          <br />
+                          {{ item.raw.player2.name }} ({{ item.raw.player2.doubles }}) [{{
+                            item.raw.player2.team
+                          }}] <br />
                         </v-list-item>
                       </v-sheet>
                     </v-col>
@@ -127,10 +131,25 @@
               </template>
               <v-data-table
                 theme="dark"
+                :headers="tableHeaders"
                 :items="possiblePairs"
                 :search="searchTable"
                 :items-per-page="5"
-              />
+              >
+                <template v-slot:item="{ item }">
+                  <tr>
+                    <td>
+                      <!-- {{ item.player1.name }} ({{ item.player1.doubles }}) [{{ item.player1.team }}] -->
+                      {{ item.player1.name }}
+                    </td>
+                    <td>
+                      {{ item.player2.name }} ({{ item.player2.doubles }}) [{{ item.player2.team }}]
+                    </td>
+                    <td>{{ item.points }}</td>
+                    <td>{{ item.doubles }}</td>
+                  </tr>
+                </template>
+              </v-data-table>
             </v-card>
           </v-col>
         </v-row>
@@ -140,12 +159,10 @@
 </template>
 
 <script setup lang="ts">
+import { filterPairsAndCalcDoubles } from '@/helper/pairs/filterPairsAndCalcDoubles'
 import { generateUniquePairs } from '@/helper/pairs/generateUniquePairshelper'
-import { pairsToDataTableMapper } from '@/helper/pairs/pairsToDataTableMapper'
 import { getPlayersFromSessionStorage } from '@/helper/rangliste/playersStorageHelper'
 import type Player from '@/models/Player'
-import type DataTablePair from '@/models/pairs/DataTablePair'
-import type FlatPair from '@/models/pairs/FlatPair'
 import type Pair from '@/models/pairs/Pair'
 import { computed, onMounted, ref, watch } from 'vue'
 import { useDisplay } from 'vuetify'
@@ -154,6 +171,30 @@ const { mobile } = useDisplay()
 const searchTable = ref<string>('')
 const searchPairs = ref<string>('')
 const mainTeam = ref<Pair>()
+
+const tableHeaders = ref([
+  {
+    title: 'Player 1',
+    align: 'start',
+    sortable: true,
+    key: 'player1'
+  },
+  {
+    title: 'Player 2',
+    sortable: true,
+    key: 'player2'
+  },
+  {
+    title: 'Sum',
+    sortable: true,
+    key: 'points'
+  },
+  {
+    title: 'Doubles',
+    sortable: true,
+    key: 'doubles'
+  }
+] as const)
 
 onMounted(() => {
   defaultItemsPerPage()
@@ -175,12 +216,8 @@ const allPairs = computed<Pair[]>(() => {
   return generateUniquePairs(players.value)
 })
 
-const flatPairs = computed<FlatPair[]>(() => {
-  return flattenPairs(allPairs.value)
-})
-
-const possiblePairs = computed<DataTablePair[]>(() => {
-  return pairsToDataTableMapper(filteredPairs.value, mainTeam.value)
+const possiblePairs = computed<Pair[]>(() => {
+  return filterPairsAndCalcDoubles(filteredPairs.value, mainTeam.value)
 })
 
 const filteredPairs = ref<Pair[]>(filterPairs(allPairs.value))
@@ -202,8 +239,8 @@ watch(allPairs, () => {
   }
 })
 
-function onClick(team: FlatPair) {
-  mainTeam.value = mapFlatPairToPair(team)
+function onClick(team: Pair) {
+  mainTeam.value = team
 }
 
 watch(mainTeam, () => {
@@ -239,33 +276,6 @@ function onClickSeeAll() {
     itemsPerPage.value = itemsPerPage.value === 2 ? allPairs.value.length : 2
   } else {
     itemsPerPage.value = itemsPerPage.value === 6 ? allPairs.value.length : 6
-  }
-}
-
-function flattenPairs(pairs: Pair[]): FlatPair[] {
-  let flatPairs = []
-  for (const pair of pairs) {
-    const flatPair = {
-      player1: pair.player1,
-      p1: `${pair.player1.name} (${pair.player1.doubles}) [${pair.player1.team}]`,
-      p1Id: pair.player1.id,
-      player2: pair.player2,
-      p2: `${pair.player2.name} (${pair.player2.doubles}) [${pair.player2.team}]`,
-      p2Id: pair.player2.id,
-      sumPoints: pair.points,
-      teamId: pair.teamId
-    }
-    flatPairs.push(flatPair)
-  }
-  return flatPairs
-}
-
-function mapFlatPairToPair(team: FlatPair): Pair {
-  return {
-    teamId: team.teamId,
-    player1: team.player1,
-    player2: team.player2,
-    points: team.sumPoints
   }
 }
 </script>
