@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import WelcomeItem from './WelcomeItem.vue'
-import CommunityIcon from './icons/IconCommunity.vue'
-import SupportIcon from './icons/IconSupport.vue'
+import WelcomeItem from './WelcomeItem.vue';
+import CommunityIcon from './icons/IconCommunity.vue';
+import SupportIcon from './icons/IconSupport.vue';
 </script>
 
 <template>
@@ -27,7 +27,7 @@ import SupportIcon from './icons/IconSupport.vue'
     <template #icon>
       <v-icon icon="mdi-clipboard-account-outline" />
     </template>
-    <template #heading><RouterLink to="/rangliste">Ranglisten-Tool</RouterLink></template>
+    <template #heading><RouterLink to="/simulator">Ranglisten-Tool</RouterLink></template>
 
     In der Rangliste können derzeit Spieler*innen erstellt und bearbeitet werden.
     <br />

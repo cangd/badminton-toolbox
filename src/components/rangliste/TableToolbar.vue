@@ -1,0 +1,49 @@
+<!-- eslint-disable vue/require-v-for-key -->
+<template>
+  <div class="tableToolbar">
+    <v-row class="justify-center">
+      <v-col class="pa-4" cols="12" sm="6">
+        <v-select
+          theme="dark"
+          v-model="selectedTeams"
+          :items="items"
+          label="Mannschaften"
+          chips
+          multiple
+          closable-chips
+          color="teal-lighten-2"
+          base-color="teal-lighten-2"
+        >
+        </v-select>
+      </v-col>
+    </v-row>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { TeamEnum } from '@/models/TeamEnum';
+import { computed, ref } from 'vue';
+
+const props = defineProps<{
+  teamFilter: TeamEnum[];
+}>();
+
+const emit = defineEmits<{
+  (e: 'update:teamFilter', value: TeamEnum[]): void;
+}>();
+
+const items = ref([TeamEnum.M1, TeamEnum.M2, TeamEnum.M3, TeamEnum.M4, TeamEnum.E]);
+
+const selectedTeams = computed({
+  get: () => props.teamFilter,
+  set: (value: TeamEnum[]) => {
+    emit('update:teamFilter', value);
+  }
+});
+</script>
+
+<style lang="scss" scoped>
+.tableToolbar {
+  margin-top: 30px;
+}
+</style>

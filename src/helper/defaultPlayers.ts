@@ -1,5 +1,5 @@
-import type Player from '@/models/Player'
-import { TeamEnum } from '@/models/TeamEnum'
+import type Player from '@/models/Player';
+import { TeamEnum } from '@/models/TeamEnum';
 
 export const defaultPlayers: Player[] = [
   { id: 1, name: 'Anton', singles: '10', doubles: '30', team: TeamEnum.M1, isInSimulator: true },
@@ -8,4 +8,4 @@ export const defaultPlayers: Player[] = [
   { id: 4, name: 'Dora', singles: '40', doubles: '40', team: TeamEnum.M1, isInSimulator: true },
   { id: 5, name: 'Emil', singles: '50', doubles: '50', team: TeamEnum.M2, isInSimulator: true },
   { id: 6, name: 'Frieda', singles: '60', doubles: '60', team: TeamEnum.M2, isInSimulator: false }
-]
+];
