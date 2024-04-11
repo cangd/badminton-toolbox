@@ -23,35 +23,8 @@
                 :search="searchPairs"
               >
                 <template v-slot:header="{ page, pageCount, prevPage, nextPage }">
-                  <v-row>
-                    <v-col
-                      class="d-flex justify-md-start justify-center flex-sm-row"
-                      cols="12"
-                      md="9"
-                      sm="12"
-                      xs="6"
-                    >
-                      <v-card
-                        v-if="mainTeam"
-                        class="calcView__card"
-                        append-icon="mdi-account-multiple"
-                        :title="`${mainTeam.player1.name} [${mainTeam.player1.team}] + ${mainTeam.player2.name} [${mainTeam.player2.team}] ${mainTeam.points}`"
-                        color="teal-lighten-2"
-                      >
-                      </v-card>
-
-                      <div
-                        v-if="!mainTeam"
-                        class="d-flex align-center text-h6 font-weight-bold d-flex"
-                      >
-                        &nbsp; Wähle ein gesetztes Doppel
-                      </div>
-                    </v-col>
-                    <v-col
-                      class="d-md-flex justify-md-end justify-xs-center flex-sm-row"
-                      cols="12"
-                      md="3"
-                    >
+                  <v-row class="d-md-flex justify-md-end justify-xs-center flex-sm-row">
+                    <v-col cols="12" md="3">
                       <div class="d-flex justify-center align-center">
                         <v-btn class="me-8" variant="text" @click="onClickSeeAll">
                           <span class="text-decoration-underline text-none">See all</span>
@@ -79,23 +52,32 @@
                     </v-col>
                   </v-row>
                 </template>
-
                 <template v-slot:default="{ items }">
-                  <v-row>
-                    <v-col v-for="(item, i) in items" :key="i" cols="12" lg="4" sm="6">
-                      <v-sheet border>
-                        <v-list-item
-                          class="calcView__listItem"
-                          density="comfortable"
-                          lines="two"
-                          @click="onClick(item.raw)"
-                        >
-                          {{ item.raw.p1 }} <br />
-                          {{ item.raw.p2 }} <br />
-                        </v-list-item>
-                      </v-sheet>
-                    </v-col>
-                  </v-row>
+                  <v-item-group selected-class="bg-primary">
+                    <v-container>
+                      <v-row>
+                        <v-col v-for="(item, i) in items" :key="i" cols="12" lg="4" sm="6">
+                          <v-item v-slot="{ isSelected, selectedClass, toggle }">
+                            <v-card
+                              :class="['d-flex align-center', selectedClass]"
+                              height="100"
+                              dark
+                              v-on:click="toggle"
+                              @click="onClick(item.raw)"
+                            >
+                              <div class="text-h6 flex-grow-1 text-center css-fix">
+                                {{
+                                  isSelected
+                                    ? `${item.raw.p1} \n ${item.raw.p2} \n Sum: (${item.raw.sumPoints})`
+                                    : `${item.raw.p1} \n ${item.raw.p2}`
+                                }}
+                              </div>
+                            </v-card>
+                          </v-item>
+                        </v-col>
+                      </v-row>
+                    </v-container>
+                  </v-item-group>
                 </template>
 
                 <template v-slot:footer="{ page, pageCount }">
@@ -139,56 +121,56 @@
 </template>
 
 <script setup lang="ts">
-import { generateUniquePairs } from '@/helper/pairs/generateUniquePairshelper'
-import { pairsToDataTableMapper } from '@/helper/pairs/pairsToDataTableMapper'
-import { getPlayersFromSessionStorage } from '@/helper/rangliste/playersStorageHelper'
-import type Player from '@/models/Player'
-import type DataTablePair from '@/models/pairs/DataTablePair'
-import type FlatPair from '@/models/pairs/FlatPair'
-import type Pair from '@/models/pairs/Pair'
-import { computed, onMounted, ref, watch } from 'vue'
-import { useDisplay } from 'vuetify'
+import { generateUniquePairs } from '@/helper/pairs/generateUniquePairshelper';
+import { pairsToDataTableMapper } from '@/helper/pairs/pairsToDataTableMapper';
+import { getPlayersFromSessionStorage } from '@/helper/rangliste/playersStorageHelper';
+import type Player from '@/models/Player';
+import type DataTablePair from '@/models/pairs/DataTablePair';
+import type FlatPair from '@/models/pairs/FlatPair';
+import type Pair from '@/models/pairs/Pair';
+import { computed, onMounted, ref, watch } from 'vue';
+import { useDisplay } from 'vuetify';
 
-const { mobile } = useDisplay()
-const searchTable = ref<string>('')
-const searchPairs = ref<string>('')
-const mainTeam = ref<Pair>()
+const { mobile } = useDisplay();
+const searchTable = ref<string>('');
+const searchPairs = ref<string>('');
+const mainTeam = ref<Pair>();
 
 onMounted(() => {
-  defaultItemsPerPage()
-})
+  defaultItemsPerPage();
+});
 
 const props = defineProps<{
-  playersList: Player[]
-}>()
+  playersList: Player[];
+}>();
 
 const players = computed<Player[]>(() => {
   if (props.playersList) {
-    return props.playersList
+    return props.playersList;
   }
   // Implemented for old version
-  return getPlayersFromSessionStorage()
-})
+  return getPlayersFromSessionStorage();
+});
 
 const allPairs = computed<Pair[]>(() => {
-  return generateUniquePairs(players.value)
-})
+  return generateUniquePairs(players.value);
+});
 
 const flatPairs = computed<FlatPair[]>(() => {
-  return flattenPairs(allPairs.value)
-})
+  return flattenPairs(allPairs.value);
+});
 
 const possiblePairs = computed<DataTablePair[]>(() => {
-  return pairsToDataTableMapper(filteredPairs.value, mainTeam.value)
-})
+  return pairsToDataTableMapper(filteredPairs.value, mainTeam.value);
+});
 
-const filteredPairs = ref<Pair[]>(filterPairs(allPairs.value))
+const filteredPairs = ref<Pair[]>(filterPairs(allPairs.value));
 
 watch(allPairs, () => {
-  filteredPairs.value = filterPairs(allPairs.value, mainTeam.value)
+  filteredPairs.value = filterPairs(allPairs.value, mainTeam.value);
   if (mainTeam.value) {
-    const player1 = mainTeam.value.player1
-    const player2 = mainTeam.value.player2
+    const player1 = mainTeam.value.player1;
+    const player2 = mainTeam.value.player2;
     // if (player in mainteam is missing in allPairs) then mainTeam.value = undefined
     if (
       !(
@@ -196,21 +178,21 @@ watch(allPairs, () => {
         players.value.some((player) => player.id === player2.id)
       )
     ) {
-      mainTeam.value = undefined
+      mainTeam.value = undefined;
     }
   }
-})
+});
 
 function onClick(team: FlatPair) {
-  mainTeam.value = mapFlatPairToPair(team)
+  mainTeam.value = mapFlatPairToPair(team);
 }
 
 watch(mainTeam, () => {
-  filteredPairs.value = filterPairs(allPairs.value, mainTeam.value)
-})
+  filteredPairs.value = filterPairs(allPairs.value, mainTeam.value);
+});
 
 function filterPairs(allPairs: Pair[], team?: Pair): Pair[] {
-  let filtered: Pair[] = allPairs
+  let filtered: Pair[] = allPairs;
   if (team) {
     filtered = allPairs.filter(
       (pair) =>
@@ -218,31 +200,31 @@ function filterPairs(allPairs: Pair[], team?: Pair): Pair[] {
         pair.player2.id !== team.player1.id &&
         pair.player1.id !== team.player2.id &&
         pair.player2.id !== team.player2.id
-    )
+    );
   }
-  return filtered
+  return filtered;
 }
 
-const itemsPerPage = ref<number>()
+const itemsPerPage = ref<number>();
 
 function defaultItemsPerPage() {
   if (mobile.value === true) {
-    return (itemsPerPage.value = 2)
+    return (itemsPerPage.value = 2);
   } else {
-    return (itemsPerPage.value = 6)
+    return (itemsPerPage.value = 6);
   }
 }
 
 function onClickSeeAll() {
   if (mobile.value) {
-    itemsPerPage.value = itemsPerPage.value === 2 ? allPairs.value.length : 2
+    itemsPerPage.value = itemsPerPage.value === 2 ? allPairs.value.length : 2;
   } else {
-    itemsPerPage.value = itemsPerPage.value === 6 ? allPairs.value.length : 6
+    itemsPerPage.value = itemsPerPage.value === 6 ? allPairs.value.length : 6;
   }
 }
 
 function flattenPairs(pairs: Pair[]): FlatPair[] {
-  let flatPairs = []
+  let flatPairs = [];
   for (const pair of pairs) {
     const flatPair = {
       player1: pair.player1,
@@ -253,10 +235,10 @@ function flattenPairs(pairs: Pair[]): FlatPair[] {
       p2Id: pair.player2.id,
       sumPoints: pair.points,
       teamId: pair.teamId
-    }
-    flatPairs.push(flatPair)
+    };
+    flatPairs.push(flatPair);
   }
-  return flatPairs
+  return flatPairs;
 }
 
 function mapFlatPairToPair(team: FlatPair): Pair {
@@ -265,7 +247,7 @@ function mapFlatPairToPair(team: FlatPair): Pair {
     player1: team.player1,
     player2: team.player2,
     points: team.sumPoints
-  }
+  };
 }
 </script>
 
@@ -286,5 +268,9 @@ function mapFlatPairToPair(team: FlatPair): Pair {
 
 .doublesSimulator__card {
   margin: 20px;
+}
+
+.css-fix {
+  white-space: pre-wrap;
 }
 </style>

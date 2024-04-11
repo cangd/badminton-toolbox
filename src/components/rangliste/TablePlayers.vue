@@ -120,144 +120,144 @@
 // Try to use this for the TEMPLATE INSTEAD
 // https://vuetifyjs.com/en/components/data-tables/basics/#usage
 
-import { savePlayersToSessionStorage } from '@/helper/rangliste/playersStorageHelper'
-import type Player from '@/models/Player.js'
-import { computed } from 'vue'
-import TeamSelector from './TeamSelector.vue'
+import { savePlayersToSessionStorage } from '@/helper/rangliste/playersStorageHelper';
+import type Player from '@/models/Player.js';
+import { computed } from 'vue';
+import TeamSelector from './TeamSelector.vue';
 
 const props = defineProps<{
-  playersList: Player[]
-  playersInSimulator: Player[]
-}>()
+  playersList: Player[];
+  playersInSimulator: Player[];
+}>();
 
 const emit = defineEmits<{
-  (e: 'update:playersList', player: Player[]): void
-  (e: 'update:playersInSimulator', player: Player[]): void
-}>()
+  (e: 'update:playersList', player: Player[]): void;
+  (e: 'update:playersInSimulator', player: Player[]): void;
+}>();
 
 const players = computed<Player[]>({
   get: () => {
-    return props.playersList
+    return props.playersList;
   },
   set: (value: Player[]) => {
-    emit('update:playersList', value)
+    emit('update:playersList', value);
   }
-})
+});
 
 const playersSimulator = computed<Player[]>({
   get: () => {
-    return props.playersInSimulator
+    return props.playersInSimulator;
   },
   set: (value: Player[]) => {
-    emit('update:playersInSimulator', value)
+    emit('update:playersInSimulator', value);
   }
-})
+});
 
 const isNameValid = (index: number) => {
-  const currentName = players.value[index].name
+  const currentName = players.value[index].name;
   return (
     players.value.every((player, i) => index === i || player.name !== currentName) &&
     currentName !== ''
-  )
-}
+  );
+};
 
 const isSinglesValid = (index: number) => {
-  const currentSingles = players.value[index].singles
+  const currentSingles = players.value[index].singles;
   return (
     players.value.every((player, i) => index === i || player.singles !== currentSingles) &&
     currentSingles !== ''
-  )
-}
+  );
+};
 
 const isDoublesValid = (index: number) => {
-  const currentDoubles = players.value[index].doubles
+  const currentDoubles = players.value[index].doubles;
   return (
     players.value.every((player, i) => index === i || player.doubles !== currentDoubles) &&
     currentDoubles !== ''
-  )
-}
+  );
+};
 
 function isPlayerSelected(index: number): boolean {
-  return players.value[index].isInSimulator
+  return players.value[index].isInSimulator;
 }
 
 function editPlayer(index: number) {
-  players.value[index].isEditing = true
+  players.value[index].isEditing = true;
 }
 
 function savePlayer(index: number) {
-  const player = players.value[index]
+  const player = players.value[index];
   // Check uniqueness of singles and doubles values
   const isUnique = players.value.every(
     (p) =>
       p.id === player.id ||
       (p.name !== player.name && p.singles !== player.singles && p.doubles !== player.doubles)
-  )
+  );
   if (!isUnique) {
-    alert('Name, Singles and Doubles values must be unique.')
-    return
+    alert('Name, Singles and Doubles values must be unique.');
+    return;
   }
-  players.value[index].isEditing = false
-  savePlayersToSessionStorage(players.value)
+  players.value[index].isEditing = false;
+  savePlayersToSessionStorage(players.value);
 }
 
 function deletePlayer(id: any) {
-  const index = players.value.findIndex((player: { id: any }) => player.id === id)
+  const index = players.value.findIndex((player: { id: any }) => player.id === id);
   if (index !== -1) {
-    players.value.splice(index, 1)
+    players.value.splice(index, 1);
   }
-  savePlayersToSessionStorage(players.value)
+  savePlayersToSessionStorage(players.value);
 }
 
 function addToSimulator(index: number) {
-  const player = players.value[index]
-  player.isInSimulator = true
-  savePlayersToSessionStorage(players.value)
-  playersSimulator.value.push(player)
+  const player = players.value[index];
+  player.isInSimulator = true;
+  savePlayersToSessionStorage(players.value);
+  playersSimulator.value.push(player);
 }
 
 function removeFromSimulator(id: any) {
   const indexSimulator = playersSimulator.value.findIndex(
     (playerSimulator: { id: any }) => playerSimulator.id === id
-  )
-  const indexPlayer = players.value.findIndex((player: { id: any }) => player.id === id)
+  );
+  const indexPlayer = players.value.findIndex((player: { id: any }) => player.id === id);
 
-  const player = players.value[indexPlayer]
-  player.isInSimulator = false
-  savePlayersToSessionStorage(players.value)
+  const player = players.value[indexPlayer];
+  player.isInSimulator = false;
+  savePlayersToSessionStorage(players.value);
   if (indexSimulator !== -1) {
-    playersSimulator.value.splice(indexSimulator, 1)
+    playersSimulator.value.splice(indexSimulator, 1);
   }
 }
 
 function sortByName() {
-  players.value.sort((a, b) => a.name.localeCompare(b.name))
+  players.value.sort((a, b) => a.name.localeCompare(b.name));
 }
 
 function sortBySingles() {
   players.value.sort((a, b) => {
-    const singlesA = parseInt(a.singles)
-    const singlesB = parseInt(b.singles)
-    return singlesA - singlesB
-  })
+    const singlesA = parseInt(a.singles);
+    const singlesB = parseInt(b.singles);
+    return singlesA - singlesB;
+  });
 }
 
 function sortByDoubles() {
   players.value.sort((a, b) => {
-    const doublesA = parseInt(a.doubles)
-    const doublesB = parseInt(b.doubles)
-    return doublesA - doublesB
-  })
+    const doublesA = parseInt(a.doubles);
+    const doublesB = parseInt(b.doubles);
+    return doublesA - doublesB;
+  });
 }
 
 function clickOnAction() {
   const close = (i: number) => {
-    savePlayer(i)
-    players.value[i].isEditing = false
-  }
+    savePlayer(i);
+    players.value[i].isEditing = false;
+  };
 
   for (let i = 0; i < players.value.length; i++) {
-    players.value[i].isEditing == true ? close(i) : (players.value[i].isEditing = true)
+    players.value[i].isEditing == true ? close(i) : (players.value[i].isEditing = true);
   }
 }
 </script>
