@@ -20,6 +20,7 @@ import SupportIcon from './icons/IconSupport.vue';
     </template>
     <template #heading>Neue Features:</template>
 
+    <li>12.04.2024: Verbessertes Ranglisten-Tool ist live!</li>
     <li>03.04.2024: Die Toolbox geht online</li>
   </WelcomeItem>
 
@@ -32,6 +33,8 @@ import SupportIcon from './icons/IconSupport.vue';
     In der Rangliste können derzeit Spieler*innen erstellt und bearbeitet werden.
     <br />
     Die Daten werden in eurem Browser gespeichert. Ihr seht also nur eure persönliche Rangliste.
+    <br />
+    Spieler*innen können neuerdings für den Simulator ausgewählt werden.
   </WelcomeItem>
 
   <WelcomeItem>
@@ -40,8 +43,12 @@ import SupportIcon from './icons/IconSupport.vue';
     </template>
     <template #heading>Roadmap</template>
 
-    <li>Filter Funktion für Spieler, die in den Simulator übertragen werden sollen</li>
-    <li>Integrierte Ansicht</li>
+    <li>
+      Filter Funktion für Spieler, die in den Simulator übertragen werden sollen
+      <v-icon icon="mdi-check" />
+    </li>
+
+    <li>Integrierte Ansicht <v-icon icon="mdi-check" /></li>
     <li>PDF export</li>
     <li>PDF import</li>
   </WelcomeItem>
