@@ -2,14 +2,14 @@
 <template>
   <div class="hideBar">
     <v-row class="flex-row justify-end">
-      <v-col cols="12" sm="3">
+      <v-col cols="12" md="3" sm="4">
         <v-switch
           v-model="showAddPlayer"
           color="teal-lighten-2"
           label="Spieler hinzufügen"
         ></v-switch>
       </v-col>
-      <v-col cols="12" sm="2">
+      <v-col cols="12" md="2" sm="4">
         <v-switch v-model="showTable" color="teal-lighten-2" label="Rangliste"></v-switch>
       </v-col>
     </v-row>
