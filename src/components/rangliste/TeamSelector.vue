@@ -14,24 +14,24 @@
 </template>
 
 <script setup lang="ts">
-import { TeamEnum } from '@/models/TeamEnum'
-import { computed, ref } from 'vue'
+import { TeamEnum } from '@/models/TeamEnum';
+import { computed, ref } from 'vue';
 
 const props = defineProps<{
-  isDisabled?: boolean
-  teamZugehoerigkeit: TeamEnum
-}>()
+  isDisabled?: boolean;
+  teamZugehoerigkeit: TeamEnum;
+}>();
 
-const emit = defineEmits<{ (e: 'update:modelValue', value: TeamEnum): void }>()
+const emit = defineEmits<{ (e: 'update:modelValue', value: TeamEnum): void }>();
 
-const items = ref([TeamEnum.M1, TeamEnum.M2, TeamEnum.M3, TeamEnum.M4, TeamEnum.E])
+const items = ref([TeamEnum.M1, TeamEnum.M2, TeamEnum.M3, TeamEnum.M4, TeamEnum.E]);
 
 const selectedTeam = computed({
   get: () => props.teamZugehoerigkeit,
   set: (value: TeamEnum) => {
-    emit('update:modelValue', value)
+    emit('update:modelValue', value);
   }
-})
+});
 </script>
 
 <style lang="scss" scoped>

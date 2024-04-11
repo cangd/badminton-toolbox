@@ -31,22 +31,22 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import { defaultPlayers } from './helper/defaultPlayers'
+import { onMounted, ref } from 'vue';
+import { defaultPlayers } from './helper/defaultPlayers';
 import {
   getPlayersFromSessionStorage,
   savePlayersToSessionStorage
-} from './helper/rangliste/playersStorageHelper'
+} from './helper/rangliste/playersStorageHelper';
 
-const drawer = ref(false)
+const drawer = ref(false);
 
-const title = ref('Home')
+const title = ref('Home');
 
 onMounted(() => {
   if (getPlayersFromSessionStorage().length === 0) {
-    savePlayersToSessionStorage(defaultPlayers)
+    savePlayersToSessionStorage(defaultPlayers);
   }
-})
+});
 </script>
 
 <style lang="scss" scoped>

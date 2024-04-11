@@ -1,5 +1,5 @@
-import type Player from '@/models/Player'
-import { TeamEnum } from '@/models/TeamEnum'
+import type Player from '@/models/Player';
+import { TeamEnum } from '@/models/TeamEnum';
 
 export const player1: Player = {
   id: 1,
@@ -8,7 +8,7 @@ export const player1: Player = {
   doubles: '20',
   team: TeamEnum.M1,
   isInSimulator: false
-}
+};
 
 export const player2: Player = {
   id: 2,
@@ -17,7 +17,7 @@ export const player2: Player = {
   doubles: '30',
   team: TeamEnum.M1,
   isInSimulator: false
-}
+};
 
 export const player3: Player = {
   id: 3,
@@ -26,7 +26,7 @@ export const player3: Player = {
   doubles: '40',
   team: TeamEnum.M1,
   isInSimulator: false
-}
+};
 
 export const player4: Player = {
   id: 4,
@@ -35,4 +35,4 @@ export const player4: Player = {
   doubles: '50',
   team: TeamEnum.M1,
   isInSimulator: false
-}
+};

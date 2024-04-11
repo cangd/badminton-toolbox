@@ -50,15 +50,11 @@ onMounted(() => {
 });
 
 function filterPlayers(): Player[] {
-  console.log('I got here', filterTeams.value);
   const playerList = storedPlayers.value;
-  console.log('SpielerListe vorher', playerList.length);
   if (filterTeams.value.length > 0) {
     const foo = playerList.filter((player) => filterTeams.value.includes(player.team));
-    console.log('Spieler nach Filter', foo.length);
     return (players.value = foo);
   } else {
-    console.log('Reset players', playerList.length);
     return (players.value = playerList);
   }
 }

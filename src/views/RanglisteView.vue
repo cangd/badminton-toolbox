@@ -4,29 +4,29 @@
 </template>
 
 <script setup lang="ts">
-import AddPlayer from '@/components/rangliste/AddPlayer.vue'
-import TablePlayers from '@/components/rangliste/TablePlayers.vue'
-import { defaultPlayers } from '@/helper/defaultPlayers'
-import { saveLastIdToLocalStorage } from '@/helper/rangliste/lastIdStoragehelper.js'
-import { getPlayersFromSessionStorage } from '@/helper/rangliste/playersStorageHelper.js'
-import type Player from '@/models/Player.js'
-import { onMounted, ref } from 'vue'
+import AddPlayer from '@/components/rangliste/AddPlayer.vue';
+import TablePlayers from '@/components/rangliste/TablePlayers.vue';
+import { defaultPlayers } from '@/helper/defaultPlayers';
+import { saveLastIdToLocalStorage } from '@/helper/rangliste/lastIdStoragehelper.js';
+import { getPlayersFromSessionStorage } from '@/helper/rangliste/playersStorageHelper.js';
+import type Player from '@/models/Player.js';
+import { onMounted, ref } from 'vue';
 
-const players = ref<Player[]>([])
-const playersInSimulator = ref<Player[]>([])
+const players = ref<Player[]>([]);
+const playersInSimulator = ref<Player[]>([]);
 
 onMounted(() => {
-  const storedPlayers = initPlayerList()
-  const lastPlayer = storedPlayers.length - 1
-  saveLastIdToLocalStorage(storedPlayers[lastPlayer].id)
-})
+  const storedPlayers = initPlayerList();
+  const lastPlayer = storedPlayers.length - 1;
+  saveLastIdToLocalStorage(storedPlayers[lastPlayer].id);
+});
 
 function initPlayerList(): Player[] {
-  const storedPlayers = getPlayersFromSessionStorage()
+  const storedPlayers = getPlayersFromSessionStorage();
   if (storedPlayers.length > 0) {
-    return (players.value = storedPlayers)
+    return (players.value = storedPlayers);
   } else {
-    return (players.value = defaultPlayers)
+    return (players.value = defaultPlayers);
   }
 }
 </script>

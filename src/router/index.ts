@@ -1,6 +1,6 @@
-import TheWelcome from '@/components/TheWelcome.vue'
-import RanglisteSimulator from '@/views/RanglisteSimulator.vue'
-import { createRouter, createWebHashHistory } from 'vue-router'
+import TheWelcome from '@/components/TheWelcome.vue';
+import RanglisteSimulator from '@/views/RanglisteSimulator.vue';
+import { createRouter, createWebHashHistory } from 'vue-router';
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -16,6 +16,6 @@ const router = createRouter({
       component: RanglisteSimulator
     }
   ]
-})
+});
 
-export default router
+export default router;
