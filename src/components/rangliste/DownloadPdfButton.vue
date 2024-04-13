@@ -1,0 +1,52 @@
+<template>
+  <v-btn
+    size="large"
+    class="addPlayer__button"
+    icon="mdi-download"
+    variant="tonal"
+    @click="generatePdf"
+    id="button"
+    density="comfortable"
+    color="teal-lighten-2"
+  >
+  </v-btn>
+</template>
+
+<script setup lang="ts">
+import { getPlayersFromSessionStorage } from '@/helper/rangliste/playersStorageHelper';
+import pdfMake from 'pdfmake/build/pdfmake';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
+const generatePdf = () => {
+  const players = getPlayersFromSessionStorage();
+  const docDefinition: any = {
+    watermark: {
+      text: 'Created with https://cangd.github.io/badminton-toolbox',
+      fontSize: 20,
+      color: 'blue',
+      opacity: 0.1,
+      bold: true,
+      italics: false
+    },
+
+    content: [
+      { text: 'Vereinsrangliste VfB Hermsdorf', style: 'header' },
+      {
+        table: {
+          headerRows: 1,
+          widths: ['*', '*', '*', '*'],
+          body: [
+            ['Name', 'Einzel', 'Doppel', 'Mannschaft'],
+            ...players.map((player) => [player.name, player.singles, player.doubles, player.team])
+          ]
+        }
+      }
+    ],
+    styles: {
+      header: { fontSize: 18, bold: true, margin: [0, 0, 0, 10] }
+    }
+  };
+  pdfMake.createPdf(docDefinition).download('vereinsrangliste.pdf');
+};
+</script>
