@@ -70,46 +70,71 @@
         </v-col>
 
         <v-col class="py-2" cols="12" md="2" sm="3" xs="3">
-          <v-btn
-            v-if="!player.isEditing"
-            icon="mdi-account-edit-outline"
-            variant="plain"
-            class="tablePlayers__action--edit"
-            @click="editPlayer(index)"
-            id="tablePlayersEdit"
-          ></v-btn>
-          <v-btn
-            v-if="!player.isEditing && player.isInSimulator == false"
-            icon="mdi-playlist-plus"
-            variant="plain"
-            class="tablePlayers__action--addToSimulator"
-            @click="addToSimulator(index)"
-            id="tablePlayersAddToSimulator"
-          ></v-btn>
-          <v-btn
-            v-if="!player.isEditing && player.isInSimulator == true"
-            icon="mdi-playlist-minus"
-            variant="plain"
-            class="tablePlayers__action--removeFromSimulator"
-            @click="removeFromSimulator(player.id)"
-            id="tablePlayersRemoveFromSimulator"
-          ></v-btn>
-          <v-btn
-            v-if="player.isEditing"
-            icon="mdi-pencil-off-outline"
-            variant="plain"
-            class="tablePlayers__action--save"
-            @click="savePlayer(index)"
-            id="tablePlayersSave"
-          ></v-btn>
-          <v-btn
-            v-if="player.isEditing"
-            icon="mdi-delete"
-            variant="plain"
-            class="tablePlayers__action--delete"
-            @click="deletePlayer(player.id)"
-            id="tablePlayersDelete"
-          ></v-btn>
+          <v-tooltip text="Bearbeiten">
+            <template v-slot:activator="{ props }">
+              <v-btn
+                v-bind="props"
+                v-if="!player.isEditing"
+                icon="mdi-account-edit-outline"
+                variant="plain"
+                class="tablePlayers__action--edit"
+                @click="editPlayer(index)"
+                id="tablePlayersEdit"
+              ></v-btn>
+            </template>
+          </v-tooltip>
+          <v-tooltip text="Zum Simulator hinzufügen">
+            <template v-slot:activator="{ props }">
+              <v-btn
+                v-bind="props"
+                v-if="!player.isEditing && player.isInSimulator == false"
+                icon="mdi-playlist-plus"
+                variant="plain"
+                class="tablePlayers__action--addToSimulator"
+                @click="addToSimulator(index)"
+                id="tablePlayersAddToSimulator"
+              ></v-btn>
+            </template>
+          </v-tooltip>
+          <v-tooltip text="Vom Simulator entfernen">
+            <template v-slot:activator="{ props }">
+              <v-btn
+                v-bind="props"
+                v-if="!player.isEditing && player.isInSimulator == true"
+                icon="mdi-playlist-minus"
+                variant="plain"
+                class="tablePlayers__action--removeFromSimulator"
+                @click="removeFromSimulator(player.id)"
+                id="tablePlayersRemoveFromSimulator"
+              ></v-btn>
+            </template>
+          </v-tooltip>
+          <v-tooltip text="Speichern">
+            <template v-slot:activator="{ props }">
+              <v-btn
+                v-bind="props"
+                v-if="player.isEditing"
+                icon="mdi-pencil-off-outline"
+                variant="plain"
+                class="tablePlayers__action--save"
+                @click="savePlayer(index)"
+                id="tablePlayersSave"
+              ></v-btn>
+            </template>
+          </v-tooltip>
+          <v-tooltip :text="`${player.name} aus der Rangliste entfernen`">
+            <template v-slot:activator="{ props }">
+              <v-btn
+                v-bind="props"
+                v-if="player.isEditing"
+                icon="mdi-delete"
+                variant="plain"
+                class="tablePlayers__action--delete"
+                @click="deletePlayer(player.id)"
+                id="tablePlayersDelete"
+              ></v-btn>
+            </template>
+          </v-tooltip>
         </v-col>
       </v-row>
     </div>

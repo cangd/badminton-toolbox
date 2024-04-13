@@ -46,17 +46,22 @@
         </v-col>
 
         <v-col class="d-flex align-center justify-center" cols="12" md="1" sm="6" xs="1">
-          <v-btn
-            class="addPlayer__button"
-            icon="mdi-account-plus"
-            variant="tonal"
-            v-if="isFormFilledWithoutErrors()"
-            @click="clickAdd"
-            id="button"
-            density="comfortable"
-            color="teal-lighten-2"
-          >
-          </v-btn>
+          <v-tooltip :text="`${newPlayerName} hinzufügen`">
+            <template v-slot:activator="{ props }">
+              <v-btn
+                v-bind="props"
+                class="addPlayer__button"
+                icon="mdi-account-plus"
+                variant="tonal"
+                v-if="isFormFilledWithoutErrors()"
+                @click="clickAdd"
+                id="button"
+                density="comfortable"
+                color="teal-lighten-2"
+              >
+              </v-btn>
+            </template>
+          </v-tooltip>
         </v-col>
       </v-row>
     </div>

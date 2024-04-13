@@ -20,6 +20,11 @@ import SupportIcon from './icons/IconSupport.vue';
     </template>
     <template #heading>Neue Features:</template>
 
+    13.04.2024: PDF Export und Tooltips sind da!
+    <li>Die erstellte Rangliste kann als PDF runtergeladen werden</li>
+    <li>An den Buttons werden Tooltips angezeigt</li>
+
+    <br />
     12.04.2024: Verbessertes Ranglisten-Tool ist live!
     <li>Integrierte Ansicht von Rangliste und Doppel-Simulator</li>
     <li>Filter nach Mannschaften in der Rangliste</li>
@@ -48,8 +53,7 @@ import SupportIcon from './icons/IconSupport.vue';
     </template>
     <template #heading>Roadmap</template>
 
-    <li>PDF export</li>
-    <li>PDF import</li>
+    <li>Mal sehen, was als nächtes kommt :)</li>
   </WelcomeItem>
 
   <WelcomeItem>
