@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/require-v-for-key -->
 <template>
   <div class="tableToolbar">
-    <v-row class="justify-end align-center">
+    <v-row class="justify-center align-center">
       <v-col cols="12" sm="6" xs="6">
         <v-select
           theme="dark"
