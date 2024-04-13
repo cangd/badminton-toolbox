@@ -1,15 +1,20 @@
 <template>
-  <v-btn
-    size="large"
-    class="addPlayer__button"
-    icon="mdi-download"
-    variant="tonal"
-    @click="generatePdf"
-    id="button"
-    density="comfortable"
-    color="teal-lighten-2"
-  >
-  </v-btn>
+  <v-tooltip text="Download Rangliste">
+    <template v-slot:activator="{ props }">
+      <v-btn
+        v-bind="props"
+        size="large"
+        class="addPlayer__button"
+        icon="mdi-download"
+        variant="tonal"
+        @click="generatePdf"
+        id="button"
+        density="comfortable"
+        color="teal-lighten-2"
+      >
+      </v-btn>
+    </template>
+  </v-tooltip>
 </template>
 
 <script setup lang="ts">
