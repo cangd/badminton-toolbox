@@ -8,6 +8,7 @@
     </HideBar>
     <AddPlayer v-if="showAddPlayer" class="ranglisteView_addPlayer" v-model:playersList="players" />
     <TableToolbar
+      class="justify-center mb-n1"
       v-if="showTable"
       v-model:teamFilter="filterTeams"
       @update:teamFilter="filterPlayers"

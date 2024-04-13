@@ -16,7 +16,9 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "json2html": "^0.0.8",
     "npx": "^10.2.2",
+    "pdfmake": "^0.2.10",
     "pinia": "^2.1.7",
     "vue": "^3.4.15",
     "vue-router": "^4.2.5",

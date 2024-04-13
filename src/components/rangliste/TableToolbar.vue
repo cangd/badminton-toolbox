@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/require-v-for-key -->
 <template>
   <div class="tableToolbar">
-    <v-row class="justify-center">
+    <v-row class="justify-end align-center">
       <v-col cols="12" sm="6" xs="6">
         <v-select
           theme="dark"
@@ -16,6 +16,9 @@
         >
         </v-select>
       </v-col>
+      <v-col class="mb-5" cols="12" sm="3" xs="1">
+        <DownloadPdfButton />
+      </v-col>
     </v-row>
   </div>
 </template>
@@ -23,6 +26,7 @@
 <script setup lang="ts">
 import { TeamEnum } from '@/models/TeamEnum';
 import { computed, ref } from 'vue';
+import DownloadPdfButton from './DownloadPdfButton.vue';
 
 const props = defineProps<{
   teamFilter: TeamEnum[];
@@ -42,8 +46,4 @@ const selectedTeams = computed({
 });
 </script>
 
-<style lang="scss" scoped>
-.tableToolbar {
-  margin-top: 30px;
-}
-</style>
+<style lang="scss" scoped></style>
