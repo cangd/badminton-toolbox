@@ -21,14 +21,14 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 const generatePdf = () => {
   const players = getPlayersFromSessionStorage();
   const docDefinition: any = {
-    watermark: {
-      text: 'Created with https://cangd.github.io/badminton-toolbox',
-      fontSize: 20,
-      color: 'blue',
-      opacity: 0.1,
-      bold: true,
-      italics: false
-    },
+    // watermark: {
+    //   text: 'Created with https://cangd.github.io/badminton-toolbox',
+    //   fontSize: 20,
+    //   color: 'blue',
+    //   opacity: 0.1,
+    //   bold: true,
+    //   italics: false
+    // },
 
     content: [
       { text: 'Vereinsrangliste VfB Hermsdorf', style: 'header' },
