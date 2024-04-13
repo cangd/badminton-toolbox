@@ -7,7 +7,6 @@
         class="addPlayer__button"
         icon="mdi-download"
         variant="tonal"
-        @click="generatePdf"
         id="button"
         density="comfortable"
         color="teal-lighten-2"
