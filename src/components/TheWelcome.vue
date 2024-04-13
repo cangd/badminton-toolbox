@@ -20,8 +20,7 @@ import SupportIcon from './icons/IconSupport.vue';
     </template>
     <template #heading>Neue Features:</template>
 
-    13.04.2024: PDF Export und Tooltips sind da!
-    <li>Die erstellte Rangliste kann als PDF runtergeladen werden</li>
+    13.04.2024: Tooltips sind da!
     <li>An den Buttons werden Tooltips angezeigt</li>
 
     <br />
@@ -53,7 +52,7 @@ import SupportIcon from './icons/IconSupport.vue';
     </template>
     <template #heading>Roadmap</template>
 
-    <li>Mal sehen, was als nächtes kommt :)</li>
+    <li>PDF export</li>
   </WelcomeItem>
 
   <WelcomeItem>
