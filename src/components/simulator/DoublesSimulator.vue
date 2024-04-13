@@ -65,7 +65,7 @@
                               v-on:click="toggle"
                               @click="onClick(item.raw)"
                             >
-                              <div class="text-h6 flex-grow-1 text-center css-fix">
+                              <div class="text-subtitle-1 flex-grow-1 text-center css-fix">
                                 {{
                                   isSelected
                                     ? `${item.raw.p1} \n ${item.raw.p2} \n Sum: (${item.raw.sumPoints})`

@@ -11,8 +11,8 @@ export function pairsToDataTableMapper(pairs: Pair[], mainTeam?: Pair): DataTabl
     const dataTablePair: DataTablePair = {
       player1: `${pair.player1.name} (${pair.player1.doubles}) [${pair.player1.team}]`,
       player2: `${pair.player2.name} (${pair.player2.doubles}) [${pair.player2.team}]`,
-      sum,
-      doppel
+      doppel,
+      sum
     };
     dataTablePairs.push(dataTablePair);
   }

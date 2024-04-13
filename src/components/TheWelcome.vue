@@ -20,8 +20,13 @@ import SupportIcon from './icons/IconSupport.vue';
     </template>
     <template #heading>Neue Features:</template>
 
-    <li>12.04.2024: Verbessertes Ranglisten-Tool ist live!</li>
-    <li>03.04.2024: Die Toolbox geht online</li>
+    12.04.2024: Verbessertes Ranglisten-Tool ist live!
+    <li>Integrierte Ansicht von Rangliste und Doppel-Simulator</li>
+    <li>Filter nach Mannschaften in der Rangliste</li>
+    <li>Wähle Spieler*innen aus, die in den Doppel-Simulator übertragen werden</li>
+
+    <br />
+    03.04.2024: Die Toolbox geht online
   </WelcomeItem>
 
   <WelcomeItem>
@@ -43,12 +48,6 @@ import SupportIcon from './icons/IconSupport.vue';
     </template>
     <template #heading>Roadmap</template>
 
-    <li>
-      Filter Funktion für Spieler, die in den Simulator übertragen werden sollen
-      <v-icon icon="mdi-check" />
-    </li>
-
-    <li>Integrierte Ansicht <v-icon icon="mdi-check" /></li>
     <li>PDF export</li>
     <li>PDF import</li>
   </WelcomeItem>

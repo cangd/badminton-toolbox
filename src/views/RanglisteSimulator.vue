@@ -1,7 +1,11 @@
 <template>
   <div class="ranglisteView">
-    <HideRangliste v-model:displayAddPlayer="showAddPlayer" v-model:displayTable="showTable">
-    </HideRangliste>
+    <HideBar
+      class="ranglisteView_hidebar mt-n14 mt-sm-1 mb-5"
+      v-model:displayAddPlayer="showAddPlayer"
+      v-model:displayTable="showTable"
+    >
+    </HideBar>
     <AddPlayer v-if="showAddPlayer" class="ranglisteView_addPlayer" v-model:playersList="players" />
     <TableToolbar
       v-if="showTable"
@@ -24,7 +28,7 @@
 
 <script setup lang="ts">
 import AddPlayer from '@/components/rangliste/AddPlayer.vue';
-import HideRangliste from '@/components/rangliste/HideBar.vue';
+import HideBar from '@/components/rangliste/HideBar.vue';
 import TablePlayers from '@/components/rangliste/TablePlayers.vue';
 import TableToolbar from '@/components/rangliste/TableToolbar.vue';
 import DoublesSimulator from '@/components/simulator/DoublesSimulator.vue';

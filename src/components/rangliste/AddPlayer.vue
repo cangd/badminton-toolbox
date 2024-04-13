@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="addPlayer">
-      <v-row class="flex-row justify-center">
+      <v-row class="mt-4 flex-row justify-center">
         <v-col cols="12" md="4" sm="12" xs="4">
           <v-text-field
             id="name"

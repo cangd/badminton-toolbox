@@ -16,7 +16,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-main class="d-flex justify-center" style="min-height: 300px">
+    <v-main class="d-flex justify-center pt-md-14 pt-sm-8">
       <v-container fluid>
         <div class="app">
           <RouterView />
