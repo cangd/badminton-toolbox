@@ -16,9 +16,6 @@
         >
         </v-select>
       </v-col>
-      <v-col class="mb-5" cols="12" sm="3" xs="1">
-        <DownloadPdfButton />
-      </v-col>
     </v-row>
   </div>
 </template>
@@ -26,7 +23,6 @@
 <script setup lang="ts">
 import { TeamEnum } from '@/models/TeamEnum';
 import { computed, ref } from 'vue';
-import DownloadPdfButton from './DownloadPdfButton.vue';
 
 const props = defineProps<{
   teamFilter: TeamEnum[];
