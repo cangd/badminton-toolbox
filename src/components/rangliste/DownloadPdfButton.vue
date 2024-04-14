@@ -1,5 +1,5 @@
 <template>
-  <v-tooltip text="Download Rangliste">
+  <v-tooltip text="Download Rangliste as pdf">
     <template v-slot:activator="{ props }">
       <v-btn
         v-bind="props"
