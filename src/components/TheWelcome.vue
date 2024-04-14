@@ -28,15 +28,6 @@ import SupportIcon from './icons/IconSupport.vue';
 
     13.04.2024: Tooltips sind da!
     <li>An den Buttons werden Tooltips angezeigt</li>
-
-    <br />
-    12.04.2024: Verbessertes Ranglisten-Tool ist live!
-    <li>Integrierte Ansicht von Rangliste und Doppel-Simulator</li>
-    <li>Filter nach Mannschaften in der Rangliste</li>
-    <li>Wähle Spieler*innen aus, die in den Doppel-Simulator übertragen werden</li>
-
-    <br />
-    03.04.2024: Die Toolbox geht online
   </WelcomeItem>
 
   <WelcomeItem>
