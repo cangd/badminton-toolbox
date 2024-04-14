@@ -1,8 +1,8 @@
 <!-- eslint-disable vue/require-v-for-key -->
 <template>
   <div class="tableToolbar">
-    <v-row class="justify-end align-center">
-      <v-col cols="12" sm="6" xs="6">
+    <v-row class="justify-center align-center">
+      <v-col cols="12" sm="5" xs="6">
         <v-select
           theme="dark"
           v-model="selectedTeams"
@@ -16,7 +16,7 @@
         >
         </v-select>
       </v-col>
-      <v-col class="mb-5" cols="12" sm="3" xs="1">
+      <v-col class="mb-5" cols="12" sm="2" xs="1">
         <DownloadPdfButton />
       </v-col>
     </v-row>
