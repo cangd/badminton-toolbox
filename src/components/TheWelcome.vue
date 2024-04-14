@@ -58,7 +58,7 @@ import SupportIcon from './icons/IconSupport.vue';
     </template>
     <template #heading>Roadmap</template>
 
-    <li>PDF export</li>
+    <li>Mal sehen was als nächstes kommt :)</li>
   </WelcomeItem>
 
   <WelcomeItem>
