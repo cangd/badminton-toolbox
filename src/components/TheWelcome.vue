@@ -20,7 +20,6 @@ import SupportIcon from './icons/IconSupport.vue';
     </template>
     <template #heading>Neue Features:</template>
 
-    <br />
     14.04.2024: Der PDF export online!
     <li>Die hier Rangliste kann nun als PDF exportiert werden!</li>
 
