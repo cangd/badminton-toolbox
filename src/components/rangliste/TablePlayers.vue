@@ -292,6 +292,15 @@ function clickOnAction() {
   &__head-doubles {
     text-decoration: underline;
   }
+
+  &__input-name,
+  &__input-singles,
+  &__input-doubles,
+  &__action--addToSimulator,
+  &__action--removeFromSimulator,
+  &__selector-team {
+    color: #4db6ac;
+  }
 }
 *:disabled {
   background-color: dimgrey;
