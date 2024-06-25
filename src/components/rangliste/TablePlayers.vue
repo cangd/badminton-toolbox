@@ -230,24 +230,31 @@ function removeFromSimulator(id: any) {
   }
 }
 
-function sortByName() {
-  players.value.sort((a, b) => a.name.localeCompare(b.name));
+async function sortByName() {
+  await players.value.sort((a, b) => a.name.localeCompare(b.name));
+  localStorage.setItem('myRangliste', JSON.stringify(players.value));
 }
 
-function sortBySingles() {
-  players.value.sort((a, b) => {
+async function sortBySingles() {
+  await players.value.sort((a, b) => {
     const singlesA = parseInt(a.singles);
     const singlesB = parseInt(b.singles);
-    return singlesA - singlesB;
+    const result = singlesA - singlesB;
+
+    return result;
   });
+  localStorage.setItem('myRangliste', JSON.stringify(players.value));
 }
 
-function sortByDoubles() {
-  players.value.sort((a, b) => {
+async function sortByDoubles() {
+  await players.value.sort((a, b) => {
     const doublesA = parseInt(a.doubles);
     const doublesB = parseInt(b.doubles);
-    return doublesA - doublesB;
+    const result = doublesA - doublesB;
+    // console.log(players.value);
+    return result;
   });
+  localStorage.setItem('myRangliste', JSON.stringify(players.value));
 }
 
 function clickOnAction() {
